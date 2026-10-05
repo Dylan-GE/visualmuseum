@@ -224,19 +224,21 @@
       "spec": {
         "function": "插入固定支撐構件，防止鬆脫滑動",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "細長的棕褐色桿件，上段有環繞糾結的結構。"
       },
       "_source_file": "part3.obj",
       "color": "#5a4a3a",
       "history": {},
       "quiz": {
-        "question": "安全插銷的主要用途是？",
+        "question": "安全插銷的外形最接近哪一種？",
         "options": [
-          "將煤炭從採煤面運出坑外",
-          "插入固定支撐構件，防止鬆脫滑動",
-          "為礦工供應呼吸用氧氣"
+          "細長桿件，上段有環繞糾結的結構",
+          "寬大的長方形箱體",
+          "六角形的厚實輪盤"
         ],
-        "correct_index": 1
+        "correct_index": 0,
+        "basis": "appearance"
       }
     },
     {
@@ -337,19 +339,21 @@
       "spec": {
         "function": "固定支撐構件位置的細長零件",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "非常細長的直桿狀零件，外形單純。"
       },
       "_source_file": "支撐固定器.obj",
       "color": "#4a4a4a",
       "history": {},
       "quiz": {
-        "question": "支撐固定器的功能是？",
+        "question": "支撐固定器的外形是？",
         "options": [
-          "切鋸坑木",
-          "固定支撐構件的位置",
-          "測量坑內瓦斯濃度"
+          "寬大的長方形木箱",
+          "非常細長的直桿狀",
+          "多環相連的鍊條"
         ],
-        "correct_index": 1
+        "correct_index": 1,
+        "basis": "appearance"
       }
     },
     {
@@ -405,18 +409,20 @@
       "spec": {
         "function": "坑道改修工程使用的斧頭",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頭部一側為方塊狀錘面、另一側為尖窄的鑿刃。"
       },
       "_source_file": "chopper.obj",
       "color": "#3a3a3a",
       "quiz": {
-        "question": "改修斧頭是在哪一類工程中使用的工具？",
+        "question": "改修斧頭的頭部有什麼特徵？",
         "options": [
-          "坑道改修工程",
-          "採煤面採煤",
-          "車輛維修"
+          "兩側都是圓形的環",
+          "只有單一的扁平鏟面",
+          "一側為方塊錘面，另一側為尖窄的鑿刃"
         ],
-        "correct_index": 0
+        "correct_index": 2,
+        "basis": "appearance"
       }
     },
     {
@@ -434,19 +440,21 @@
       "spec": {
         "function": "採煤面使用的斧頭",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頭部一側為方塊狀錘面、另一側為較寬的扁平斧刃。"
       },
       "_source_file": "chopper_2.obj",
       "color": "#3a3a3a",
       "history": {},
       "quiz": {
-        "question": "炭嘴斧頭主要在哪裡使用？",
+        "question": "炭嘴斧頭的頭部有什麼特徵？",
         "options": [
-          "坑外火藥庫",
-          "採煤面",
-          "通風機房"
+          "一側為方塊錘面，另一側為較寬的扁平斧刃",
+          "整個頭部呈圓球狀",
+          "沒有長柄，只有一個鐵環"
         ],
-        "correct_index": 1
+        "correct_index": 0,
+        "basis": "appearance"
       }
     },
     {
@@ -660,19 +668,21 @@
       "spec": {
         "function": "六角形滑輪/輪組零件",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "灰色、厚實的塊狀金屬件，上方有斜面凹槽，下方帶有框架底座。"
       },
       "_source_file": "six.obj",
       "color": "#5a5d61",
       "history": {},
       "quiz": {
-        "question": "六角輪屬於哪一類零件？",
+        "question": "六角輪的外形最接近哪一種？",
         "options": [
-          "起爆裝置",
-          "六角形滑輪／輪組零件",
-          "呼吸防護裝備"
+          "青綠色的細長袋狀物",
+          "灰色厚實的塊狀金屬件，帶有斜面與底座框架",
+          "棕色的長方形木箱"
         ],
-        "correct_index": 1
+        "correct_index": 1,
+        "basis": "appearance"
       }
     },
     {
@@ -690,18 +700,20 @@
       "spec": {
         "function": "爆破時用水袋協助抑制粉塵",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "青綠色的圓柱形長條袋狀物。"
       },
       "_source_file": "waterbag.obj",
       "color": "#4a9b8e",
       "quiz": {
-        "question": "爆破水袋的作用是？",
+        "question": "爆破水袋是什麼樣子？",
         "options": [
-          "點燃導火線",
-          "支撐坑道頂板",
-          "爆破時協助抑制粉塵"
+          "灰色厚實的金屬塊",
+          "鏽棕色的鍊條",
+          "青綠色的圓柱形長條袋狀物"
         ],
-        "correct_index": 2
+        "correct_index": 2,
+        "basis": "appearance"
       }
     },
     {
@@ -719,18 +731,20 @@
       "spec": {
         "function": "存放砂袋與水袋的箱體",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "棕褐色的長方形木箱，一側有突出的把手。"
       },
       "_source_file": "watersandbox.obj",
       "color": "#8b6b47",
       "quiz": {
-        "question": "砂袋水袋箱用來做什麼？",
+        "question": "砂袋水袋箱的外形是？",
         "options": [
-          "存放砂袋與水袋",
-          "存放雷管",
-          "運送煤炭"
+          "棕褐色的長方形木箱，一側有突出的把手",
+          "圓柱形的鐵桶",
+          "細長的金屬長柄"
         ],
-        "correct_index": 0
+        "correct_index": 0,
+        "basis": "appearance"
       }
     },
     {
@@ -882,19 +896,21 @@
       "spec": {
         "function": "較大型的人工鑿挖工具",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頭部呈尖嘴狀，像細長的十字鎬。"
       },
       "_source_file": "pickaxe_2.obj",
       "color": "#3a3a3a",
       "history": {},
       "quiz": {
-        "question": "大掘仔是什麼類型的工具？",
+        "question": "大掘仔的外形最接近哪一種？",
         "options": [
-          "自動運煤設備",
-          "通風設備",
-          "較大型的人工鑿挖工具"
+          "寬大的方形木箱",
+          "長柄，頭部呈尖嘴狀",
+          "數個環相接的鍊條"
         ],
-        "correct_index": 2
+        "correct_index": 1,
+        "basis": "appearance"
       }
     },
     {
@@ -1022,18 +1038,20 @@
       "spec": {
         "function": "坑道改修工程使用的鋸具",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "細長扁平的深灰色鋸身，一端較尖。"
       },
       "_source_file": "bigsaw.obj",
       "color": "#3a3a3a",
       "quiz": {
-        "question": "改修鋸是在哪一類工程中使用的鋸具？",
+        "question": "改修鋸的鋸身是什麼形狀？",
         "options": [
-          "採煤面採煤",
-          "車輛維修",
-          "坑道改修工程"
+          "圓形的大輪盤",
+          "短粗的圓柱體",
+          "細長扁平，一端較尖"
         ],
-        "correct_index": 2
+        "correct_index": 2,
+        "basis": "appearance"
       }
     },
     {
@@ -1120,19 +1138,21 @@
       "spec": {
         "function": "鋼索末端的大型固定/連接五金",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "白色金屬鍊環串接而成，下方連著一個尖錐形的金屬頭。"
       },
       "_source_file": "biglock.obj",
       "color": "#a8a9ad",
       "history": {},
       "quiz": {
-        "question": "大索頭是什麼？",
+        "question": "大索頭的外形特徵是？",
         "options": [
-          "鋼索末端的大型固定／連接五金",
-          "採煤用的鑿具",
-          "通風用的風扇"
+          "鍊環串接，下方連著尖錐形金屬頭",
+          "長柄加上錘頭",
+          "扁平的長方形木箱"
         ],
-        "correct_index": 0
+        "correct_index": 0,
+        "basis": "appearance"
       }
     },
     {
@@ -1189,19 +1209,21 @@
       "spec": {
         "function": "雙面錘頭，用於敲擊/拆卸作業",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頂端為橫向的 T 字形，兩側都是方塊狀錘頭。"
       },
       "_source_file": "doublehammer.obj",
       "color": "#3a3a3a",
       "history": {},
       "quiz": {
-        "question": "雙頭錘的用途是？",
+        "question": "雙頭錘的頂端是什麼形狀？",
         "options": [
-          "運送煤炭",
-          "引爆炸藥",
-          "雙面錘頭，用於敲擊或拆卸作業"
+          "單一的尖嘴",
+          "橫向的 T 字形，兩側都是錘頭",
+          "圓形的環"
         ],
-        "correct_index": 2
+        "correct_index": 1,
+        "basis": "appearance"
       }
     },
     {
@@ -1258,19 +1280,21 @@
       "spec": {
         "function": "勾住台車進行推送調度",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "細長的棕色彎鉤，鉤尖向外彎曲，另一端有小環。"
       },
       "_source_file": "hook.obj",
       "color": "#5a4a3a",
       "history": {},
       "quiz": {
-        "question": "押車鉤的用途是？",
+        "question": "押車鉤的外形是？",
         "options": [
-          "固定坑道支撐",
-          "勾住台車進行推送調度",
-          "搬運炸藥"
+          "筆直的實心長桿",
+          "方正的木箱",
+          "細長的彎鉤，鉤尖向外彎曲"
         ],
-        "correct_index": 1
+        "correct_index": 2,
+        "basis": "appearance"
       }
     },
     {
@@ -1333,25 +1357,21 @@
       "spec": {
         "function": "連接兩節礦車，讓多台礦車串聯牽引",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "鏽棕色的 U 形環，開口處有一支橫向插銷固定。"
       },
       "_source_file": "part1.obj",
       "color": "#5c4a3a",
-      "history": {
-        "use_value": "連結器（車鉤）的一般功能是把多節車輛連接起來，讓動力車能帶動後方無動力車廂；礦車連接器在礦坑中大致也是此功能（為一般性說明，非礦場專屬來源）。",
-        "sources": [
-          "https://zh.wikipedia.org/wiki/%E8%BD%A6%E9%92%A9 (車鉤｜維基百科)"
-        ],
-        "confidence": "low"
-      },
+      "history": {},
       "quiz": {
-        "question": "礦車連接器的功能是？",
+        "question": "礦車連接器的外形是？",
         "options": [
-          "連接兩節礦車，讓多台礦車串聯牽引",
-          "引爆炸藥",
-          "固定坑道支撐"
+          "U 形環，開口處有橫向插銷固定",
+          "細長的直桿",
+          "圓柱形的長條袋"
         ],
-        "correct_index": 0
+        "correct_index": 0,
+        "basis": "appearance"
       }
     },
     {
@@ -1369,19 +1389,21 @@
       "spec": {
         "function": "短粗鍊環，用於吊掛或連接重物",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "數個橢圓形鐵環相互串接而成的短鍊條，呈鏽棕色。"
       },
       "_source_file": "part2.obj",
       "color": "#5c4a3a",
       "history": {},
       "quiz": {
-        "question": "三環鍊的用途是？",
+        "question": "三環鍊的外形是？",
         "options": [
-          "供電給起爆裝置",
-          "短粗鍊環，用於吊掛或連接重物",
-          "過濾有毒氣體"
+          "單一的長直桿",
+          "數個橢圓形鐵環相互串接的短鍊條",
+          "扁平的鏟狀長柄"
         ],
-        "correct_index": 1
+        "correct_index": 1,
+        "basis": "appearance"
       }
     },
     {
@@ -1399,19 +1421,21 @@
       "spec": {
         "function": "採煤面使用的鋸具",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "深灰色、略微彎曲的扁平鋸身，一端有握柄。"
       },
       "_source_file": "saw.obj",
       "color": "#3a3a3a",
       "history": {},
       "quiz": {
-        "question": "炭嘴鋸主要在哪裡使用？",
+        "question": "炭嘴鋸的鋸身有什麼特徵？",
         "options": [
-          "火藥庫",
-          "通風機房",
-          "採煤面"
+          "圓形的輪盤",
+          "兩側都是方塊錘頭",
+          "略微彎曲的扁平鋸身，一端有握柄"
         ],
-        "correct_index": 2
+        "correct_index": 2,
+        "basis": "appearance"
       }
     },
     {
@@ -1429,19 +1453,21 @@
       "spec": {
         "function": "鏟除坑道內碎屑與煤渣",
         "era": "待確認",
-        "material": "待確認"
+        "material": "待確認",
+        "appearance": "細長的長柄，末端為扁平的鏟面。"
       },
       "_source_file": "shovel.obj",
       "color": "#3a3a3a",
       "history": {},
       "quiz": {
-        "question": "平嘴鏟的用途是？",
+        "question": "平嘴鏟的末端是什麼形狀？",
         "options": [
-          "鏟除坑道內的碎屑與煤渣",
-          "引爆炸藥",
-          "測量風速"
+          "扁平的鏟面",
+          "尖錐形的金屬頭",
+          "橫向的 T 字形錘頭"
         ],
-        "correct_index": 0
+        "correct_index": 0,
+        "basis": "appearance"
       }
     },
     {

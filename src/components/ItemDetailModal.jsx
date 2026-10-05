@@ -3,8 +3,11 @@ import { ArrowLeft, QrCode, Trophy, X } from 'lucide-react';
 import ModelPreview from './ModelPreview';
 import { getItemTypeLabel, getRarityColor, RARITY_LABEL } from '../utils/itemTheme';
 
+const hasText = (v) => typeof v === 'string' && v.trim() !== '' && !/待確認|待補/.test(v);
+
 function DetailView({ item, onClose, onEnterGame }) {
   const color = getRarityColor(item.rarity);
+  const story = item.history?.mining_story || item.history?.use_value;
 
   return (
     <div className="modal-card modal-card-split" onClick={(e) => e.stopPropagation()}>
@@ -24,22 +27,33 @@ function DetailView({ item, onClose, onEnterGame }) {
           <h2>{item.name}</h2>
         </div>
 
-        <section className="modal-section">
-          <h3>材質</h3>
-          <p>{item.spec?.material || '（尚無資料）'}</p>
-        </section>
+        {hasText(item.spec?.material) && (
+          <section className="modal-section">
+            <h3>材質</h3>
+            <p>{item.spec.material}</p>
+          </section>
+        )}
 
-        <section className="modal-section">
-          <h3>用途</h3>
-          <p>{item.spec?.function || '（尚無資料）'}</p>
-        </section>
+        {hasText(item.spec?.function) && (
+          <section className="modal-section">
+            <h3>用途</h3>
+            <p>{item.spec.function}</p>
+          </section>
+        )}
 
-        <section className="modal-section">
-          <h3>歷史故事</h3>
-          <p className="modal-story">
-            {item.history?.mining_story || item.history?.use_value || '（尚無資料）'}
-          </p>
-        </section>
+        {hasText(item.spec?.appearance) && (
+          <section className="modal-section">
+            <h3>外觀</h3>
+            <p>{item.spec.appearance}</p>
+          </section>
+        )}
+
+        {hasText(story) && (
+          <section className="modal-section">
+            <h3>歷史故事</h3>
+            <p className="modal-story">{story}</p>
+          </section>
+        )}
 
         <div className="modal-footer">
           <div className="modal-qr">
