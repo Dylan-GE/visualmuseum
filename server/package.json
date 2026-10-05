@@ -1,0 +1,18 @@
+{
+  "name": "virtual-mining-museum-server",
+  "private": true,
+  "version": "0.1.0",
+  "description": "AI 導覽（老礦工／淘金客／地質學家）的後端 API，代打 Anthropic Claude API，金鑰不曝露給前端",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.115.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

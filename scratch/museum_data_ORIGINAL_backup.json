@@ -1,0 +1,1004 @@
+{
+  "_note": "2026-07-31 重新設計：斜坑(zone_incline)當作 6 岔路口的中心點，直接放射連接主坑/天車間/右一片/右二片/左一片/左二片，取代原本的樹狀結構。複線/押車/支撐/摃場/右三片/左三片已移除，原本掛在這些 zone（含斜坑自己）底下的物件已按類別重新分配到保留的 6 個 zone。3D 幾何由 TunnelZoneScene.jsx 的模組化坑道零件系統渲染（見 PROGRESS.md）。",
+  "route": [
+    "zone_portal",
+    "zone_incline",
+    "zone_hoist_room",
+    "zone_right_1",
+    "zone_right_2",
+    "zone_left_1",
+    "zone_left_2"
+  ],
+  "connections": [
+    [
+      "zone_incline",
+      "zone_portal"
+    ],
+    [
+      "zone_incline",
+      "zone_hoist_room"
+    ],
+    [
+      "zone_incline",
+      "zone_right_1"
+    ],
+    [
+      "zone_incline",
+      "zone_right_2"
+    ],
+    [
+      "zone_incline",
+      "zone_left_1"
+    ],
+    [
+      "zone_incline",
+      "zone_left_2"
+    ]
+  ],
+  "zones": [
+    {
+      "id": "zone_incline",
+      "name": "斜坑",
+      "coordinates": {
+        "x": 0,
+        "y": 0,
+        "z": -77
+      },
+      "size": {
+        "x": 4,
+        "z": 4
+      },
+      "style": "主要傾斜坑道，左右工作面分岔點"
+    },
+    {
+      "id": "zone_portal",
+      "name": "主坑",
+      "coordinates": {
+        "x": 0,
+        "y": 0,
+        "z": -92.6
+      },
+      "size": {
+        "x": 3,
+        "z": 3
+      },
+      "style": "坑口入口，紅磚拱門"
+    },
+    {
+      "id": "zone_hoist_room",
+      "name": "天車間",
+      "coordinates": {
+        "x": 0,
+        "y": 0,
+        "z": -57
+      },
+      "size": {
+        "x": 3,
+        "z": 3
+      },
+      "style": "天車捲揚機房"
+    },
+    {
+      "id": "zone_right_1",
+      "name": "右一片",
+      "coordinates": {
+        "x": 13.51,
+        "y": 0,
+        "z": -84.8
+      },
+      "size": {
+        "x": 3,
+        "z": 3
+      },
+      "style": "右側第一工作面"
+    },
+    {
+      "id": "zone_right_2",
+      "name": "右二片",
+      "coordinates": {
+        "x": 13.51,
+        "y": 0,
+        "z": -69.2
+      },
+      "size": {
+        "x": 3,
+        "z": 3
+      },
+      "style": "右側第二工作面，採煤作業"
+    },
+    {
+      "id": "zone_left_1",
+      "name": "左一片",
+      "coordinates": {
+        "x": -13.51,
+        "y": 0,
+        "z": -84.8
+      },
+      "size": {
+        "x": 3,
+        "z": 3
+      },
+      "style": "左側第一工作面，改修工程"
+    },
+    {
+      "id": "zone_left_2",
+      "name": "左二片",
+      "coordinates": {
+        "x": -13.51,
+        "y": 0,
+        "z": -69.2
+      },
+      "size": {
+        "x": 3,
+        "z": 3
+      },
+      "style": "左側第二工作面"
+    }
+  ],
+  "items": [
+    {
+      "id": "tool_coal_tub",
+      "type": "transport",
+      "name": "礦車",
+      "rarity": "Common",
+      "zone_id": "zone_left_2",
+      "position": [
+        -12.51,
+        0.3,
+        -69.2
+      ],
+      "model_url": "/models/tools/99_temp/minecart.obj",
+      "usdz_url": "/models/tools/coal_tub.usdz",
+      "spec": {
+        "function": "沿軌道載運坑內開採出的煤炭至坑口",
+        "era": "日治時期至戰後皆廣泛使用於台灣煤礦坑道",
+        "material": "鑄鐵車體、木製擋板"
+      },
+      "history": {
+        "use_value": "是坑內外運輸的核心工具，一台台車可裝載數百公斤煤炭，靠人力或小型機車牽引沿軌道進出坑道。",
+        "mining_story": "礦工們稱推車為「放天車」，滿載的台車下坡時煞車全靠經驗，稍有不慎便會翻覆傷人。"
+      },
+      "quiz": {
+        "question": "運煤台車主要沿著什麼移動？",
+        "options": [
+          "軌道",
+          "皮帶輸送帶"
+        ],
+        "correct_index": 0
+      },
+      "color": "#5a3d2e"
+    },
+    {
+      "id": "tool_single_support",
+      "type": "support",
+      "name": "單柱支撐",
+      "rarity": "Common",
+      "zone_id": "zone_portal",
+      "position": [
+        1,
+        0.6,
+        -92.6
+      ],
+      "model_url": "/models/tools/99_temp/SingleSupport.obj",
+      "usdz_url": "/models/tools/timber_support.usdz",
+      "spec": {
+        "function": "以單根立柱搭配頂板支撐坑道局部區域，構造簡單、施作快速",
+        "era": "各時期坑道皆常見的基本支撐形式",
+        "material": "原木或鋼管立柱"
+      },
+      "history": {
+        "use_value": "是坑道支撐系統中最基本的形式，多用於坑況較穩定的區段，施工快速、成本較低。",
+        "mining_story": "老礦工說，單柱支撐雖然簡單，但柱子擺放的角度跟間距全靠經驗判斷，差之毫釐可能就撐不住頂板。"
+      },
+      "quiz": {
+        "question": "單柱支撐相較其他支撐方式的特色是？",
+        "options": [
+          "構造簡單、施作快速",
+          "承重能力最強"
+        ],
+        "correct_index": 0
+      },
+      "color": "#4a3c2e"
+    },
+    {
+      "id": "tool_hoist_winch",
+      "type": "electrical",
+      "name": "捲揚機",
+      "rarity": "Legendary",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        0.71,
+        0.5,
+        -57.71
+      ],
+      "model_url": "/models/tools/99_temp/machine_A.obj",
+      "usdz_url": "/models/tools/hoist_winch.usdz",
+      "spec": {
+        "function": "利用電力驅動鋼索，牽引台車或運載人員上下坑道與豎坑",
+        "era": "機電化運輸時期核心設備",
+        "material": "電動馬達、鋼索、捲筒"
+      },
+      "history": {
+        "use_value": "取代人力牽引，大幅提升坑內外運輸效率，也讓深部開採與豎坑運輸成為可能。",
+        "mining_story": "捲揚機房的老師傅得靠聲音判斷機器狀況，鋼索一旦磨損斷裂後果不堪設想，是坑內最需要謹慎維護的機電設備之一。"
+      },
+      "quiz": {
+        "question": "捲揚機主要靠什麼驅動？",
+        "options": [
+          "電力馬達",
+          "蒸汽機"
+        ],
+        "correct_index": 0
+      },
+      "color": "#3d3d40"
+    },
+    {
+      "id": "tool_pneumatic_pick",
+      "type": "tool",
+      "name": "氣動鎬煤機",
+      "rarity": "Rare",
+      "zone_id": "zone_right_2",
+      "position": [
+        14.22,
+        0.4,
+        -69.91
+      ],
+      "model_url": "/models/tools/99_temp/Pneumatic.obj",
+      "usdz_url": "/models/tools/coal_cutter.usdz",
+      "spec": {
+        "function": "利用壓縮空氣驅動鎬頭反覆撞擊，鬆動並鑿落煤層",
+        "era": "機械化採煤時期引進，取代人工鎬煤",
+        "material": "鋼鐵機身、耐磨鎬頭"
+      },
+      "history": {
+        "use_value": "比起人工用鎬煤，氣動鎬煤機能大幅縮短採煤時間，是機械化採煤的重要過渡工具。",
+        "mining_story": "操作鎬煤機時全身都跟著震動，礦工們常說「一天鎬下來，骨頭都要散了」。"
+      },
+      "quiz": {
+        "question": "氣動鎬煤機主要靠什麼方式鬆動煤層？",
+        "options": [
+          "高速撞擊",
+          "高溫燃燒"
+        ],
+        "correct_index": 0
+      },
+      "color": "#444444"
+    },
+    {
+      "id": "tool_circle_support",
+      "type": "support",
+      "name": "圓拱支撐",
+      "rarity": "Rare",
+      "zone_id": "zone_left_1",
+      "position": [
+        -14.22,
+        0.6,
+        -84.09
+      ],
+      "model_url": "/models/tools/99_temp/circle_sup.obj",
+      "usdz_url": "/models/tools/steel_arch.usdz",
+      "spec": {
+        "function": "以圓弧形鋼構支撐坑道頂部與側壁，能平均分散地壓，較直柱式支撐更穩固",
+        "era": "坑道改修工程與地壓較大的區段常用",
+        "material": "型鋼、鋼板"
+      },
+      "history": {
+        "use_value": "圓拱形狀能有效分散坑道頂部的地壓，在地質條件較差或需要長期維持的坑道區段特別重要，也可回收重複使用。",
+        "mining_story": "架設圓拱支撐需要多人合力，對位要精準，是坑內少數需要團隊分工合作才能完成的工程。"
+      },
+      "quiz": {
+        "question": "圓拱支撐的形狀設計主要是為了？",
+        "options": [
+          "平均分散地壓",
+          "節省材料成本"
+        ],
+        "correct_index": 0
+      },
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "tool_rock_drill",
+      "type": "tool",
+      "name": "氣動鑿岩機",
+      "rarity": "Rare",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        1,
+        0.4,
+        -57
+      ],
+      "model_url": "/models/tools/99_temp/AirLegA_2.obj",
+      "usdz_url": "/models/tools/pneumatic_drill.usdz",
+      "spec": {
+        "function": "利用壓縮空氣鑽鑿岩層與煤層，加速掘進與開採效率",
+        "era": "機械化開採時期引進",
+        "material": "鋼鐵機身、碳化鎢鑽頭"
+      },
+      "history": {
+        "use_value": "取代傳統十字鎬人工開鑿，大幅提升掘進坑道與開採的速度。",
+        "mining_story": "操作風鑽是體力活也是技術活，長期使用甚至會讓礦工罹患職業性的白手病（振動病）。"
+      },
+      "quiz": {
+        "question": "氣動鑿岩機是靠什麼動力運作？",
+        "options": [
+          "壓縮空氣",
+          "電力馬達"
+        ],
+        "correct_index": 0
+      },
+      "color": "#47474a"
+    },
+    {
+      "id": "tool_drill_airleg",
+      "type": "tool",
+      "name": "鑿岩機風腿",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        0.71,
+        0.4,
+        -56.29
+      ],
+      "model_url": "/models/tools/99_temp/jackLegB.obj",
+      "usdz_url": "/models/tools/drill_airleg.usdz",
+      "spec": {
+        "function": "以壓縮空氣頂撐鑿岩機機身，抵銷鑽鑿時的後座力，讓機身穩定貼緊岩面",
+        "era": "與氣動鑿岩機搭配使用的標準配件",
+        "material": "鋼鐵氣壓筒"
+      },
+      "history": {
+        "use_value": "沒有風腿支撐，鑿岩機在鑽鑿時會因後座力不斷彈跳，風腿讓礦工能穩定操作、精準鑽孔。",
+        "mining_story": "風腿的頂撐力道要跟著岩面角度調整，是礦工們熟能生巧才能抓準的手感。"
+      },
+      "quiz": {
+        "question": "鑿岩機風腿主要的功能是？",
+        "options": [
+          "頂撐機身抵銷後座力",
+          "運送岩石碎屑"
+        ],
+        "correct_index": 0
+      },
+      "color": "#5a4a3a"
+    },
+    {
+      "id": "wip_detonator",
+      "type": "tool",
+      "name": "雷管",
+      "rarity": "Common",
+      "zone_id": "zone_portal",
+      "position": [
+        -0.89,
+        0.4,
+        -93.05
+      ],
+      "model_url": "/models/tools/99_temp/Detonator.obj",
+      "spec": {
+        "function": "接於炸藥上，通電或撞擊後引爆炸藥",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "Detonator.obj",
+      "color": "#c0c0c0"
+    },
+    {
+      "id": "wip_biglock",
+      "type": "transport",
+      "name": "大索頭",
+      "rarity": "Common",
+      "zone_id": "zone_left_2",
+      "position": [
+        -12.8,
+        0.4,
+        -68.49
+      ],
+      "model_url": "/models/tools/99_temp/biglock.obj",
+      "spec": {
+        "function": "鋼索末端的大型固定/連接五金",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "biglock.obj",
+      "color": "#a8a9ad"
+    },
+    {
+      "id": "wip_bigsaw",
+      "type": "tool",
+      "name": "改修鋸",
+      "rarity": "Common",
+      "zone_id": "zone_right_1",
+      "position": [
+        14.51,
+        0.4,
+        -84.8
+      ],
+      "model_url": "/models/tools/99_temp/bigsaw.obj",
+      "spec": {
+        "function": "坑道改修工程使用的鋸具",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "bigsaw.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_box",
+      "type": "tool",
+      "name": "雷管箱",
+      "rarity": "Common",
+      "zone_id": "zone_left_1",
+      "position": [
+        -12.51,
+        0.4,
+        -84.8
+      ],
+      "model_url": "/models/tools/99_temp/box.obj",
+      "spec": {
+        "function": "存放雷管的木箱（與炸藥箱可能共用同一箱體模型，僅噴漆文字不同）",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "box.obj",
+      "color": "#8b6b47"
+    },
+    {
+      "id": "wip_box_2",
+      "type": "tool",
+      "name": "炸藥箱",
+      "rarity": "Common",
+      "zone_id": "zone_right_2",
+      "position": [
+        14.51,
+        0.4,
+        -69.2
+      ],
+      "model_url": "/models/tools/99_temp/box_2.obj",
+      "spec": {
+        "function": "存放炸藥的木箱（與雷管箱可能共用同一箱體模型，僅噴漆文字不同）",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "box_2.obj",
+      "color": "#8b6b47"
+    },
+    {
+      "id": "wip_chain",
+      "type": "transport",
+      "name": "輸送鍊",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        -0.89,
+        0.4,
+        -57.45
+      ],
+      "model_url": "/models/tools/99_temp/chain.obj",
+      "spec": {
+        "function": "搭配輸送槽使用的鍊條，帶動煤炭移動",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "chain.obj",
+      "color": "#4a4a4a"
+    },
+    {
+      "id": "wip_chopper",
+      "type": "tool",
+      "name": "改修斧頭",
+      "rarity": "Common",
+      "zone_id": "zone_right_1",
+      "position": [
+        14.22,
+        0.4,
+        -84.09
+      ],
+      "model_url": "/models/tools/99_temp/chopper.obj",
+      "spec": {
+        "function": "坑道改修工程使用的斧頭",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "chopper.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_chopper_2",
+      "type": "tool",
+      "name": "炭嘴斧頭",
+      "rarity": "Common",
+      "zone_id": "zone_right_1",
+      "position": [
+        12.62,
+        0.4,
+        -85.25
+      ],
+      "model_url": "/models/tools/99_temp/chopper_2.obj",
+      "spec": {
+        "function": "採煤面使用的斧頭",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "chopper_2.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_conveyortrough",
+      "type": "transport",
+      "name": "輸送槽",
+      "rarity": "Common",
+      "zone_id": "zone_right_2",
+      "position": [
+        12.62,
+        0.4,
+        -69.65
+      ],
+      "model_url": "/models/tools/99_temp/conveyortrough.obj",
+      "spec": {
+        "function": "煤炭沿槽狀溝道滑送",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "conveyortrough.obj",
+      "color": "#4a4a4a"
+    },
+    {
+      "id": "wip_doublehammer",
+      "type": "tool",
+      "name": "雙頭錘",
+      "rarity": "Common",
+      "zone_id": "zone_left_1",
+      "position": [
+        -12.8,
+        0.4,
+        -84.09
+      ],
+      "model_url": "/models/tools/99_temp/doublehammer.obj",
+      "spec": {
+        "function": "雙面錘頭，用於敲擊/拆卸作業",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "doublehammer.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_dynamite",
+      "type": "tool",
+      "name": "炸藥",
+      "rarity": "Common",
+      "zone_id": "zone_left_1",
+      "position": [
+        -14.4,
+        0.4,
+        -85.25
+      ],
+      "model_url": "/models/tools/99_temp/dynamite.obj",
+      "spec": {
+        "function": "坑道開鑿爆破用炸藥",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "dynamite.obj",
+      "color": "#6b4a35"
+    },
+    {
+      "id": "wip_hook",
+      "type": "transport",
+      "name": "押車鉤",
+      "rarity": "Common",
+      "zone_id": "zone_left_2",
+      "position": [
+        -14.4,
+        0.4,
+        -69.65
+      ],
+      "model_url": "/models/tools/99_temp/hook.obj",
+      "spec": {
+        "function": "勾住台車進行推送調度",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "hook.obj",
+      "color": "#5a4a3a"
+    },
+    {
+      "id": "wip_locomotive",
+      "type": "transport",
+      "name": "柴油機車頭",
+      "rarity": "Common",
+      "zone_id": "zone_left_2",
+      "position": [
+        -13.51,
+        0.4,
+        -68.2
+      ],
+      "model_url": "/models/tools/99_temp/locomotive.obj",
+      "spec": {
+        "function": "柴油動力牽引台車列車",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "locomotive.obj",
+      "color": "#3f6b7a"
+    },
+    {
+      "id": "wip_part1",
+      "type": "transport",
+      "name": "礦車連接器",
+      "rarity": "Common",
+      "zone_id": "zone_left_2",
+      "position": [
+        -14.22,
+        0.4,
+        -68.49
+      ],
+      "model_url": "/models/tools/99_temp/part1.obj",
+      "spec": {
+        "function": "連接兩節礦車，讓多台礦車串聯牽引",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "part1.obj",
+      "color": "#5c4a3a"
+    },
+    {
+      "id": "wip_part2",
+      "type": "transport",
+      "name": "三環鍊",
+      "rarity": "Common",
+      "zone_id": "zone_left_1",
+      "position": [
+        -13.51,
+        0.4,
+        -83.8
+      ],
+      "model_url": "/models/tools/99_temp/part2.obj",
+      "spec": {
+        "function": "短粗鍊環，用於吊掛或連接重物",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "part2.obj",
+      "color": "#5c4a3a"
+    },
+    {
+      "id": "wip_part3",
+      "type": "support",
+      "name": "安全插銷",
+      "rarity": "Common",
+      "zone_id": "zone_portal",
+      "position": [
+        0.71,
+        0.4,
+        -91.89
+      ],
+      "model_url": "/models/tools/99_temp/part3.obj",
+      "spec": {
+        "function": "插入固定支撐構件，防止鬆脫滑動",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "part3.obj",
+      "color": "#5a4a3a"
+    },
+    {
+      "id": "wip_pickaxe",
+      "type": "tool",
+      "name": "炭掘仔",
+      "rarity": "Common",
+      "zone_id": "zone_right_1",
+      "position": [
+        13.51,
+        0.4,
+        -83.8
+      ],
+      "model_url": "/models/tools/99_temp/pickaxe.obj",
+      "spec": {
+        "function": "人工手持鑿挖煤層工具",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "pickaxe.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_pickaxe_2",
+      "type": "tool",
+      "name": "大掘仔",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        0,
+        0.4,
+        -58
+      ],
+      "model_url": "/models/tools/99_temp/pickaxe_2.obj",
+      "spec": {
+        "function": "較大型的人工鑿挖工具",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "pickaxe_2.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_pound",
+      "type": "tool",
+      "name": "鑿桿",
+      "rarity": "Common",
+      "zone_id": "zone_right_1",
+      "position": [
+        12.8,
+        0.4,
+        -84.09
+      ],
+      "model_url": "/models/tools/99_temp/pound.obj",
+      "spec": {
+        "function": "搭配鑿岩機使用的長鋼桿",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "pound.obj",
+      "color": "#4a4a4a"
+    },
+    {
+      "id": "wip_respirator",
+      "type": "electrical",
+      "name": "一氧化碳自救呼吸器",
+      "rarity": "Common",
+      "zone_id": "zone_right_1",
+      "position": [
+        13.51,
+        0.4,
+        -85.8
+      ],
+      "model_url": "/models/tools/99_temp/respirator.obj",
+      "spec": {
+        "function": "坑內意外時提供自救用氧氣/濾毒",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "respirator.obj",
+      "color": "#c0c0c0"
+    },
+    {
+      "id": "wip_sandbag",
+      "type": "tool",
+      "name": "爆破砂袋",
+      "rarity": "Common",
+      "zone_id": "zone_right_2",
+      "position": [
+        13.51,
+        0.4,
+        -70.2
+      ],
+      "model_url": "/models/tools/99_temp/sandbag.obj",
+      "spec": {
+        "function": "爆破時用砂袋覆蓋控制震波方向",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "sandbag.obj",
+      "color": "#3b6ea5"
+    },
+    {
+      "id": "wip_save_foothold",
+      "type": "support",
+      "name": "安全支撐",
+      "rarity": "Common",
+      "zone_id": "zone_portal",
+      "position": [
+        0,
+        0.4,
+        -91.6
+      ],
+      "model_url": "/models/tools/99_temp/save_foothold.obj",
+      "spec": {
+        "function": "短型木楔，輔助局部支撐與定位",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "save_foothold.obj",
+      "color": "#6b5335"
+    },
+    {
+      "id": "wip_saw",
+      "type": "tool",
+      "name": "炭嘴鋸",
+      "rarity": "Common",
+      "zone_id": "zone_left_1",
+      "position": [
+        -13.51,
+        0.4,
+        -85.8
+      ],
+      "model_url": "/models/tools/99_temp/saw.obj",
+      "spec": {
+        "function": "採煤面使用的鋸具",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "saw.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_shovel",
+      "type": "tool",
+      "name": "平嘴鏟",
+      "rarity": "Common",
+      "zone_id": "zone_left_2",
+      "position": [
+        -13.51,
+        0.4,
+        -70.2
+      ],
+      "model_url": "/models/tools/99_temp/shovel.obj",
+      "spec": {
+        "function": "鏟除坑道內碎屑與煤渣",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "shovel.obj",
+      "color": "#3a3a3a"
+    },
+    {
+      "id": "wip_six",
+      "type": "transport",
+      "name": "六角輪",
+      "rarity": "Common",
+      "zone_id": "zone_right_2",
+      "position": [
+        14.22,
+        0.4,
+        -68.49
+      ],
+      "model_url": "/models/tools/99_temp/six.obj",
+      "spec": {
+        "function": "六角形滑輪/輪組零件",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "six.obj",
+      "color": "#5a5d61"
+    },
+    {
+      "id": "wip_three_sup",
+      "type": "support",
+      "name": "三節支撐",
+      "rarity": "Common",
+      "zone_id": "zone_portal",
+      "position": [
+        0.89,
+        0.4,
+        -93.05
+      ],
+      "model_url": "/models/tools/99_temp/three_sup.obj",
+      "spec": {
+        "function": "A字型三節式支撐架，用於坑道局部補強",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "three_sup.obj",
+      "color": "#5a4635"
+    },
+    {
+      "id": "wip_transmitter",
+      "type": "tool",
+      "name": "發爆器",
+      "rarity": "Common",
+      "zone_id": "zone_left_1",
+      "position": [
+        -14.22,
+        0.4,
+        -84.09
+      ],
+      "model_url": "/models/tools/99_temp/transmitter.obj",
+      "spec": {
+        "function": "手動起爆裝置，觸發雷管引爆",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "transmitter.obj",
+      "color": "#2b2b2b"
+    },
+    {
+      "id": "wip_ventilator",
+      "type": "ventilation",
+      "name": "局部風扇",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        0,
+        0.4,
+        -56
+      ],
+      "model_url": "/models/tools/99_temp/ventilator.obj",
+      "spec": {
+        "function": "局部強制通風換氣，改善坑道末端空氣品質",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "ventilator.obj",
+      "color": "#408080"
+    },
+    {
+      "id": "wip_waterbag",
+      "type": "tool",
+      "name": "爆破水袋",
+      "rarity": "Common",
+      "zone_id": "zone_right_2",
+      "position": [
+        13.51,
+        0.4,
+        -68.2
+      ],
+      "model_url": "/models/tools/99_temp/waterbag.obj",
+      "spec": {
+        "function": "爆破時用水袋抑制粉塵與震波",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "waterbag.obj",
+      "color": "#4a9b8e"
+    },
+    {
+      "id": "wip_watersandbox",
+      "type": "tool",
+      "name": "砂袋水袋箱",
+      "rarity": "Common",
+      "zone_id": "zone_right_2",
+      "position": [
+        12.8,
+        0.4,
+        -68.49
+      ],
+      "model_url": "/models/tools/99_temp/watersandbox.obj",
+      "spec": {
+        "function": "存放砂袋與水袋的箱體",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "watersandbox.obj",
+      "color": "#8b6b47"
+    },
+    {
+      "id": "wip_winddoor",
+      "type": "ventilation",
+      "name": "風門",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        0.89,
+        0.4,
+        -57.45
+      ],
+      "model_url": "/models/tools/99_temp/winddoor.obj",
+      "spec": {
+        "function": "控制坑道風流方向的門扇",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "winddoor.obj",
+      "color": "#45484c"
+    },
+    {
+      "id": "wip_zhicheng_guding_qi",
+      "type": "support",
+      "name": "支撐固定器",
+      "rarity": "Common",
+      "zone_id": "zone_portal",
+      "position": [
+        -0.71,
+        0.4,
+        -91.89
+      ],
+      "model_url": "/models/tools/99_temp/支撐固定器.obj",
+      "spec": {
+        "function": "固定支撐構件位置的細長零件",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "支撐固定器.obj",
+      "color": "#4a4a4a"
+    }
+  ]
+}

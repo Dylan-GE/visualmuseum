@@ -1,0 +1,68 @@
+# Blender 5.2.0 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl SlopeB
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeB_CP.png
+map_Bump -bm 1.000000 D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeB_Np.png
+
+newmtl SlopeC
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeC_CP.png
+map_Bump -bm 1.000000 D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeC_NP.png
+
+newmtl SlopeD
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeD_CP.png
+map_Bump -bm 1.000000 D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeD_NP.png
+
+newmtl SlopeE
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeE_CP.png
+map_Bump -bm 1.000000 D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeE_NP.png
+
+newmtl SlopeF
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeF_CP.png
+map_Bump -bm 1.000000 D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeF_NP.png
+
+newmtl SlopeG
+Ns 1000.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 1
+map_Kd D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeG_CP.png
+map_Bump -bm 1.000000 D:/Project/VirtualMuseum/scratch/tunnel_pieces/SlopeB/SlopeG_NP.png
