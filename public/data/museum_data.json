@@ -183,12 +183,31 @@
       ],
       "model_url": "/models/tools/99_temp/Detonator.obj",
       "spec": {
-        "function": "接於炸藥上，通電或撞擊後引爆炸藥",
+        "function": "接於炸藥上，以電氣方式引爆炸藥",
         "era": "待確認",
         "material": "待確認"
       },
       "_source_file": "Detonator.obj",
-      "color": "#c0c0c0"
+      "color": "#c0c0c0",
+      "history": {
+        "mining_story": "坑內爆破規定以電氣方式引爆，電雷管裝入炸藥之前，必須由安全人員用導通試驗器檢查線路是否通電，不通的雷管不得使用；放炮前還要先量測可燃氣體、處理煤塵，確認安全後才能引爆，足見雷管在高瓦斯、多煤塵的煤礦裡是需要嚴格管制的危險品。",
+        "use_value": "雷管是啟動炸藥爆破的起爆元件，讓掘進、開鑿坑道的鑽孔爆破得以進行，但也因為一旦誤爆後果嚴重，才有一套檢測與專人管理的安全流程。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=112000000216&indexCode=MOCCOLLECTIONS (電雷管引發導通試驗器｜國家文化記憶庫，新北市立黃金博物館典藏)",
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則，1992年廢止)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616017 (煤礦坑內作業（一）礦工的工種｜國家文化記憶庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "雷管在爆破作業中扮演什麼角色？",
+        "options": [
+          "接在炸藥上，負責引爆炸藥",
+          "固定坑道頂板的支撐",
+          "排除坑內的有害氣體"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_part3",
@@ -208,7 +227,17 @@
         "material": "待確認"
       },
       "_source_file": "part3.obj",
-      "color": "#5a4a3a"
+      "color": "#5a4a3a",
+      "history": {},
+      "quiz": {
+        "question": "安全插銷的主要用途是？",
+        "options": [
+          "將煤炭從採煤面運出坑外",
+          "插入固定支撐構件，防止鬆脫滑動",
+          "為礦工供應呼吸用氧氣"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_save_foothold",
@@ -228,7 +257,26 @@
         "material": "待確認"
       },
       "_source_file": "save_foothold.obj",
-      "color": "#6b5335"
+      "color": "#6b5335",
+      "history": {
+        "mining_story": "臺灣煤礦的坑道支撐早期以相思木裁切加工，由改修工架設在坑道頂部與兩側，用來承受上方與側向岩盤的壓力、保護坑道結構；後來因相思木不易取得，才改用鋼樑與水泥柱。",
+        "use_value": "坑內支撐是防止落磐、維持坑道通行與作業空間的基本安全設施，木楔與襯木則用來把支撐與岩壁間的空隙填緊以免鬆動。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=616026&indexCode=Culture_Invisible (煤礦坑內作業（三）保命的坑木｜國家文化記憶庫)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=315592 (侯硐礦場-支撐｜國家文化記憶庫)",
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則：支架頂部與兩側應以襯木填緊)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "安全支撐是一種什麼樣的構件？",
+        "options": [
+          "用電力驅動的運煤機械",
+          "專門存放炸藥的木箱",
+          "短型木楔，輔助局部支撐與定位"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_three_sup",
@@ -241,15 +289,38 @@
         -0.14,
         9.23
       ],
-      "rotation": [0, 1.57, 0],
+      "rotation": [
+        0,
+        1.57,
+        0
+      ],
       "model_url": "/models/tools/99_temp/three_sup.obj",
       "spec": {
-        "function": "A字型三節式支撐架，用於坑道局部補強",
+        "function": "由頂樑與左右兩柱組成ㄇ字形框架的三節式支撐，用於坑道支撐",
         "era": "待確認",
-        "material": "待確認"
+        "material": "相思木（原木，早期）；後期改用鋼樑與水泥柱"
       },
       "_source_file": "three_sup.obj",
-      "color": "#5a4635"
+      "color": "#5a4635",
+      "history": {
+        "mining_story": "三節支撐是煤礦坑道最典型的支撐形式：由改修工把相思木加工後，在坑道頂部與左右兩側各架一節，組成ㄇ字形的框架，用來扛住上方與兩側的岩層壓力。相思木質地緻密堅硬，在承壓將斷之前會發出連續的劈啪聲，有經驗的礦工聽到就知道要趕快撤離，因此被稱為保命的坑木。",
+        "use_value": "三節支撐是維持坑道不坍塌的基本結構，讓採煤與運煤能在坑內持續進行，同時兼具以聲響預警的安全作用。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=315592 (侯硐礦場-支撐｜國家文化記憶庫)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=616026&indexCode=Culture_Invisible (煤礦坑內作業（三）保命的坑木｜國家文化記憶庫)",
+          "https://www.tmaroc.org.tw/2023article46/ (【博物之島專文】為己、為礦、為家人！重啟猴硐的礦工記憶)"
+        ],
+        "confidence": "high"
+      },
+      "quiz": {
+        "question": "三節支撐的作用是？",
+        "options": [
+          "在坑道頂部與兩側架設框架，撐住岩層壓力",
+          "引導坑內風流方向",
+          "把煤炭沿槽道滑送出去"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_zhicheng_guding_qi",
@@ -269,7 +340,17 @@
         "material": "待確認"
       },
       "_source_file": "支撐固定器.obj",
-      "color": "#4a4a4a"
+      "color": "#4a4a4a",
+      "history": {},
+      "quiz": {
+        "question": "支撐固定器的功能是？",
+        "options": [
+          "切鋸坑木",
+          "固定支撐構件的位置",
+          "測量坑內瓦斯濃度"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_box_2",
@@ -286,10 +367,28 @@
       "spec": {
         "function": "存放炸藥的木箱（與雷管箱可能共用同一箱體模型，僅噴漆文字不同）",
         "era": "待確認",
-        "material": "待確認"
+        "material": "木（法規規定用木造等牢固的絕緣容器）"
       },
       "_source_file": "box_2.obj",
-      "color": "#8b6b47"
+      "color": "#8b6b47",
+      "history": {
+        "mining_story": "坑內放炮用的炸藥與雷管必須分開裝在標示明確的木箱中，箱內不得放其他物品，放置處要離工作面保持適當距離，並由專人專車攜帶，每天收工後剩餘或不良的爆炸物必須退回火藥庫保管，不能留在坑內。",
+        "use_value": "炸藥箱把爆炸物與雷管隔離、限制在受管制的範圍內運送與暫存，是防止誤爆與意外的關鍵管理設施。",
+        "sources": [
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則，1992年廢止)",
+          "https://law.moea.gov.tw/LawContent.aspx?id=FL010988 (礦場安全法施行細則；僅見搜尋摘要，WebFetch 回 403 未能開啟全文)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "坑內的炸藥應該如何存放？",
+        "options": [
+          "與雷管混放在同一個箱子",
+          "直接散放在工作面旁",
+          "裝在標示明確的木箱，與雷管分開"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_chopper",
@@ -309,7 +408,16 @@
         "material": "待確認"
       },
       "_source_file": "chopper.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "quiz": {
+        "question": "改修斧頭是在哪一類工程中使用的工具？",
+        "options": [
+          "坑道改修工程",
+          "採煤面採煤",
+          "車輛維修"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_chopper_2",
@@ -329,7 +437,17 @@
         "material": "待確認"
       },
       "_source_file": "chopper_2.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "炭嘴斧頭主要在哪裡使用？",
+        "options": [
+          "坑外火藥庫",
+          "採煤面",
+          "通風機房"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_conveyortrough",
@@ -342,15 +460,36 @@
         -0.06,
         -36.66
       ],
-      "rotation": [0, 1.57, 0],
+      "rotation": [
+        0,
+        1.57,
+        0
+      ],
       "model_url": "/models/tools/99_temp/conveyortrough.obj",
       "spec": {
         "function": "煤炭沿槽狀溝道滑送",
-        "era": "待確認",
+        "era": "1980年代（民國70年代）瑞三鑛業復興坑採煤面照片可證；使用時期更早者未查得",
         "material": "待確認"
       },
       "_source_file": "conveyortrough.obj",
-      "color": "#4a4a4a"
+      "color": "#4a4a4a",
+      "history": {
+        "mining_story": "在採煤面上，礦工把剛採下的煤塊集中、撥入輸送槽，再由輸送系統送往後方裝入礦車。國家文化記憶庫收錄的瑞三鑛業復興坑採煤面照片即記錄此作業姿態。",
+        "use_value": "輸送槽讓採煤面的煤炭得以集中並沿槽道往外送，減少全靠人力搬運的負擔。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=220821 (復興煤礦採煤面煤炭集中｜國家文化記憶庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "輸送槽的作用是？",
+        "options": [
+          "把礦工送下坑道",
+          "排放坑內積水",
+          "讓煤炭沿槽狀溝道滑送"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_pickaxe",
@@ -366,11 +505,30 @@
       "model_url": "/models/tools/99_temp/pickaxe.obj",
       "spec": {
         "function": "人工手持鑿挖煤層工具",
-        "era": "待確認",
-        "material": "待確認"
+        "era": "日治時期至戰後，約至民國70年代（1980年代）瑞三一帶仍有此器物紀錄",
+        "material": "木柄搭配金屬（鐵／鋼）鎬頭（指雙頭十字鎬，即雙頭掘仔）"
       },
       "_source_file": "pickaxe.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "history": {
+        "mining_story": "在氣動鎬煤機普及之前，礦工採煤主要靠雙頭十字鎬（台語稱掘仔）。礦工可在打鐵店或礦工用具店購得，並依身高、力氣與工作習慣挑選約2.5至3.5台斤的重量，還會自行鍛鍊、磨尖鎬頭以提高效率。",
+        "use_value": "它是氣動鎬煤機出現前最重要的人力採煤工具，礦工下坑必備，象徵挖礦工作本身。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=216402&indexCode=Culture_Object (雙頭十字鎬，國家文化記憶庫，新北市政府文化局；瑞三本坑旁展示室)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=600059&indexCode=Culture_Object (雙頭十字鎬-1，山佳煤礦文物館)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=600049 (十字鎬，三峽利豐煤礦，國家文化記憶庫)"
+        ],
+        "confidence": "medium（以雙頭掘仔推論）"
+      },
+      "quiz": {
+        "question": "炭掘仔是什麼樣的工具？",
+        "options": [
+          "人工手持鑿挖煤層的工具",
+          "引爆炸藥的起爆器",
+          "運煤的台車"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_pound",
@@ -390,7 +548,25 @@
         "material": "待確認"
       },
       "_source_file": "pound.obj",
-      "color": "#4a4a4a"
+      "color": "#4a4a4a",
+      "history": {
+        "mining_story": "掘進工以十字鎬、鑽桿甚至炸藥在岩層中開闢坑道；鑽鑿孔洞後裝填炸藥爆破，是開路與取煤的前置步驟。",
+        "use_value": "鑽鑿岩壁孔洞以裝藥爆破，是掘進（開闢坑道）工序的關鍵工具。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616017 (煤礦坑內作業（一）礦工的工種，苗栗縣政府文化觀光局建檔)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616018 (煤礦坑內作業（二）礦工的裝備與使用機具)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "鑿桿通常搭配什麼設備使用？",
+        "options": [
+          "輸送槽",
+          "鑿岩機",
+          "局部風扇"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_respirator",
@@ -406,11 +582,31 @@
       "model_url": "/models/tools/99_temp/respirator.obj",
       "spec": {
         "function": "坑內意外時提供自救用氧氣/濾毒",
-        "era": "待確認",
-        "material": "待確認"
+        "era": "戰後時期；臺灣省礦務局於1984年12月前後統一調查並彙整採購（與1984年海山、煤山等礦災後加強礦工安全防護有關）",
+        "material": "外殼為鐵製（金屬罐體，瓶蓋以金屬扣片固定）"
       },
       "_source_file": "respirator.obj",
-      "color": "#c0c0c0"
+      "color": "#c0c0c0",
+      "history": {
+        "mining_story": "礦坑遇火災或爆炸產生大量一氧化碳時，礦工可打開密封的鐵罐，把頭罩套上、口含呼吸管並夾住鼻子，靠罐內氧氣撐約40分鐘，爭取逃出坑外的時間。瑞三煤礦也曾在1984年回報礦務局持有自救呼吸器、並申請增購。",
+        "use_value": "它是坑內發生災變時讓礦工有限時間內脫離有毒氣體的個人最後一道保命裝備，使用時間有限，仍須在期限內逃出礦坑。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=312690 (文山煤礦礦工一氧化碳自救呼吸罐｜國家文化記憶庫 2.0，新北市政府文化局建檔)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=225071&indexCode=Culture_Object (台灣省礦務局統一購買一氧化碳自救呼吸器｜國家文化記憶庫，涉及瑞三鑛業)",
+          "https://www.tmaroc.org.tw/2023article46/ (【博物之島專文】為己、為礦、為家人！重啟猴硐的礦工記憶，提到CO自救救命器的用途)",
+          "https://citycat.neocities.org/coal01 (煤礦風光 1，煤山煤礦災變：備有100個自救器卻未發給礦工，屬轉述性網站，僅作輔助)"
+        ],
+        "confidence": "high"
+      },
+      "quiz": {
+        "question": "一氧化碳自救呼吸器在什麼時候使用？",
+        "options": [
+          "平時採煤作業時",
+          "運煤台車脫軌時",
+          "坑內發生災變、有毒氣體瀰漫時"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_sandbag",
@@ -425,12 +621,29 @@
       ],
       "model_url": "/models/tools/99_temp/sandbag.obj",
       "spec": {
-        "function": "爆破時用砂袋覆蓋控制震波方向",
+        "function": "爆破時填塞炮孔，防止火焰引燃坑內瓦斯與煤塵",
         "era": "待確認",
         "material": "待確認"
       },
       "_source_file": "sandbag.obj",
-      "color": "#3b6ea5"
+      "color": "#3b6ea5",
+      "history": {
+        "mining_story": "依臺灣礦場安全法施行細則，炸藥裝入炮孔後，要用黏土、砂袋或其他不燃性物質把炮孔充分填塞，不可使用可燃物，避免爆破時火焰與高溫外洩引燃坑內瓦斯或煤塵。",
+        "use_value": "砂袋是炮孔填塞材料之一，讓爆破能量留在孔內作用於煤岩，同時降低引燃可燃氣體的風險。",
+        "sources": [
+          "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=J0020018 (礦場安全法施行細則 第121條，地下礦場第八節 爆炸物及爆破，全國法規資料庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "爆破砂袋在爆破中的用途是？",
+        "options": [
+          "填塞炮孔，防止火焰引燃瓦斯與煤塵",
+          "照亮工作面",
+          "支撐坑道頂板"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_six",
@@ -450,7 +663,17 @@
         "material": "待確認"
       },
       "_source_file": "six.obj",
-      "color": "#5a5d61"
+      "color": "#5a5d61",
+      "history": {},
+      "quiz": {
+        "question": "六角輪屬於哪一類零件？",
+        "options": [
+          "起爆裝置",
+          "六角形滑輪／輪組零件",
+          "呼吸防護裝備"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_waterbag",
@@ -465,12 +688,21 @@
       ],
       "model_url": "/models/tools/99_temp/waterbag.obj",
       "spec": {
-        "function": "爆破時用水袋抑制粉塵與震波",
+        "function": "爆破時用水袋協助抑制粉塵",
         "era": "待確認",
         "material": "待確認"
       },
       "_source_file": "waterbag.obj",
-      "color": "#4a9b8e"
+      "color": "#4a9b8e",
+      "quiz": {
+        "question": "爆破水袋的作用是？",
+        "options": [
+          "點燃導火線",
+          "支撐坑道頂板",
+          "爆破時協助抑制粉塵"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_watersandbox",
@@ -490,7 +722,16 @@
         "material": "待確認"
       },
       "_source_file": "watersandbox.obj",
-      "color": "#8b6b47"
+      "color": "#8b6b47",
+      "quiz": {
+        "question": "砂袋水袋箱用來做什麼？",
+        "options": [
+          "存放砂袋與水袋",
+          "存放雷管",
+          "運送煤炭"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "tool_hoist_winch",
@@ -606,7 +847,25 @@
         "material": "待確認"
       },
       "_source_file": "chain.obj",
-      "color": "#4a4a4a"
+      "color": "#4a4a4a",
+      "history": {
+        "mining_story": "採煤面常以鍊條運煤機（chain conveyor）配合截煤機、電鑽，把煤沿工作面運往坑道，再裝入礦車。臺灣記憶相關報導也提到煤礦以鏈式輸送機將煤運至坑口附近再裝車。",
+        "use_value": "鍊條帶動煤炭在槽內移動，是採煤面機械化運煤的核心零件。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=258745&indexCode=Culture_Object (〈基隆炭礦株式會社〉主要礦場設備一覽表｜國家文化記憶庫，載有「煤面運煤機（鍊條運煤機）」)",
+          "https://www.twreporter.org/a/bookreview-the-coal-mining-village-deep-in-memory (報導者書摘，提到鏈式輸送機)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "輸送鍊搭配什麼設備使用？",
+        "options": [
+          "鑿岩機",
+          "輸送槽，帶動煤炭移動",
+          "風門"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_pickaxe_2",
@@ -626,7 +885,17 @@
         "material": "待確認"
       },
       "_source_file": "pickaxe_2.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "大掘仔是什麼類型的工具？",
+        "options": [
+          "自動運煤設備",
+          "通風設備",
+          "較大型的人工鑿挖工具"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_ventilator",
@@ -646,7 +915,26 @@
         "material": "待確認"
       },
       "_source_file": "ventilator.obj",
-      "color": "#408080"
+      "color": "#408080",
+      "history": {
+        "mining_story": "在掘進工作面這類總風流難以到達的地方，礦場要另設電動或氣動的局部扇風機，再接風管把新鮮空氣送到工作面，以沖淡爆破後的有害氣體與粉塵。臺灣規定開動前須先測定可燃性氣體，確認合格才能送電。",
+        "use_value": "局部風扇補足主通風系統到不了的掘進末端，是讓盡頭工作面保持可呼吸、可作業空氣的設備。",
+        "sources": [
+          "https://law.moj.gov.tw/LawClass/LawParaDeatil.aspx?pcode=J0020018&bp=11 (礦場安全法施行細則 第81、82條，局部扇風機設置與運轉)",
+          "http://www.rootlaw.com.tw/LawArticle.aspx?LawID=A040100041001400-1130429 (煤礦通風安全設施要點 第五條，局部扇風機的設置條件：快速掘進區、通風不易到達處等)",
+          "https://patents.google.com/patent/CN115750418A/zh (搜尋摘要：局部通風用於掘進面供氧、稀釋瓦斯與爆破有害氣體，屬中國技術背景說明)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "局部風扇的功能是？",
+        "options": [
+          "局部強制通風，改善坑道末端空氣品質",
+          "引爆炸藥",
+          "牽引礦車"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_winddoor",
@@ -666,7 +954,26 @@
         "material": "待確認"
       },
       "_source_file": "winddoor.obj",
-      "color": "#45484c"
+      "color": "#45484c",
+      "history": {
+        "mining_story": "礦坑靠風門與遮斷壁、風橋等設施把主入風坑與主出風坑間的風流導向各工作面，法規要求相隔適當距離至少設兩道風門，讓人車通過時輪流開關，避免風流短路。災變時風門也影響救災：煤山煤礦火災中，有督察員進入坑道把風門打開讓濃煙就近排出；海山一坑礦災後搶救人員也曾修復被炸壞的風門。",
+        "use_value": "風門用來控制與分配坑道風流方向，風門受損會直接影響通風與救援。",
+        "sources": [
+          "https://law.moj.gov.tw/LawClass/LawParaDeatil.aspx?pcode=J0020018&bp=11 (礦場安全法施行細則 第83條，風門/調節風門/風橋；搜尋摘要稱需至少兩道、輪流開關)",
+          "https://citycat.neocities.org/coal01 (煤礦風光 1，煤山煤礦災變中打開風門排煙的紀錄；轉述性網站)",
+          "https://storystudio.tw/article/gushi/history-of-taiwan-coal-mine (被遺忘的礦工們與臺灣曾經的煤礦榮景，海山礦災後修復被炸壞的風門)"
+        ],
+        "confidence": "high"
+      },
+      "quiz": {
+        "question": "風門的作用是？",
+        "options": [
+          "運送煤炭",
+          "控制與分配坑道的風流方向",
+          "照明坑道"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "tool_pneumatic_pick",
@@ -718,7 +1025,16 @@
         "material": "待確認"
       },
       "_source_file": "bigsaw.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "quiz": {
+        "question": "改修鋸是在哪一類工程中使用的鋸具？",
+        "options": [
+          "採煤面採煤",
+          "車輛維修",
+          "坑道改修工程"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "tool_coal_tub",
@@ -731,7 +1047,11 @@
         -0.18,
         -34.8
       ],
-      "rotation": [0, -1.57, 0],
+      "rotation": [
+        0,
+        -1.57,
+        0
+      ],
       "model_url": "/models/tools/99_temp/minecart.obj",
       "usdz_url": "/models/tools/coal_tub.usdz",
       "spec": {
@@ -803,7 +1123,17 @@
         "material": "待確認"
       },
       "_source_file": "biglock.obj",
-      "color": "#a8a9ad"
+      "color": "#a8a9ad",
+      "history": {},
+      "quiz": {
+        "question": "大索頭是什麼？",
+        "options": [
+          "鋼索末端的大型固定／連接五金",
+          "採煤用的鑿具",
+          "通風用的風扇"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_box",
@@ -820,10 +1150,29 @@
       "spec": {
         "function": "存放雷管的木箱（與炸藥箱可能共用同一箱體模型，僅噴漆文字不同）",
         "era": "待確認",
-        "material": "待確認"
+        "material": "木（法規規定用木造等牢固的絕緣容器）"
       },
       "_source_file": "box.obj",
-      "color": "#8b6b47"
+      "color": "#8b6b47",
+      "history": {
+        "mining_story": "雷管和炸藥一樣要用有特殊標誌的木箱分開存放，不可混放其他物品，並且要放在遠離鐵軌、電池、高壓電線、火源與機電設備的安全地點，避免日曬雨淋；使用電雷管前，還要經過導通試驗才能裝入炸藥。",
+        "use_value": "把最敏感的起爆元件單獨裝箱管理，可避免雷管與炸藥同時意外引爆，是坑內爆炸物管制的一環。",
+        "sources": [
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則，1992年廢止)",
+          "https://law.moea.gov.tw/LawContent.aspx?id=FL010988 (礦場安全法施行細則；僅見搜尋摘要，全文未能開啟)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=112000000216&indexCode=MOCCOLLECTIONS (電雷管引發導通試驗器｜國家文化記憶庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "雷管應該如何存放？",
+        "options": [
+          "與炸藥混放在同一個箱子",
+          "裝在標示明確的木箱，與炸藥分開",
+          "隨身放在礦工口袋"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_doublehammer",
@@ -843,7 +1192,17 @@
         "material": "待確認"
       },
       "_source_file": "doublehammer.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "雙頭錘的用途是？",
+        "options": [
+          "運送煤炭",
+          "引爆炸藥",
+          "雙面錘頭，用於敲擊或拆卸作業"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_dynamite",
@@ -859,11 +1218,30 @@
       "model_url": "/models/tools/99_temp/dynamite.obj",
       "spec": {
         "function": "坑道開鑿爆破用炸藥",
-        "era": "待確認",
-        "material": "待確認"
+        "era": "1950年代起（黃金博物館典藏紀錄提到自1955年起自日本進口炸藥；典藏品為戰後民國時期）",
+        "material": "膠質炸藥，以浸蠟紙卷包裝，直徑約3公分（黃金博物館典藏品）"
       },
       "_source_file": "dynamite.obj",
-      "color": "#6b4a35"
+      "color": "#6b4a35",
+      "history": {
+        "mining_story": "煤礦掘進工在開鑿坑道、穿越岩層時用炸藥鑽孔爆破；早期以導火線配黑火藥點火，後來改用電雷管引爆。戰後臺灣的礦用炸藥一度仰賴進口，典藏品為符合煤礦許用標準的膠質炸藥。",
+        "use_value": "炸藥是掘進與開鑿岩層、延伸坑道的主要手段，讓礦工得以到達煤層，但因坑內有瓦斯與煤塵，必須配合嚴格的安全規定使用。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=MOCCOLLECTIONS&id=112000000193 (炸藥｜國家文化記憶庫，新北市立黃金博物館典藏)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616017 (煤礦坑內作業（一）礦工的工種｜國家文化記憶庫)",
+          "https://e-info.org.tw/node/237660 (環境資訊中心：台灣煤礦業退場故事)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "炸藥在煤礦中主要用於？",
+        "options": [
+          "坑道開鑿與岩層爆破",
+          "驅動運煤車",
+          "通風換氣"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_hook",
@@ -883,7 +1261,17 @@
         "material": "待確認"
       },
       "_source_file": "hook.obj",
-      "color": "#5a4a3a"
+      "color": "#5a4a3a",
+      "history": {},
+      "quiz": {
+        "question": "押車鉤的用途是？",
+        "options": [
+          "固定坑道支撐",
+          "勾住台車進行推送調度",
+          "搬運炸藥"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_locomotive",
@@ -892,19 +1280,43 @@
       "rarity": "Common",
       "zone_id": "zone_incline",
       "position": [
-        -0.10,
+        -0.1,
         -0.08,
         -51.9
       ],
-      "rotation": [0, 1.57, 0],
+      "rotation": [
+        0,
+        1.57,
+        0
+      ],
       "model_url": "/models/tools/99_temp/locomotive.obj",
       "spec": {
         "function": "柴油動力牽引台車列車",
-        "era": "待確認",
+        "era": "瑞三礦業使用至1990年停採；機關車庫資料標示日治時期與戰後時期，廠牌為加藤製作所（該公司1923年起製造鐵道內燃機）。確切製造年份未查得",
         "material": "待確認"
       },
       "_source_file": "locomotive.obj",
-      "color": "#3f6b7a"
+      "color": "#3f6b7a",
+      "history": {
+        "mining_story": "瑞三礦業以柴油機關車拖動煤車出入水平坑道，與斜坑改用捲揚機牽引不同。園區另有資料指出有加裝車頂駕駛座的機車（編號6、7）供坑外台車牽引與調度。",
+        "use_value": "柴油機關車以內燃機動力取代人力推車，是水平坑道及坑外煤車運送的主要動力。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=211376&indexCode=Culture_Place (瑞三鑛業公司柴油機關車庫｜國家文化記憶庫)",
+          "http://blair-train.blogspot.com/2017/07/blog-post.html (Blair's 鐵道攝影：瑞三煤礦柴油機車，個人部落格，僅作旁證)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=315313 (武丹山礦場事業計畫書-搬運｜國家文化記憶庫，1962年，另一礦場，僅作一般背景)",
+          "https://zh.wikipedia.org/zh-tw/%E7%8C%B4%E7%A1%90%E7%85%A4%E7%A4%A6%E5%8D%9A%E7%89%A9%E5%9C%92%E5%8D%80 (猴硐煤礦博物園區｜維基百科，1990年停採)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "柴油機車頭的作用是？",
+        "options": [
+          "抽排坑內積水",
+          "鑿開岩壁",
+          "以柴油動力牽引台車列車"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_part1",
@@ -924,7 +1336,23 @@
         "material": "待確認"
       },
       "_source_file": "part1.obj",
-      "color": "#5c4a3a"
+      "color": "#5c4a3a",
+      "history": {
+        "use_value": "連結器（車鉤）的一般功能是把多節車輛連接起來，讓動力車能帶動後方無動力車廂；礦車連接器在礦坑中大致也是此功能（為一般性說明，非礦場專屬來源）。",
+        "sources": [
+          "https://zh.wikipedia.org/wiki/%E8%BD%A6%E9%92%A9 (車鉤｜維基百科)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "礦車連接器的功能是？",
+        "options": [
+          "連接兩節礦車，讓多台礦車串聯牽引",
+          "引爆炸藥",
+          "固定坑道支撐"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_part2",
@@ -944,7 +1372,17 @@
         "material": "待確認"
       },
       "_source_file": "part2.obj",
-      "color": "#5c4a3a"
+      "color": "#5c4a3a",
+      "history": {},
+      "quiz": {
+        "question": "三環鍊的用途是？",
+        "options": [
+          "供電給起爆裝置",
+          "短粗鍊環，用於吊掛或連接重物",
+          "過濾有毒氣體"
+        ],
+        "correct_index": 1
+      }
     },
     {
       "id": "wip_saw",
@@ -964,7 +1402,17 @@
         "material": "待確認"
       },
       "_source_file": "saw.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "炭嘴鋸主要在哪裡使用？",
+        "options": [
+          "火藥庫",
+          "通風機房",
+          "採煤面"
+        ],
+        "correct_index": 2
+      }
     },
     {
       "id": "wip_shovel",
@@ -984,7 +1432,17 @@
         "material": "待確認"
       },
       "_source_file": "shovel.obj",
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "平嘴鏟的用途是？",
+        "options": [
+          "鏟除坑道內的碎屑與煤渣",
+          "引爆炸藥",
+          "測量風速"
+        ],
+        "correct_index": 0
+      }
     },
     {
       "id": "wip_transmitter",
@@ -999,12 +1457,31 @@
       ],
       "model_url": "/models/tools/99_temp/transmitter.obj",
       "spec": {
-        "function": "手動起爆裝置，觸發雷管引爆",
+        "function": "供電給電雷管的起爆裝置，觸發雷管引爆",
         "era": "待確認",
-        "material": "待確認"
+        "material": "（黃金博物館藏安全發爆器為電容式、橘紅色外殼配黃色外袋，但這是單一館藏品，不一定代表瑞三所用，故不當作材質）"
       },
       "_source_file": "transmitter.obj",
-      "color": "#2b2b2b"
+      "color": "#2b2b2b",
+      "history": {
+        "mining_story": "煤礦含有瓦斯與煤塵，不能用明火引爆，地下爆破須使用煤礦准用炸藥與電雷管，由發爆器供電起爆。使用前要逐一檢查電雷管導通並量測整個線路電阻，充電後才引爆，發爆器的開關鑰匙由爆破人員親自攜帶，不可插在機器上。",
+        "use_value": "發爆器是電雷管起爆系統的電源與觸發端，搭配檢驗合格要求與開關由專人保管的規定，兼顧爆破效率與安全。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=MOCCOLLECTIONS&id=112000000217 (安全發爆器｜國家文化記憶庫，新北市立黃金博物館館藏，電容式、可接100枚雷管、直流1200V、使用注意事項)",
+          "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=J0020018 (礦場安全法施行細則 第6條將發爆器列為須檢驗合格才能裝設使用的設備；地下礦場爆炸物及爆破章節規定使用電雷管)",
+          "https://baike.baidu.com/item/%E5%8F%91%E7%88%86%E5%99%A8/4135493 (发爆器，百度百科，搜尋摘要：發電式與電容式兩類，煤礦廣泛使用，僅作背景)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "發爆器的功能是？",
+        "options": [
+          "抽出坑內積水",
+          "供電給電雷管，觸發雷管起爆",
+          "帶動輸送鍊"
+        ],
+        "correct_index": 1
+      }
     }
   ]
 }
