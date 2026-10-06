@@ -362,9 +362,15 @@ export const BCD_ZONE_COORDS = {
 // zone_incline and bin 7, so they're trustworthy enough to close that gap
 // despite sitting in the "wide chamber" zone the other early bins were
 // excluded from.
+// 2026-10-05: the first two points' Z were corrected from -0.88/-0.04 to
+// -4.2/-3.9. Rasterizing the rendered mesh's actual floor showed the arm's
+// floor band at x=-6/-9 spans z -6.0..-2.5 / -5.8..-1.8, so the old Zs ran
+// 1.6-1.8m past its edge through empty space (no geometry at all) — the
+// black void visible on the first steps toward 天車間. The new Zs are the
+// floor band's centerline there; points 3+ already sat inside the floor.
 export const BCD_INCLINE_HOIST_PATH = [
-  [-5.79, -1.18, -0.88],
-  [-8.88, -1.18, -0.04],
+  [-5.79, -1.18, -4.2],
+  [-8.88, -1.18, -3.9],
   [-17.31, -1.17, 0.91],
   [-20.97, -1.17, 2.70],
   [-24.32, -1.17, 4.60],
