@@ -66,6 +66,10 @@ export default function ItemMarker({ item, unlocked, onClick }) {
       // needs tilting too. Omit the field entirely to keep an item's
       // current orientation unchanged.
       rotation={item.rotation ?? [0, 0, 0]}
+      // Optional uniform size multiplier (museum_data.json `scale`), for
+      // machines too big for the tunnel they sit in — e.g. the 捲揚機 is
+      // 3.3m long in a 2.8m-wide bore. Omit to keep the model's own size.
+      scale={item.scale ?? 1}
       onClick={(e) => {
         e.stopPropagation();
         onClick(item);

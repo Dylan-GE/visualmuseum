@@ -4,6 +4,7 @@ import { Box3, Matrix4, Quaternion, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import ErrorBoundary from './ErrorBoundary';
+import { patchSlopeAMaterial } from '../utils/slopeTextureFix';
 
 const PIECE = (name) => `/models/tunnel_pieces/${name}.glb`;
 
@@ -39,13 +40,13 @@ function useGroundedParts(name, preRotation) {
       if (child.isMesh) {
         parts.push({
           geometry: child.geometry,
-          material: child.material,
+          material: name === 'SlopeA' ? patchSlopeAMaterial(child.material) : child.material,
           matrix: groundOffset.clone().multiply(child.matrixWorld),
         });
       }
     });
     return parts;
-  }, [gltf, preRotation]);
+  }, [gltf, preRotation, name]);
 }
 
 const UP_AXIS = new Vector3(0, 1, 0);

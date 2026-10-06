@@ -217,7 +217,7 @@
       "zone_id": "zone_main1",
       "position": [
         1.13,
-        -0.14,
+        -0.07,
         27.2
       ],
       "model_url": "/models/tools/99_temp/part3.obj",
@@ -288,7 +288,7 @@
       "zone_id": "zone_main1",
       "position": [
         0,
-        -0.14,
+        -0.08,
         9.23
       ],
       "rotation": [
@@ -402,7 +402,7 @@
       "zone_id": "zone_main2",
       "position": [
         0.85,
-        -0.22,
+        -0.06,
         -45.5
       ],
       "model_url": "/models/tools/99_temp/chopper.obj",
@@ -546,7 +546,7 @@
       "zone_id": "zone_main2",
       "position": [
         -0.12,
-        -0.12,
+        -0.08,
         -27.83
       ],
       "model_url": "/models/tools/99_temp/pound.obj",
@@ -624,7 +624,7 @@
       "zone_id": "zone_main2",
       "position": [
         0.89,
-        -0.22,
+        -0.08,
         -19
       ],
       "model_url": "/models/tools/99_temp/sandbag.obj",
@@ -661,7 +661,7 @@
       "zone_id": "zone_main2",
       "position": [
         0.56,
-        -0.12,
+        -0.08,
         -14.58
       ],
       "model_url": "/models/tools/99_temp/six.obj",
@@ -693,7 +693,7 @@
       "zone_id": "zone_main2",
       "position": [
         0.66,
-        -0.22,
+        -0.08,
         -10.17
       ],
       "model_url": "/models/tools/99_temp/waterbag.obj",
@@ -754,9 +754,9 @@
       "rarity": "Legendary",
       "zone_id": "zone_hoist_room",
       "position": [
-        -29.91,
-        -0.69,
-        11.85
+        -35.11,
+        -0.08,
+        13.07
       ],
       "model_url": "/models/tools/99_temp/machine_A.obj",
       "usdz_url": "/models/tools/hoist_winch.usdz",
@@ -777,7 +777,13 @@
         ],
         "correct_index": 0
       },
-      "color": "#3d3d40"
+      "color": "#3d3d40",
+      "rotation": [
+        0,
+        1.5708,
+        0
+      ],
+      "scale": 0.7
     },
     {
       "id": "tool_rock_drill",
@@ -787,7 +793,7 @@
       "zone_id": "zone_hoist_room",
       "position": [
         -30.49,
-        -0.79,
+        -0.1,
         13.54
       ],
       "model_url": "/models/tools/99_temp/AirLegA_2.obj",
@@ -819,7 +825,7 @@
       "zone_id": "zone_hoist_room",
       "position": [
         -31.16,
-        -0.79,
+        -0.09,
         11.4
       ],
       "model_url": "/models/tools/99_temp/jackLegB.obj",
@@ -851,7 +857,7 @@
       "zone_id": "zone_hoist_room",
       "position": [
         -31.74,
-        -0.79,
+        -0.1,
         13.33
       ],
       "model_url": "/models/tools/99_temp/chain.obj",
@@ -889,7 +895,7 @@
       "zone_id": "zone_hoist_room",
       "position": [
         -32.41,
-        -0.79,
+        -0.1,
         11.66
       ],
       "model_url": "/models/tools/99_temp/pickaxe_2.obj",
@@ -921,8 +927,8 @@
       "zone_id": "zone_hoist_room",
       "position": [
         -32.98,
-        -0.79,
-        13.84
+        -0.1,
+        11.5
       ],
       "model_url": "/models/tools/99_temp/ventilator.obj",
       "spec": {
@@ -959,8 +965,8 @@
       "rarity": "Common",
       "zone_id": "zone_hoist_room",
       "position": [
-        -33.65,
-        -0.79,
+        -32,
+        -0.1,
         11.93
       ],
       "model_url": "/models/tools/99_temp/winddoor.obj",
@@ -999,7 +1005,7 @@
       "zone_id": "zone_incline",
       "position": [
         0.68,
-        -0.18,
+        -0.08,
         8.24
       ],
       "model_url": "/models/tools/99_temp/Pneumatic.obj",
@@ -1062,7 +1068,7 @@
       "zone_id": "zone_incline",
       "position": [
         -0.3,
-        -0.18,
+        -0.08,
         -34.8
       ],
       "rotation": [
@@ -1099,7 +1105,7 @@
       "zone_id": "zone_incline",
       "position": [
         -0.1,
-        -0.45,
+        -0.08,
         -13.53
       ],
       "model_url": "/models/tools/99_temp/circle_sup.obj",

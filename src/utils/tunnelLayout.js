@@ -415,22 +415,39 @@ const DECOR_EDGE_MARGIN = 3;
 // SHELL_VARIANTS tube; only the repeating arch/lagging/rock PROPS are
 // missing from the real scan pieces (they're separate named objects in
 // bg.obj that weren't part of this crop) and need adding back in.
-function buildDecorEdge(from, to, archVariants) {
-  const originWithNudge = [from[0], from[1] + BCD_DECOR_Y_NUDGE, from[2]];
+// `fit` ({ sx, sy, originY }) shrinks the props for a tunnel narrower than the
+// ~3.5m-wide TunnelB/C these were authored for: arch frames are scaled by
+// (sx, sy), every other prop keeps its size but its lateral/vertical offset is
+// scaled to match, and originY (if given) replaces the default floor+nudge.
+function buildDecorEdge(from, to, archVariants, fit = null) {
+  const originY = fit?.originY ?? from[1] + BCD_DECOR_Y_NUDGE;
+  const originWithNudge = [from[0], originY, from[2]];
   const dx = to[0] - from[0];
   const dz = to[2] - from[2];
   const length = Math.hypot(dx, dz);
   const rotationY = Math.atan2(-dx, -dz);
-  return transformSegment(
-    buildStraightRun(length, {
-      noShell: true,
-      archVariants,
-      junctions: [0, -length],
-      exclusionRadius: DECOR_EDGE_MARGIN,
-    }),
-    { origin: originWithNudge, rotationY },
-  );
+  let local = buildStraightRun(length, {
+    noShell: true,
+    archVariants,
+    junctions: [0, -length],
+    exclusionRadius: DECOR_EDGE_MARGIN,
+  });
+  if (fit) {
+    local = local.map((p) =>
+      archVariants.includes(p.name)
+        ? { ...p, scale: [fit.sx, fit.sy, 1] }
+        : { ...p, x: p.x * fit.sx, y: p.y * fit.sy },
+    );
+  }
+  return transformSegment(local, { origin: originWithNudge, rotationY });
 }
+
+// SlopeA's real interior (measured off the rendered mesh, 2026-10-05): floor
+// y=-0.15 and ceiling y~2.03 (2.15m tall, level until x~-34.5 where the floor
+// starts dropping), half-width ~1.4m at 1m height but only ~0.95m at 2m —
+// an arched cross-section. The unscaled three-support frame is 3.3m wide x
+// 2.45m tall, which poked through both the walls and the ceiling.
+const SLOPE_A_DECOR_FIT = { sx: 0.55, sy: 0.8, originY: -0.15 };
 
 export function buildBcdTopology() {
   const decor = [
@@ -444,7 +461,7 @@ export function buildBcdTopology() {
     // Deliberately NOT decorating zone_incline<->via (TunnelD's bend +
     // SlopeA's kink) — same "don't assume straight-line safety" reasoning
     // as everywhere else on that leg.
-    ...buildDecorEdge(BCD_INCLINE_HOIST_VIA, BCD_ZONE_COORDS.zone_hoist_room, COMPOSITE_ARCH_VARIANTS),
+    ...buildDecorEdge(BCD_INCLINE_HOIST_VIA, BCD_ZONE_COORDS.zone_hoist_room, COMPOSITE_ARCH_VARIANTS, SLOPE_A_DECOR_FIT),
   ];
   return {
     placements: [...BCD_PLACEMENTS, ...decor],
