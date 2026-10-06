@@ -16,6 +16,8 @@ export const MAP_IMAGE_SIZE = { width: 892, height: 593 };
 export const ZONE_MAP_PIXELS = {
   zone_main1: [810, 145],
   zone_hoist_room: [650, 178],
+  zone_hoist_west: [705, 178],
+  zone_hoist_east: [595, 178],
   zone_incline: [455, 270],
   zone_main2: [195, 130],
 };

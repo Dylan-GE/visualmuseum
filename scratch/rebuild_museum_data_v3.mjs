@@ -12,6 +12,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { BCD_ZONE_COORDS, BCD_INCLINE_HOIST_PATH, pointBetween } from '../src/utils/tunnelLayout.js';
 
+// 2026-10-06: STALE — museum_data.json has since been edited directly (item
+// quizzes/history/appearance, heights, rotations, scales, new hoist zones).
+// Re-running this rebuilds from an old backup and silently wipes all of it.
+if (!process.env.FORCE_REBUILD) {
+  console.error('Refusing to run: this would overwrite hand-edited public/data/museum_data.json. Set FORCE_REBUILD=1 to override.');
+  process.exit(1);
+}
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_PATH = path.join(__dirname, '..', 'public', 'data', 'museum_data.json');
 // Read from the preserved pre-this-migration backup, NOT the live output

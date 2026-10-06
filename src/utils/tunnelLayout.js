@@ -23,6 +23,8 @@ export const TUNNEL_ZONE_IDS = [
   'zone_incline',
   'zone_main2',
   'zone_hoist_room',
+  'zone_hoist_west',
+  'zone_hoist_east',
 ];
 
 // --- Layout parameters (all in meters, tuned by eye against the pieces'
@@ -322,7 +324,14 @@ export const BCD_ZONE_COORDS = {
   zone_main1: [-0.08, -1.1418, 48.17], // TunnelB's own far mouth
   zone_main2: [-0.12, -1.3219, -52.91], // TunnelC's far, confirmed-capped end
   zone_incline: [-0.045, -1.1809, -2.755], // TunnelD, midpoint of its B/C openings
-  zone_hoist_room: [-36.63, -1.7914, 12.72], // SlopeA's own far mouth
+  // 2026-10-06: SlopeA is a 34m east-west corridor (x -36.6..-2.4) that the
+  // slope from zone_incline joins near x=-30, not a dead-end spur — the old
+  // layout only let you walk its west end. zone_hoist_room is now the
+  // junction itself (3 exits: back down the slope, west end, east end), and
+  // each end of the corridor is its own zone.
+  zone_hoist_room: [-30.2, -1.16, 12.7],
+  zone_hoist_west: [-36.63, -1.7914, 12.72], // SlopeA's own far (west) mouth
+  zone_hoist_east: [-4.6, -1.14, 12.6], // east end, ~2m short of the capped wall at x=-2.4
 };
 
 // The zone_incline <-> zone_hoist_room edge passes through TunnelD's real
@@ -371,18 +380,22 @@ export const BCD_ZONE_COORDS = {
 export const BCD_INCLINE_HOIST_PATH = [
   [-5.79, -1.18, -4.2],
   [-8.88, -1.18, -3.9],
-  [-17.31, -1.17, 0.91],
-  [-20.97, -1.17, 2.70],
-  [-24.32, -1.17, 4.60],
-  [-27.78, -1.17, 6.43],
-  [-29.33, -1.17, 8.18],
-  [-30.45, -1.17, 9.20],
-  [-26.89, -1.1619, 12.5],
+  [-17.14, -1.17, 0.74],
+  [-20.97, -1.17, 2.65],
+  [-24.32, -1.17, 4.05],
+  [-27.78, -1.17, 5.65],
+  [-29.25, -1.17, 7.0],
+  [-30.1, -1.17, 8.7],
+  [-29.9, -1.17, 10.3],
 ];
 // Last point of the path above — kept as its own export since it's also
 // used as one endpoint of the confirmed-straight decor edge to
 // zone_hoist_room (see buildBcdTopology below), same as before.
-export const BCD_INCLINE_HOIST_VIA = BCD_INCLINE_HOIST_PATH[BCD_INCLINE_HOIST_PATH.length - 1];
+export const BCD_INCLINE_HOIST_VIA = [-26.89, -1.1619, 12.5];
+
+// West-end walk from the hoist junction: level until x~-34.5, then the real
+// floor drops ~0.55m toward the mouth (measured off SlopeA).
+export const BCD_HOIST_WEST_PATH = [[-34.5, -1.16, 12.7]];
 
 // TunnelD's own two "through" openings (world space, same translation as
 // everything else here) — the short (~5.5m), confirmed-straight stretch
@@ -418,7 +431,8 @@ const DECOR_EDGE_MARGIN = 3;
 // `fit` ({ sx, sy, originY }) shrinks the props for a tunnel narrower than the
 // ~3.5m-wide TunnelB/C these were authored for: arch frames are scaled by
 // (sx, sy), every other prop keeps its size but its lateral/vertical offset is
-// scaled to match, and originY (if given) replaces the default floor+nudge.
+// scaled to match, originY (if given) replaces the default floor+nudge, and
+// margin (if given) replaces DECOR_EDGE_MARGIN.
 function buildDecorEdge(from, to, archVariants, fit = null) {
   const originY = fit?.originY ?? from[1] + BCD_DECOR_Y_NUDGE;
   const originWithNudge = [from[0], originY, from[2]];
@@ -430,7 +444,7 @@ function buildDecorEdge(from, to, archVariants, fit = null) {
     noShell: true,
     archVariants,
     junctions: [0, -length],
-    exclusionRadius: DECOR_EDGE_MARGIN,
+    exclusionRadius: fit?.margin ?? DECOR_EDGE_MARGIN,
   });
   if (fit) {
     local = local.map((p) =>
@@ -461,7 +475,11 @@ export function buildBcdTopology() {
     // Deliberately NOT decorating zone_incline<->via (TunnelD's bend +
     // SlopeA's kink) — same "don't assume straight-line safety" reasoning
     // as everywhere else on that leg.
-    ...buildDecorEdge(BCD_INCLINE_HOIST_VIA, BCD_ZONE_COORDS.zone_hoist_room, COMPOSITE_ARCH_VARIANTS, SLOPE_A_DECOR_FIT),
+    // Starts west of the slope's mouth (x -31.5..-27.5): frames across the
+    // mouth walled off the way back down the slope.
+    ...buildDecorEdge([-32.6, BCD_INCLINE_HOIST_VIA[1], 12.55], BCD_ZONE_COORDS.zone_hoist_west, COMPOSITE_ARCH_VARIANTS, { ...SLOPE_A_DECOR_FIT, margin: 0.8 }),
+    // East half of the same corridor (same bore, same fit).
+    ...buildDecorEdge(BCD_INCLINE_HOIST_VIA, BCD_ZONE_COORDS.zone_hoist_east, COMPOSITE_ARCH_VARIANTS, SLOPE_A_DECOR_FIT),
   ];
   return {
     placements: [...BCD_PLACEMENTS, ...decor],

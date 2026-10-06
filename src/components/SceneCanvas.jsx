@@ -143,8 +143,12 @@ function lookAtTowards(from, to) {
 
 // World-space yaw (radians) a GroundHotspot's arrow should be rotated by so
 // its tip (local -Z, see GroundHotspot.jsx) points from `from` toward `to`.
+// Rotating -Z by theta about Y gives (-sin(theta), -cos(theta)), so
+// theta = atan2(-dx, -dz). The earlier atan2(dx, -dz) mirrored the X axis —
+// invisible on the north-south main tunnel (dx~0), but every arrow on the
+// east-west / diagonal legs pointed the wrong way (2026-10-06 feedback).
 function yawTo(from, to) {
-  return Math.atan2(to.x - from.x, -(to.z - from.z));
+  return Math.atan2(-(to.x - from.x), -(to.z - from.z));
 }
 
 // How far ahead (meters, along the path) to look when following a bent

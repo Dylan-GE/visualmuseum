@@ -36,6 +36,14 @@ export default function TunnelZoneScene() {
           preRotation={PRE_ROTATIONS[name] ?? null}
         />
       ))}
+      {/* SlopeA's scan has a 2.25 x 1.5m rectangular hole in its floor
+          (x -10.0..-7.75, z 11.9..13.4) straight across the east walk —
+          nothing below it. Cover it slightly under the real floor (-0.14)
+          so the surrounding floor hides the overlap. */}
+      <mesh position={[-8.875, -0.146, 12.65]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[2.6, 1.9]} />
+        <meshStandardMaterial color="#584a3a" roughness={1} />
+      </mesh>
     </>
   );
 }
