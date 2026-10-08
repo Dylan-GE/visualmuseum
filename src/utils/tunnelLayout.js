@@ -321,8 +321,12 @@ export const BCD_PLACEMENTS = BCD_PLACEMENTS_BASE.map((p) => ({ ...p, y: p.y + B
 // why 2026-08-12's first pass had the camera floating above the tunnel
 // looking down, and BIM items floating well off the ground).
 export const BCD_ZONE_COORDS = {
-  zone_main1: [-0.08, -1.1418, 48.17], // TunnelB's own far mouth
-  zone_main2: [-0.12, -1.3219, -52.91], // TunnelC's far, confirmed-capped end
+  // x of main1/main2 (0.22) and the incline end of the trunk edges (0.10, see
+  // BCD_TRUNK_CENTER_X) were re-measured 2026-10-08 from the rendered wall-to-
+  // wall center: the old -0.08/-0.12 ran 0.2-0.4m left of it, so the walking
+  // line hugged the left wall and the steel frames poked through it.
+  zone_main1: [0.22, -1.1418, 48.17], // TunnelB's own far mouth
+  zone_main2: [0.22, -1.3219, -52.91], // TunnelC's far, confirmed-capped end
   zone_incline: [-0.045, -1.1809, -2.755], // TunnelD, midpoint of its B/C openings
   // 2026-10-06: SlopeA is a 34m east-west corridor (x -36.6..-2.4) that the
   // slope from zone_incline joins near x=-30, not a dead-end spur — the old
@@ -442,13 +446,17 @@ function buildDecorEdge(from, to, archVariants) {
   );
 }
 
+// Where the trunk edges' decor lines end at the junction: the TunnelB/TunnelC
+// bores' measured center there, not zone_incline's own coordinate.
+const TRUNK_DECOR_INCLINE_END = [0.1, BCD_ZONE_COORDS.zone_incline[1], BCD_ZONE_COORDS.zone_incline[2]];
+
 export function buildBcdTopology() {
   const decor = [
     // 主坑1 (TunnelB) — 三節支撐 placeholder per 2026-08-12 feedback (real
     // "單節支撐" piece not yet identified in the modular library).
-    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main1, BCD_ZONE_COORDS.zone_incline, COMPOSITE_ARCH_VARIANTS),
+    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main1, TRUNK_DECOR_INCLINE_END, COMPOSITE_ARCH_VARIANTS),
     // 主坑2 (TunnelC) + 斜坑 (TunnelD's own short through-span) — 圓拱支撐.
-    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main2, BCD_ZONE_COORDS.zone_incline, STEEL_ARCH_VARIANTS),
+    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main2, TRUNK_DECOR_INCLINE_END, STEEL_ARCH_VARIANTS),
     ...buildDecorEdge(TUNNEL_D_B_OPENING, TUNNEL_D_C_OPENING, STEEL_ARCH_VARIANTS),
     // 天車間 (SlopeA's corridor) deliberately has NO support props for now
     // (2026-10-08): the real bore is only ~2.1m tall and arched, the stock
