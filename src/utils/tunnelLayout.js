@@ -429,21 +429,29 @@ const DECOR_EDGE_MARGIN = 3;
 // SHELL_VARIANTS tube; only the repeating arch/lagging/rock PROPS are
 // missing from the real scan pieces (they're separate named objects in
 // bg.obj that weren't part of this crop) and need adding back in.
-function buildDecorEdge(from, to, archVariants) {
+// `fit` ({ sx, sy }) shrinks the props for a bore a little narrower/lower than
+// the one they were authored for: arch frames are scaled by (sx, sy) and every
+// other prop keeps its size but has its lateral/vertical offset scaled to match.
+function buildDecorEdge(from, to, archVariants, fit = null) {
   const originWithNudge = [from[0], from[1] + BCD_DECOR_Y_NUDGE, from[2]];
   const dx = to[0] - from[0];
   const dz = to[2] - from[2];
   const length = Math.hypot(dx, dz);
   const rotationY = Math.atan2(-dx, -dz);
-  return transformSegment(
-    buildStraightRun(length, {
-      noShell: true,
-      archVariants,
-      junctions: [0, -length],
-      exclusionRadius: DECOR_EDGE_MARGIN,
-    }),
-    { origin: originWithNudge, rotationY },
-  );
+  let local = buildStraightRun(length, {
+    noShell: true,
+    archVariants,
+    junctions: [0, -length],
+    exclusionRadius: DECOR_EDGE_MARGIN,
+  });
+  if (fit) {
+    local = local.map((p) =>
+      archVariants.includes(p.name)
+        ? { ...p, scale: [fit.sx, fit.sy, 1] }
+        : { ...p, x: p.x * fit.sx, y: p.y * fit.sy },
+    );
+  }
+  return transformSegment(local, { origin: originWithNudge, rotationY });
 }
 
 // Where the trunk edges' decor lines end at the junction: the TunnelB/TunnelC
@@ -454,9 +462,9 @@ export function buildBcdTopology() {
   const decor = [
     // 主坑1 (TunnelB) — 三節支撐 placeholder per 2026-08-12 feedback (real
     // "單節支撐" piece not yet identified in the modular library).
-    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main1, TRUNK_DECOR_INCLINE_END, COMPOSITE_ARCH_VARIANTS),
+    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main1, TRUNK_DECOR_INCLINE_END, STEEL_ARCH_VARIANTS, { sx: 0.95, sy: 0.88 }),
     // 主坑2 (TunnelC) + 斜坑 (TunnelD's own short through-span) — 圓拱支撐.
-    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main2, TRUNK_DECOR_INCLINE_END, STEEL_ARCH_VARIANTS),
+    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main2, TRUNK_DECOR_INCLINE_END, COMPOSITE_ARCH_VARIANTS, { sx: 0.9, sy: 1 }),
     ...buildDecorEdge(TUNNEL_D_B_OPENING, TUNNEL_D_C_OPENING, STEEL_ARCH_VARIANTS),
     // 天車間 (SlopeA's corridor) deliberately has NO support props for now
     // (2026-10-08): the real bore is only ~2.1m tall and arched, the stock

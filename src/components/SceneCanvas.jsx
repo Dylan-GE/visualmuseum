@@ -22,11 +22,18 @@ import ErrorBoundary from './ErrorBoundary';
 import GroundHotspot from './GroundHotspot';
 import ItemMarker from './ItemMarker';
 import { buildAdjacency, computeNeighborDirs } from '../utils/route';
-import { TUNNEL_ZONE_IDS } from '../utils/tunnelLayout';
+import { BCD_MESH_Y_NUDGE, TUNNEL_ZONE_IDS } from '../utils/tunnelLayout';
 
 const TUNNEL_ZONE_ID_SET = new Set(TUNNEL_ZONE_IDS);
 
-const EYE_HEIGHT = 1.7;
+// Eye height above the VISIBLE floor. Zone coordinates carry the floor as
+// originally measured; the tunnel meshes are drawn BCD_MESH_Y_NUDGE higher
+// than that (see tunnelLayout.js), so the camera and ground hotspots must be
+// lifted by the same amount. Before this, the eye sat ~0.66m above the drawn
+// floor, which made the ground arrows a ~6 degree grazing target — flat and
+// hard to see or click (2026-10-08 feedback).
+const EYE_HEIGHT = 1.6;
+const FLOOR_LIFT = BCD_MESH_Y_NUDGE;
 // Must stay comfortably under the smallest OrbitControls maxDistance
 // (currently 1.2, from the smallest zone size 3x3 * 0.4) — otherwise
 // OrbitControls' per-frame distance clamp fights the gsap flight tween
@@ -36,11 +43,10 @@ const LOOK_AHEAD = 1;
 // a short "street view"-style step rather than teleporting the full arm
 // length to the next zone. Must stay far enough that the hotspot (on the
 // ground, y~0.05) sits within OrbitControls' pannable tilt range from eye
-// height (EYE_HEIGHT=1.7, tilt capped at 18° below horizontal — see the
-// maxPolarAngle on <OrbitControls> below): atan(1.65 / d) <= 18° needs
-// d >= ~5.1, so anything much smaller puts the hotspot below where the
-// camera can even look.
-const STEP_DISTANCE = 6;
+// height (EYE_HEIGHT=1.6, tilt capped at 36° below horizontal — see the
+// minPolarAngle on <OrbitControls> below): atan(1.55 / d) <= 36° needs
+// d >= ~2.2; 5m keeps the arrow at a comfortable ~17° down-angle.
+const STEP_DISTANCE = 5;
 const STEP_DURATION = 0.6;
 const HEADING_REPORT_INTERVAL = 0.1;
 const DEFAULT_ROOM_SIZE = { x: 20, z: 20 };
@@ -128,7 +134,7 @@ function pathLerp(from, to, t, viaInfo, fromId) {
 // view down. A small permanent downward tilt on every arrival/step look-at
 // means the floor — and whatever hotspot is sitting on it — is in view
 // from the first frame, without needing a tall always-visible element.
-const LOOK_DOWNWARD_TILT = 1;
+const LOOK_DOWNWARD_TILT = 0.45;
 
 // Always look TOWARD `to`, never away from it — for a dead-end zone (e.g.
 // zone_portal, the entrance) "away from the neighbor" points past the zone
@@ -138,7 +144,8 @@ function lookAtTowards(from, to) {
   const dx = to.x - from.x;
   const dz = to.z - from.z;
   const len = Math.hypot(dx, dz) || 1;
-  return [from.x + (dx / len) * LOOK_AHEAD, EYE_HEIGHT - LOOK_DOWNWARD_TILT, from.z + (dz / len) * LOOK_AHEAD];
+  const eyeY = from.y + FLOOR_LIFT + EYE_HEIGHT;
+  return [from.x + (dx / len) * LOOK_AHEAD, eyeY - LOOK_DOWNWARD_TILT, from.z + (dz / len) * LOOK_AHEAD];
 }
 
 // World-space yaw (radians) a GroundHotspot's arrow should be rotated by so
@@ -313,7 +320,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
   const flyToPosition = useCallback((pos, lookAt, duration) => {
     const callFlight = () => {
       if (flightRef.current) {
-        flightRef.current([pos.x, pos.y + EYE_HEIGHT, pos.z], lookAt, duration);
+        flightRef.current([pos.x, pos.y + FLOOR_LIFT + EYE_HEIGHT, pos.z], lookAt, duration);
       } else {
         requestAnimationFrame(callFlight);
       }
@@ -333,7 +340,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
       const firstViaPoint = viaInfo ? orderedViaPoints(viaInfo, zone.id)[0] : null;
       const lookAt = firstNeighbor
         ? lookAtTowards(zone.coordinates, firstViaPoint ?? firstNeighbor.coordinates)
-        : [zone.coordinates.x, EYE_HEIGHT, zone.coordinates.z - LOOK_AHEAD];
+        : [zone.coordinates.x, zone.coordinates.y + FLOOR_LIFT + EYE_HEIGHT, zone.coordinates.z - LOOK_AHEAD];
 
       setWalk(null);
       flyToPosition(zone.coordinates, lookAt, opts.instant ? 0.01 : 1.5);
@@ -432,7 +439,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         spots.push({
           key: 'forward',
           label: newT >= 1 ? to.name : '',
-          position: [pos.x, pos.y + 0.05, pos.z],
+          position: [pos.x, pos.y + FLOOR_LIFT + 0.05, pos.z],
           rotationY: yawTo(curPos, pos),
           onClick: () => stepAlongEdge(walk.fromId, walk.toId, newT, undefined, true),
         });
@@ -443,7 +450,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         spots.push({
           key: 'backward',
           label: '', // retreating never switches the committed zone — no name to announce
-          position: [pos.x, pos.y + 0.05, pos.z],
+          position: [pos.x, pos.y + FLOOR_LIFT + 0.05, pos.z],
           rotationY: yawTo(curPos, pos),
           onClick: () => stepAlongEdge(walk.fromId, walk.toId, newT, undefined, false),
         });
@@ -473,7 +480,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         return {
           key: neighbor.id,
           label: isFork || newT >= 1 ? neighbor.name : '',
-          position: [pos.x, pos.y + 0.05, pos.z],
+          position: [pos.x, pos.y + FLOOR_LIFT + 0.05, pos.z],
           rotationY: yawTo(current.coordinates, pos),
           onClick: () => stepAlongEdge(currentZoneId, neighbor.id, newT),
         };
@@ -550,7 +557,10 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         ref={controlsRef}
         enableZoom
         enablePan={false}
-        minPolarAngle={Math.PI * 0.4}
+        // Polar angle is measured from straight up, so the MIN limit is how far
+        // you can look DOWN (0.3*PI = 36 degrees below horizontal) and the MAX
+        // limit how far you can look up (0.6*PI = 18 degrees).
+        minPolarAngle={Math.PI * 0.3}
         maxPolarAngle={Math.PI * 0.6}
         minDistance={0.4}
         maxDistance={maxDistance}
