@@ -31,9 +31,11 @@ const METERS_PER_UV = 24;
 export const ATLAS_FIXES = {
   SlopeA: {
     alwaysFallback: true,
-    goodRects: [
+    rockRects: [
       [0.152, 0.165, 0.424, 0.99],
       [0.455, 0.215, 0.722, 0.99],
+    ],
+    dirtRects: [
       [0.014, 0.17, 0.138, 0.99],
       [0.732, 0.215, 0.862, 0.99],
     ],
@@ -42,10 +44,12 @@ export const ATLAS_FIXES = {
   },
   TunnelB: {
     flattenFloorY: -0.14,
-    goodRects: [
-      [0.021, 0.01, 0.121, 0.99],
+    rockRects: [
       [0.135, 0.01, 0.396, 0.99],
       [0.435, 0.01, 0.715, 0.99],
+    ],
+    dirtRects: [
+      [0.021, 0.01, 0.121, 0.99],
       [0.732, 0.01, 0.805, 0.99],
     ],
     rockRect: [0.135, 0.01, 0.396, 0.99],
@@ -53,10 +57,12 @@ export const ATLAS_FIXES = {
   },
   TunnelC: {
     flattenFloorY: -0.14,
-    goodRects: [
-      [0.021, 0.02, 0.121, 0.97],
+    rockRects: [
       [0.13, 0.02, 0.37, 0.97],
       [0.45, 0.03, 0.715, 0.97],
+    ],
+    dirtRects: [
+      [0.021, 0.02, 0.121, 0.97],
       [0.728, 0.03, 0.81, 0.97],
     ],
     rockRect: [0.13, 0.02, 0.37, 0.97],
@@ -71,19 +77,21 @@ varying vec3 vFixPos;
 bool inFixRect(vec2 uv, vec4 r) { return uv.x >= r.x && uv.y >= r.y && uv.x <= r.z && uv.y <= r.w; }
 `;
 
-function buildMapFragment({ alwaysFallback, goodRects, rockRect, dirtRect }) {
-  const good = alwaysFallback
-    ? 'false'
-    : goodRects.map((r) => `inFixRect(fixUv, ${vec4(r)})`).join(' || ');
+function buildMapFragment({ alwaysFallback, rockRects = [], dirtRects = [], rockRect, dirtRect }) {
+  const anyIn = (rects) => (rects.length ? rects.map((r) => `inFixRect(fixUv, ${vec4(r)})`).join(' || ') : 'false');
   return ShaderChunk.map_fragment.replace(
     'vec4 sampledDiffuseColor = texture2D( map, vMapUv );',
     `
 	vec2 fixUv = vMapUv;
-	bool fixGood = ${good};
 	vec3 fixN = normalize(cross(dFdx(vFixPos), dFdy(vFixPos)));
 	if (dot(fixN, cameraPosition - vFixPos) < 0.0) fixN = -fixN;
 	bool fixFloor = fixN.y > 0.5;
 	bool fixCeil = fixN.y < -0.5;
+	// Keep the mesh's own UVs only where they land on the kind of tile the
+	// surface actually is (floor -> dirt, wall/ceiling -> rock); a flattened
+	// ditch or bank keeps its old rock UVs and would otherwise render as a
+	// flat stretch of wall.
+	bool fixGood = ${alwaysFallback ? 'false' : `fixFloor ? (${anyIn(dirtRects)}) : (${anyIn(rockRects)})`};
 	vec3 fixAbs = abs(fixN);
 	vec2 fixPlane = (fixFloor || fixCeil) ? vFixPos.xz : (fixAbs.x > fixAbs.z ? vFixPos.zy : vFixPos.xy);
 	vec4 fixRect = fixFloor ? ${vec4(dirtRect)} : ${vec4(rockRect)};
@@ -128,6 +136,6 @@ export function patchAtlasMaterial(material, pieceName) {
       .replace('#include <common>', `#include <common>\n${FRAGMENT_HELPERS}`)
       .replace('#include <map_fragment>', mapFragment);
   };
-  patched.customProgramCacheKey = () => `atlas-fix-${pieceName}-v4`;
+  patched.customProgramCacheKey = () => `atlas-fix-${pieceName}-v5`;
   return patched;
 }
