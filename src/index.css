@@ -57,7 +57,8 @@ html, body, #root {
 }
 
 .minimap-viewport {
-  width: 460px;
+  /* Stay left of the centered scene strip on narrower windows. */
+  width: clamp(260px, calc(50vw - 196px), 460px);
   aspect-ratio: 648 / 288;
   border-radius: 12px;
   overflow: hidden;
