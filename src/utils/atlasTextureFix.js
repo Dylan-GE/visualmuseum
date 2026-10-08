@@ -10,6 +10,13 @@ import { ShaderChunk } from 'three';
 //  - SlopeA: ~11% of its surface samples smear, and its far end maps walls and
 //    ceiling onto the dirt strip (a big brown dome). It ignores its UVs
 //    entirely (`alwaysFallback`).
+//  - Floor cross-section (TunnelB/TunnelC, `flattenFloorY`): the scan's floor is
+//    flat only for |x| < ~0.8; beside it the left drops into a drainage ditch
+//    (-0.31, abrupt wall at x~-1.2) while the right climbs a gradual bank
+//    (-0.14 at x=1.0 to +0.27 at x=1.4), so the whole floor reads as banked /
+//    tilted (2026-10-08 feedback, "地板有點歪"). A vertex shader pulls every
+//    vertex within 0.4m below / 0.5m above the floor plane onto it, blending
+//    out by 0.9m, giving a level floor that meets the walls directly.
 //  - TunnelB/TunnelC: UV islands meet along seams, so triangles straddling a
 //    seam smear diagonal streaks across a wall — most visible in the unsupported
 //    first meters of each trunk, where the camera sits. They keep their own
@@ -34,6 +41,7 @@ export const ATLAS_FIXES = {
     dirtRect: [0.014, 0.17, 0.138, 0.99],
   },
   TunnelB: {
+    flattenFloorY: -0.14,
     goodRects: [
       [0.021, 0.01, 0.121, 0.99],
       [0.135, 0.01, 0.396, 0.99],
@@ -44,6 +52,7 @@ export const ATLAS_FIXES = {
     dirtRect: [0.021, 0.01, 0.121, 0.99],
   },
   TunnelC: {
+    flattenFloorY: -0.14,
     goodRects: [
       [0.021, 0.02, 0.121, 0.97],
       [0.13, 0.02, 0.37, 0.97],
@@ -87,10 +96,21 @@ function buildMapFragment({ alwaysFallback, goodRects, rockRect, dirtRect }) {
   );
 }
 
+function buildFlatten(y) {
+  if (y === undefined) return '';
+  return `
+	float fixH = vFixPos.y - (${y.toFixed(3)});
+	if (fixH > -0.4 && fixH < 0.9) {
+		transformed.y += -fixH * (1.0 - smoothstep(0.5, 0.9, max(fixH, 0.0)));
+		vFixPos.y = ${y.toFixed(3)} + fixH * smoothstep(0.5, 0.9, max(fixH, 0.0));
+	}`;
+}
+
 export function patchAtlasMaterial(material, pieceName) {
   const cfg = ATLAS_FIXES[pieceName];
   if (!cfg) return material;
   const mapFragment = buildMapFragment(cfg);
+  const flatten = buildFlatten(cfg.flattenFloorY);
   const patched = material.clone();
   patched.onBeforeCompile = (shader) => {
     shader.vertexShader = shader.vertexShader
@@ -102,12 +122,12 @@ export function patchAtlasMaterial(material, pieceName) {
 	#ifdef USE_INSTANCING
 		fixP = instanceMatrix * fixP;
 	#endif
-	vFixPos = (modelMatrix * fixP).xyz;`,
+	vFixPos = (modelMatrix * fixP).xyz;${flatten}`,
       );
     shader.fragmentShader = shader.fragmentShader
       .replace('#include <common>', `#include <common>\n${FRAGMENT_HELPERS}`)
       .replace('#include <map_fragment>', mapFragment);
   };
-  patched.customProgramCacheKey = () => `atlas-fix-${pieceName}-v3`;
+  patched.customProgramCacheKey = () => `atlas-fix-${pieceName}-v4`;
   return patched;
 }

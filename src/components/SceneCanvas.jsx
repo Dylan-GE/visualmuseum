@@ -134,7 +134,7 @@ function pathLerp(from, to, t, viaInfo, fromId) {
 // view down. A small permanent downward tilt on every arrival/step look-at
 // means the floor — and whatever hotspot is sitting on it — is in view
 // from the first frame, without needing a tall always-visible element.
-const LOOK_DOWNWARD_TILT = 0.32;
+const LOOK_DOWNWARD_TILT = 0.22;
 
 // Always look TOWARD `to`, never away from it — for a dead-end zone (e.g.
 // zone_portal, the entrance) "away from the neighbor" points past the zone
