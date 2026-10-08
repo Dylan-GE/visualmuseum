@@ -330,7 +330,7 @@ export const BCD_ZONE_COORDS = {
   // junction itself (3 exits: back down the slope, west end, east end), and
   // each end of the corridor is its own zone.
   zone_hoist_room: [-30.2, -1.16, 12.7],
-  zone_hoist_west: [-36.63, -1.7914, 12.72], // SlopeA's own far (west) mouth
+  zone_hoist_west: [-34.7, -1.25, 12.7], // just inside the west mouth, which the 風門 plugs at x~-36
   zone_hoist_east: [-4.6, -1.14, 12.6], // east end, ~2m short of the capped wall at x=-2.4
 };
 
@@ -393,9 +393,6 @@ export const BCD_INCLINE_HOIST_PATH = [
 // zone_hoist_room (see buildBcdTopology below), same as before.
 export const BCD_INCLINE_HOIST_VIA = [-26.89, -1.1619, 12.5];
 
-// West-end walk from the hoist junction: level until x~-34.5, then the real
-// floor drops ~0.55m toward the mouth (measured off SlopeA).
-export const BCD_HOIST_WEST_PATH = [[-34.5, -1.16, 12.7]];
 
 // TunnelD's own two "through" openings (world space, same translation as
 // everything else here) — the short (~5.5m), confirmed-straight stretch
@@ -428,40 +425,22 @@ const DECOR_EDGE_MARGIN = 3;
 // SHELL_VARIANTS tube; only the repeating arch/lagging/rock PROPS are
 // missing from the real scan pieces (they're separate named objects in
 // bg.obj that weren't part of this crop) and need adding back in.
-// `fit` ({ sx, sy, originY }) shrinks the props for a tunnel narrower than the
-// ~3.5m-wide TunnelB/C these were authored for: arch frames are scaled by
-// (sx, sy), every other prop keeps its size but its lateral/vertical offset is
-// scaled to match, originY (if given) replaces the default floor+nudge, and
-// margin (if given) replaces DECOR_EDGE_MARGIN.
-function buildDecorEdge(from, to, archVariants, fit = null) {
-  const originY = fit?.originY ?? from[1] + BCD_DECOR_Y_NUDGE;
-  const originWithNudge = [from[0], originY, from[2]];
+function buildDecorEdge(from, to, archVariants) {
+  const originWithNudge = [from[0], from[1] + BCD_DECOR_Y_NUDGE, from[2]];
   const dx = to[0] - from[0];
   const dz = to[2] - from[2];
   const length = Math.hypot(dx, dz);
   const rotationY = Math.atan2(-dx, -dz);
-  let local = buildStraightRun(length, {
-    noShell: true,
-    archVariants,
-    junctions: [0, -length],
-    exclusionRadius: fit?.margin ?? DECOR_EDGE_MARGIN,
-  });
-  if (fit) {
-    local = local.map((p) =>
-      archVariants.includes(p.name)
-        ? { ...p, scale: [fit.sx, fit.sy, 1] }
-        : { ...p, x: p.x * fit.sx, y: p.y * fit.sy },
-    );
-  }
-  return transformSegment(local, { origin: originWithNudge, rotationY });
+  return transformSegment(
+    buildStraightRun(length, {
+      noShell: true,
+      archVariants,
+      junctions: [0, -length],
+      exclusionRadius: DECOR_EDGE_MARGIN,
+    }),
+    { origin: originWithNudge, rotationY },
+  );
 }
-
-// SlopeA's real interior (measured off the rendered mesh, 2026-10-05): floor
-// y=-0.15 and ceiling y~2.03 (2.15m tall, level until x~-34.5 where the floor
-// starts dropping), half-width ~1.4m at 1m height but only ~0.95m at 2m —
-// an arched cross-section. The unscaled three-support frame is 3.3m wide x
-// 2.45m tall, which poked through both the walls and the ceiling.
-const SLOPE_A_DECOR_FIT = { sx: 0.55, sy: 0.8, originY: -0.15 };
 
 export function buildBcdTopology() {
   const decor = [
@@ -471,15 +450,9 @@ export function buildBcdTopology() {
     // 主坑2 (TunnelC) + 斜坑 (TunnelD's own short through-span) — 圓拱支撐.
     ...buildDecorEdge(BCD_ZONE_COORDS.zone_main2, BCD_ZONE_COORDS.zone_incline, STEEL_ARCH_VARIANTS),
     ...buildDecorEdge(TUNNEL_D_B_OPENING, TUNNEL_D_C_OPENING, STEEL_ARCH_VARIANTS),
-    // 天車間 (SlopeA's safe straight half, via->zone_hoist_room) — 三節支撐.
-    // Deliberately NOT decorating zone_incline<->via (TunnelD's bend +
-    // SlopeA's kink) — same "don't assume straight-line safety" reasoning
-    // as everywhere else on that leg.
-    // Starts west of the slope's mouth (x -31.5..-27.5): frames across the
-    // mouth walled off the way back down the slope.
-    ...buildDecorEdge([-32.6, BCD_INCLINE_HOIST_VIA[1], 12.55], BCD_ZONE_COORDS.zone_hoist_west, COMPOSITE_ARCH_VARIANTS, { ...SLOPE_A_DECOR_FIT, margin: 0.8 }),
-    // East half of the same corridor (same bore, same fit).
-    ...buildDecorEdge(BCD_INCLINE_HOIST_VIA, BCD_ZONE_COORDS.zone_hoist_east, COMPOSITE_ARCH_VARIANTS, SLOPE_A_DECOR_FIT),
+    // 天車間 (SlopeA's corridor) deliberately has NO support props for now
+    // (2026-10-08): the real bore is only ~2.1m tall and arched, the stock
+    // frames were too big and, scaled to fit, looked too small — left bare.
   ];
   return {
     placements: [...BCD_PLACEMENTS, ...decor],
