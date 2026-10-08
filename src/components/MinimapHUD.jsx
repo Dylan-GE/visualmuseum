@@ -1,15 +1,22 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import MinimapImage from './MinimapImage';
+import MinimapView from './MinimapView';
 
-export default function MinimapHUD({ currentZoneId, heading = 0, onSelectZone }) {
+export default function MinimapHUD({ zones, items, unlockedItems, currentZoneId, pose, onSelectZone }) {
   const [collapsed, setCollapsed] = useState(true);
 
   return (
     <div className="minimap-hud">
       {!collapsed && (
         <div className="minimap-viewport">
-          <MinimapImage currentZoneId={currentZoneId} heading={heading} onSelectZone={onSelectZone} />
+          <MinimapView
+            zones={zones}
+            items={items}
+            unlockedItems={unlockedItems}
+            currentZoneId={currentZoneId}
+            pose={pose}
+            onSelectZone={onSelectZone}
+          />
         </div>
       )}
       <button className="minimap-toggle" onClick={() => setCollapsed((v) => !v)}>

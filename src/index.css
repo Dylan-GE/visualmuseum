@@ -57,26 +57,12 @@ html, body, #root {
 }
 
 .minimap-viewport {
-  width: 420px;
-  height: 320px;
+  width: 460px;
+  aspect-ratio: 648 / 288;
   border-radius: 12px;
   overflow: hidden;
-  background: transparent;
+  background: rgba(10, 14, 20, 0.62);
   margin-bottom: 6px;
-}
-
-.map-zone-hotspot {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 9999px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.map-zone-hotspot:hover {
-  background: rgba(56, 189, 248, 0.18);
 }
 
 .location-banner {

@@ -20,7 +20,7 @@ function App() {
   const { data, error } = useMuseumData();
   const sceneRef = useRef(null);
   const [currentZone, setCurrentZone] = useState(null);
-  const [heading, setHeading] = useState(0);
+  const [pose, setPose] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [unlockedItems, setUnlockedItems] = useState(() => loadUnlockedItems());
   const [collectionOpen, setCollectionOpen] = useState(false);
@@ -70,7 +70,7 @@ function App() {
         ref={sceneRef}
         data={data}
         onSelectZone={handleSelectZone}
-        onHeadingChange={setHeading}
+        onPoseChange={setPose}
         onSelectItem={handleSelectItem}
         unlockedItems={unlockedItems}
       />
@@ -81,7 +81,14 @@ function App() {
       />
       <LocationBanner zoneName={currentZone?.name} />
       <AIGuideHUD />
-      <MinimapHUD currentZoneId={currentZone?.id} heading={heading} onSelectZone={handleJumpToZone} />
+      <MinimapHUD
+        zones={data?.zones}
+        items={data?.items}
+        unlockedItems={unlockedItems}
+        currentZoneId={currentZone?.id}
+        pose={pose}
+        onSelectZone={handleJumpToZone}
+      />
       {data && (
         <SceneThumbnailStrip
           zones={data.zones}

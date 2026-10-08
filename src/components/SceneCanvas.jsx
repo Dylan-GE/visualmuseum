@@ -241,9 +241,13 @@ function CameraController({ controlsRef, flightRef }) {
   return null;
 }
 
-function HeadingReporter({ onHeadingChange }) {
+// Reports the camera's world X/Z and heading (atan2(dirZ, dirX)) for the
+// minimap, at most every HEADING_REPORT_INTERVAL and only when it moved or
+// turned enough to matter, so standing still doesn't re-render the app.
+function PoseReporter({ onPoseChange }) {
   const { camera } = useThree();
   const lastReport = useRef(0);
+  const lastPose = useRef(null);
   const dirRef = useRef(new Vector3());
 
   useFrame(({ clock }) => {
@@ -251,14 +255,22 @@ function HeadingReporter({ onHeadingChange }) {
     if (now - lastReport.current < HEADING_REPORT_INTERVAL) return;
     lastReport.current = now;
     camera.getWorldDirection(dirRef.current);
-    onHeadingChange?.(Math.atan2(dirRef.current.z, dirRef.current.x));
+    const pose = {
+      x: camera.position.x,
+      z: camera.position.z,
+      heading: Math.atan2(dirRef.current.z, dirRef.current.x),
+    };
+    const prev = lastPose.current;
+    if (prev && Math.hypot(pose.x - prev.x, pose.z - prev.z) < 0.05 && Math.abs(pose.heading - prev.heading) < 0.02) return;
+    lastPose.current = pose;
+    onPoseChange?.(pose);
   });
 
   return null;
 }
 
 const SceneCanvas = forwardRef(function SceneCanvas(
-  { data, onSelectZone, onHeadingChange, onSelectItem, unlockedItems },
+  { data, onSelectZone, onPoseChange, onSelectItem, unlockedItems },
   ref,
 ) {
   const controlsRef = useRef();
@@ -566,7 +578,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         maxDistance={maxDistance}
       />
       <CameraController controlsRef={controlsRef} flightRef={flightRef} />
-      <HeadingReporter onHeadingChange={onHeadingChange} />
+      <PoseReporter onPoseChange={onPoseChange} />
     </Canvas>
   );
 });
