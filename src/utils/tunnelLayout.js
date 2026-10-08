@@ -325,8 +325,8 @@ export const BCD_ZONE_COORDS = {
   // BCD_TRUNK_CENTER_X) were re-measured 2026-10-08 from the rendered wall-to-
   // wall center: the old -0.08/-0.12 ran 0.2-0.4m left of it, so the walking
   // line hugged the left wall and the steel frames poked through it.
-  zone_main1: [0.22, -1.1418, 48.17], // TunnelB's own far mouth
-  zone_main2: [0.22, -1.3219, -52.91], // TunnelC's far, confirmed-capped end
+  zone_main1: [0.22, -1.1418, 45.5], // 2.7m inside TunnelB's far mouth (z=48.17), see TRUNK_FAR_ENDS
+  zone_main2: [0.22, -1.3219, -50.0], // 2.9m inside TunnelC's far, confirmed-capped end (z=-52.91)
   zone_incline: [-0.045, -1.1809, -2.755], // TunnelD, midpoint of its B/C openings
   // 2026-10-06: SlopeA is a 34m east-west corridor (x -36.6..-2.4) that the
   // slope from zone_incline joins near x=-30, not a dead-end spur — the old
@@ -432,7 +432,7 @@ const DECOR_EDGE_MARGIN = 3;
 // `fit` ({ sx, sy }) shrinks the props for a bore a little narrower/lower than
 // the one they were authored for: arch frames are scaled by (sx, sy) and every
 // other prop keeps its size but has its lateral/vertical offset scaled to match.
-function buildDecorEdge(from, to, archVariants, fit = null) {
+function buildDecorEdge(from, to, archVariants, fit = null, startMargin = DECOR_EDGE_MARGIN) {
   const originWithNudge = [from[0], from[1] + BCD_DECOR_Y_NUDGE, from[2]];
   const dx = to[0] - from[0];
   const dz = to[2] - from[2];
@@ -442,8 +442,11 @@ function buildDecorEdge(from, to, archVariants, fit = null) {
     noShell: true,
     archVariants,
     junctions: [0, -length],
-    exclusionRadius: DECOR_EDGE_MARGIN,
+    exclusionRadius: startMargin,
   });
+  // The far end of an edge may be given a shorter clearance (startMargin) than
+  // the junction end, which always keeps DECOR_EDGE_MARGIN.
+  local = local.filter((p) => p.z > -(length - DECOR_EDGE_MARGIN));
   if (fit) {
     local = local.map((p) =>
       archVariants.includes(p.name)
@@ -456,15 +459,22 @@ function buildDecorEdge(from, to, archVariants, fit = null) {
 
 // Where the trunk edges' decor lines end at the junction: the TunnelB/TunnelC
 // bores' measured center there, not zone_incline's own coordinate.
+// The trunks' real far ends. The arrival points sit a few meters inside these
+// (2026-10-08) so the support frames, which now start 0.8m from the end,
+// surround the camera instead of leaving bare scan geometry in the near field.
+const TRUNK_FAR_ENDS = {
+  main1: [0.22, -1.1418, 48.17],
+  main2: [0.22, -1.3219, -52.91],
+};
 const TRUNK_DECOR_INCLINE_END = [0.1, BCD_ZONE_COORDS.zone_incline[1], BCD_ZONE_COORDS.zone_incline[2]];
 
 export function buildBcdTopology() {
   const decor = [
     // 主坑1 (TunnelB) — 三節支撐 placeholder per 2026-08-12 feedback (real
     // "單節支撐" piece not yet identified in the modular library).
-    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main1, TRUNK_DECOR_INCLINE_END, STEEL_ARCH_VARIANTS, { sx: 0.95, sy: 0.88 }),
+    ...buildDecorEdge(TRUNK_FAR_ENDS.main1, TRUNK_DECOR_INCLINE_END, STEEL_ARCH_VARIANTS, { sx: 0.95, sy: 0.88 }, 0.8),
     // 主坑2 (TunnelC) + 斜坑 (TunnelD's own short through-span) — 圓拱支撐.
-    ...buildDecorEdge(BCD_ZONE_COORDS.zone_main2, TRUNK_DECOR_INCLINE_END, COMPOSITE_ARCH_VARIANTS, { sx: 0.9, sy: 1 }),
+    ...buildDecorEdge(TRUNK_FAR_ENDS.main2, TRUNK_DECOR_INCLINE_END, COMPOSITE_ARCH_VARIANTS, { sx: 0.9, sy: 1 }, 0.8),
     ...buildDecorEdge(TUNNEL_D_B_OPENING, TUNNEL_D_C_OPENING, STEEL_ARCH_VARIANTS),
     // 天車間 (SlopeA's corridor) deliberately has NO support props for now
     // (2026-10-08): the real bore is only ~2.1m tall and arched, the stock
