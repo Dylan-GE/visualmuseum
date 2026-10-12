@@ -1,5 +1,11 @@
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
+import { useLoader } from '@react-three/fiber';
+import { BufferGeometry, Float32BufferAttribute } from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import ErrorBoundary from './ErrorBoundary';
 import InstancedTunnelPiece from './InstancedTunnelPiece';
+import { patchAtlasMaterial } from '../utils/atlasTextureFix';
+import { tunnelPieceUrl, withDraco } from '../utils/tunnelPieceLoader';
 import { PRE_ROTATIONS, buildBcdTopology, groupByName } from '../utils/tunnelLayout';
 
 // Replaces the boxy ZoneBlockout room+corridor geometry for the zones listed
@@ -23,6 +29,40 @@ import { PRE_ROTATIONS, buildBcdTopology, groupByName } from '../utils/tunnelLay
 // driving camera/hotspot navigation can never drift apart.
 const { placements: ALL_PLACEMENTS } = buildBcdTopology();
 
+// SlopeA's scan has a rectangular hole in its floor (measured x -10.10..-7.96,
+// z 12.00..13.48) straight across the east walk — nothing below it. The real
+// floor around it climbs from -0.145 on the west edge to -0.117 on the east
+// edge (constant along z), so the cover is a slanted quad (a flat one left a
+// visible step/seam) set ~4mm under that surface. It uses SlopeA's own patched
+// material, which textures floors from world position, so the dirt continues
+// seamlessly instead of reading as a coloured rectangle.
+const PATCH = { x0: -10.3, x1: -7.76, z0: 11.8, z1: 13.68, yWest: -0.1525, yEast: -0.1225 };
+
+function SlopeFloorPatch() {
+  const gltf = useLoader(GLTFLoader, tunnelPieceUrl('SlopeA'), withDraco);
+  const material = useMemo(() => {
+    let source = null;
+    gltf.scene.traverse((child) => {
+      if (child.isMesh && !source) source = child.material;
+    });
+    return source ? patchAtlasMaterial(source, 'SlopeA') : null;
+  }, [gltf]);
+  const geometry = useMemo(() => {
+    const { x0, x1, z0, z1, yWest, yEast } = PATCH;
+    const g = new BufferGeometry();
+    g.setAttribute(
+      'position',
+      new Float32BufferAttribute([x0, yWest, z0, x1, yEast, z0, x1, yEast, z1, x0, yWest, z1], 3),
+    );
+    g.setAttribute('uv', new Float32BufferAttribute([0, 0, 1, 0, 1, 1, 0, 1], 2));
+    g.setIndex([0, 2, 1, 0, 3, 2]);
+    g.computeVertexNormals();
+    return g;
+  }, []);
+  if (!material) return null;
+  return <mesh geometry={geometry} material={material} />;
+}
+
 export default function TunnelZoneScene() {
   const grouped = useMemo(() => groupByName(ALL_PLACEMENTS), []);
 
@@ -36,14 +76,11 @@ export default function TunnelZoneScene() {
           preRotation={PRE_ROTATIONS[name] ?? null}
         />
       ))}
-      {/* SlopeA's scan has a 2.25 x 1.5m rectangular hole in its floor
-          (x -10.0..-7.75, z 11.9..13.4) straight across the east walk —
-          nothing below it. Cover it slightly under the real floor (-0.14)
-          so the surrounding floor hides the overlap. */}
-      <mesh position={[-8.875, -0.146, 12.65]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[2.6, 1.9]} />
-        <meshStandardMaterial color="#584a3a" roughness={1} />
-      </mesh>
+      <ErrorBoundary fallback={null}>
+        <Suspense fallback={null}>
+          <SlopeFloorPatch />
+        </Suspense>
+      </ErrorBoundary>
     </>
   );
 }

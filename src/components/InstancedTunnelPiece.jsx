@@ -2,17 +2,10 @@ import { Suspense, useLayoutEffect, useMemo, useRef } from 'react';
 import { useLoader } from '@react-three/fiber';
 import { Box3, Matrix4, Quaternion, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import ErrorBoundary from './ErrorBoundary';
 import { patchAtlasMaterial } from '../utils/atlasTextureFix';
+import { tunnelPieceUrl, withDraco } from '../utils/tunnelPieceLoader';
 
-const PIECE = (name) => `/models/tunnel_pieces/${name}.glb`;
-
-function withDraco(loader) {
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('/draco/');
-  loader.setDRACOLoader(dracoLoader);
-}
 
 // Loads a tunnel-piece .glb once and extracts {geometry, material, matrix}
 // for every mesh inside it, with `matrix` already carrying the same
@@ -21,7 +14,7 @@ function withDraco(loader) {
 // of placements can share one InstancedMesh per submesh instead of one full
 // scene-graph clone per placement.
 function useGroundedParts(name, preRotation) {
-  const gltf = useLoader(GLTFLoader, PIECE(name), withDraco);
+  const gltf = useLoader(GLTFLoader, tunnelPieceUrl(name), withDraco);
   return useMemo(() => {
     // .clone() shares geometry/material by reference (that's what we want —
     // one buffer per submesh, reused across all instances) and only deep-copies
