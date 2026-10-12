@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, QrCode, Trophy, X } from 'lucide-react';
+import { ArrowLeft, Trophy, X } from 'lucide-react';
 import ModelPreview from './ModelPreview';
+import ItemQRCode from './ItemQRCode';
 import { getItemTypeLabel, getRarityColor, RARITY_LABEL } from '../utils/itemTheme';
 
 const hasText = (v) => typeof v === 'string' && v.trim() !== '' && !/待確認|待補/.test(v);
@@ -56,13 +57,17 @@ function DetailView({ item, onClose, onEnterGame }) {
         )}
 
         <div className="modal-footer">
-          <div className="modal-qr">
-            <QrCode size={28} />
-            <div>
-              <div className="modal-qr-title">AR / QR Code</div>
-              <div className="modal-qr-caption">手機掃描 QR Code，在擴增實境中檢視 3D 模型</div>
+          {item.ar?.glb ? (
+            <div className="modal-qr">
+              <ItemQRCode itemId={item.id} />
+              <div>
+                <div className="modal-qr-title">AR 檢視</div>
+                <div className="modal-qr-caption">用手機掃描，在桌面上看 3D 模型</div>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="modal-qr" />
+          )}
           <button className="modal-collection-btn" onClick={onEnterGame}>
             <Trophy size={16} />
             遊戲收藏

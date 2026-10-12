@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
+    // AR testing needs a public HTTPS URL a phone can reach (ngrok / Cloudflare
+    // Tunnel); Vite otherwise rejects requests whose Host header isn't localhost.
+    allowedHosts: true,
     // 2026-08-14：這個環境下 Vite 原生的檔案系統事件監控不可靠——連續好幾輪
     // 編輯 SceneCanvas.jsx 之後，伺服器只吃到最後一次的變更，其餘完全沒觸發
     // HMR（直接用 grep 確認過磁碟上的檔案內容其實都是對的，問題出在監控本

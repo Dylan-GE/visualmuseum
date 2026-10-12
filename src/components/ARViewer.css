@@ -1,0 +1,133 @@
+.ar-page {
+  position: fixed;
+  inset: 0;
+  overflow-y: auto;
+  background: #0a0e14;
+  color: #e2e8f0;
+  font-family: system-ui, -apple-system, 'Segoe UI', 'Noto Sans TC', sans-serif;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ar-inner {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 12px 16px calc(28px + env(safe-area-inset-bottom));
+}
+
+.ar-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ar-back {
+  color: #94a3b8;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.ar-rarity {
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+}
+
+.ar-title {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #f8fafc;
+}
+
+.ar-stage {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: radial-gradient(ellipse at 50% 35%, #2a3447 0%, #121826 70%);
+}
+
+.ar-stage model-viewer {
+  display: block;
+  width: 100%;
+  height: min(58vh, 460px);
+  --poster-color: transparent;
+  --progress-bar-color: #38bdf8;
+}
+
+.ar-button {
+  position: absolute;
+  left: 50%;
+  bottom: 14px;
+  transform: translateX(-50%);
+  padding: 12px 22px;
+  border: none;
+  border-radius: 9999px;
+  background: #38bdf8;
+  color: #04121e;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+  cursor: pointer;
+}
+
+.ar-status {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  top: 12px;
+  font-size: 13px;
+  text-align: center;
+  color: #cbd5e1;
+  background: rgba(10, 14, 20, 0.7);
+  border-radius: 10px;
+  padding: 6px 10px;
+}
+
+.ar-note {
+  margin: 10px 2px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+.ar-section {
+  margin-top: 16px;
+}
+
+.ar-section h2 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #7dd3fc;
+}
+
+.ar-section p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: #e2e8f0;
+}
+
+.ar-message {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  background: #0a0e14;
+  color: #cbd5e1;
+  font-size: 16px;
+  text-align: center;
+  padding: 24px;
+}
+
+.ar-message a {
+  color: #7dd3fc;
+}

@@ -220,7 +220,6 @@
         35.17
       ],
       "model_url": "/models/tools/99_temp/SingleSupport.obj",
-      "usdz_url": "/models/tools/timber_support.usdz",
       "spec": {
         "function": "以單根立柱搭配頂板支撐坑道局部區域，構造簡單、施作快速",
         "era": "各時期坑道皆常見的基本支撐形式",
@@ -238,7 +237,16 @@
         ],
         "correct_index": 0
       },
-      "color": "#4a3c2e"
+      "color": "#4a3c2e",
+      "ar": {
+        "glb": "/models/ar/tool_single_support.glb",
+        "scale": 0.211,
+        "real_size_m": [
+          0.245,
+          2.137,
+          0.304
+        ]
+      }
     },
     {
       "id": "wip_detonator",
@@ -277,6 +285,15 @@
           "排除坑內的有害氣體"
         ],
         "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_detonator.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.029,
+          0.006,
+          0.209
+        ]
       }
     },
     {
@@ -309,6 +326,15 @@
         ],
         "correct_index": 0,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_part3.glb",
+        "scale": 0.773,
+        "real_size_m": [
+          0.124,
+          0.582,
+          0.101
+        ]
       }
     },
     {
@@ -348,6 +374,15 @@
           "短型木楔，輔助局部支撐與定位"
         ],
         "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_save_foothold.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.143,
+          0.362,
+          0.211
+        ]
       }
     },
     {
@@ -397,7 +432,16 @@
         0.86,
         0.95,
         1
-      ]
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_three_sup.glb",
+        "scale": 0.139,
+        "real_size_m": [
+          0.2,
+          2.281,
+          3.242
+        ]
+      }
     },
     {
       "id": "wip_zhicheng_guding_qi",
@@ -429,6 +473,15 @@
         ],
         "correct_index": 1,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_zhicheng_guding_qi.glb",
+        "scale": 0.219,
+        "real_size_m": [
+          0.113,
+          0.019,
+          2.052
+        ]
       }
     },
     {
@@ -467,6 +520,15 @@
           "裝在標示明確的木箱，與雷管分開"
         ],
         "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_box_2.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.31,
+          0.12,
+          0.337
+        ]
       }
     },
     {
@@ -498,6 +560,15 @@
         ],
         "correct_index": 2,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_chopper.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.269,
+          0.026,
+          0.409
+        ]
       }
     },
     {
@@ -530,6 +601,15 @@
         ],
         "correct_index": 0,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_chopper_2.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.198,
+          0.028,
+          0.332
+        ]
       }
     },
     {
@@ -572,6 +652,15 @@
           "讓煤炭沿槽狀溝道滑送"
         ],
         "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_conveyortrough.glb",
+        "scale": 0.269,
+        "real_size_m": [
+          1.675,
+          0.124,
+          0.248
+        ]
       }
     },
     {
@@ -611,6 +700,15 @@
           "運煤的台車"
         ],
         "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_pickaxe.glb",
+        "scale": 0.584,
+        "real_size_m": [
+          0.365,
+          0.031,
+          0.77
+        ]
       }
     },
     {
@@ -649,6 +747,15 @@
           "局部風扇"
         ],
         "correct_index": 1
+      },
+      "ar": {
+        "glb": "/models/ar/wip_pound.glb",
+        "scale": 0.259,
+        "real_size_m": [
+          0.042,
+          1.737,
+          0.037
+        ]
       }
     },
     {
@@ -689,6 +796,15 @@
           "坑內發生災變、有毒氣體瀰漫時"
         ],
         "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_respirator.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.099,
+          0.163,
+          0.124
+        ]
       }
     },
     {
@@ -726,6 +842,15 @@
           "支撐坑道頂板"
         ],
         "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_sandbag.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.03,
+          0.022,
+          0.186
+        ]
       }
     },
     {
@@ -758,6 +883,15 @@
         ],
         "correct_index": 1,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_six.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.292,
+          0.246,
+          0.249
+        ]
       }
     },
     {
@@ -789,6 +923,15 @@
         ],
         "correct_index": 2,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_waterbag.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.03,
+          0.022,
+          0.186
+        ]
       }
     },
     {
@@ -820,6 +963,15 @@
         ],
         "correct_index": 0,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_watersandbox.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.255,
+          0.092,
+          0.098
+        ]
       }
     },
     {
@@ -834,7 +986,6 @@
         1.2
       ],
       "model_url": "/models/tools/99_temp/machine_A.obj",
-      "usdz_url": "/models/tools/hoist_winch.usdz",
       "spec": {
         "function": "利用電力驅動鋼索，牽引台車或運載人員上下坑道與豎坑",
         "era": "機電化運輸時期核心設備",
@@ -858,7 +1009,16 @@
         -1.059,
         0
       ],
-      "scale": 0.85
+      "scale": 0.85,
+      "ar": {
+        "glb": "/models/ar/tool_hoist_winch.glb",
+        "scale": 0.138,
+        "real_size_m": [
+          1.397,
+          1.024,
+          3.264
+        ]
+      }
     },
     {
       "id": "tool_rock_drill",
@@ -872,7 +1032,6 @@
         13.54
       ],
       "model_url": "/models/tools/99_temp/AirLegA_2.obj",
-      "usdz_url": "/models/tools/pneumatic_drill.usdz",
       "spec": {
         "function": "利用壓縮空氣鑽鑿岩層與煤層，加速掘進與開採效率",
         "era": "機械化開採時期引進",
@@ -890,7 +1049,16 @@
         ],
         "correct_index": 0
       },
-      "color": "#47474a"
+      "color": "#47474a",
+      "ar": {
+        "glb": "/models/ar/tool_rock_drill.glb",
+        "scale": 0.878,
+        "real_size_m": [
+          0.513,
+          0.146,
+          0.254
+        ]
+      }
     },
     {
       "id": "tool_drill_airleg",
@@ -904,7 +1072,6 @@
         11.4
       ],
       "model_url": "/models/tools/99_temp/jackLegB.obj",
-      "usdz_url": "/models/tools/drill_airleg.usdz",
       "spec": {
         "function": "以壓縮空氣頂撐鑿岩機機身，抵銷鑽鑿時的後座力，讓機身穩定貼緊岩面",
         "era": "與氣動鑿岩機搭配使用的標準配件",
@@ -922,7 +1089,16 @@
         ],
         "correct_index": 0
       },
-      "color": "#5a4a3a"
+      "color": "#5a4a3a",
+      "ar": {
+        "glb": "/models/ar/tool_drill_airleg.glb",
+        "scale": 0.443,
+        "real_size_m": [
+          0.136,
+          1.016,
+          0.143
+        ]
+      }
     },
     {
       "id": "wip_chain",
@@ -965,7 +1141,16 @@
         0,
         -3.045,
         0
-      ]
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_chain.glb",
+        "scale": 0.265,
+        "real_size_m": [
+          1.697,
+          0.041,
+          0.092
+        ]
+      }
     },
     {
       "id": "wip_pickaxe_2",
@@ -1002,7 +1187,16 @@
         0,
         1.5708,
         0
-      ]
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_pickaxe_2.glb",
+        "scale": 0.538,
+        "real_size_m": [
+          0.362,
+          0.048,
+          0.837
+        ]
+      }
     },
     {
       "id": "wip_ventilator",
@@ -1041,6 +1235,15 @@
           "牽引礦車"
         ],
         "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_ventilator.glb",
+        "scale": 0.831,
+        "real_size_m": [
+          0.541,
+          0.466,
+          0.401
+        ]
       }
     },
     {
@@ -1090,7 +1293,16 @@
         1.24,
         1.03,
         1
-      ]
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_winddoor.glb",
+        "scale": 0.192,
+        "real_size_m": [
+          2.34,
+          2.09,
+          0.274
+        ]
+      }
     },
     {
       "id": "tool_pneumatic_pick",
@@ -1104,7 +1316,6 @@
         -5.2
       ],
       "model_url": "/models/tools/99_temp/Pneumatic.obj",
-      "usdz_url": "/models/tools/coal_cutter.usdz",
       "spec": {
         "function": "利用壓縮空氣驅動鎬頭反覆撞擊，鬆動並鑿落煤層",
         "era": "機械化採煤時期引進，取代人工鎬煤",
@@ -1122,7 +1333,16 @@
         ],
         "correct_index": 0
       },
-      "color": "#444444"
+      "color": "#444444",
+      "ar": {
+        "glb": "/models/ar/tool_pneumatic_pick.glb",
+        "scale": 0.572,
+        "real_size_m": [
+          0.175,
+          0.787,
+          0.119
+        ]
+      }
     },
     {
       "id": "wip_bigsaw",
@@ -1153,6 +1373,15 @@
         ],
         "correct_index": 2,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_bigsaw.glb",
+        "scale": 0.506,
+        "real_size_m": [
+          0.078,
+          0.038,
+          0.89
+        ]
       }
     },
     {
@@ -1172,7 +1401,6 @@
         0
       ],
       "model_url": "/models/tools/99_temp/minecart.obj",
-      "usdz_url": "/models/tools/coal_tub.usdz",
       "spec": {
         "function": "沿軌道載運坑內開採出的煤炭至坑口",
         "era": "日治時期至戰後皆廣泛使用於台灣煤礦坑道",
@@ -1190,7 +1418,16 @@
         ],
         "correct_index": 0
       },
-      "color": "#5a3d2e"
+      "color": "#5a3d2e",
+      "ar": {
+        "glb": "/models/ar/tool_coal_tub.glb",
+        "scale": 0.193,
+        "real_size_m": [
+          2.334,
+          1.167,
+          0.92
+        ]
+      }
     },
     {
       "id": "tool_circle_support",
@@ -1204,7 +1441,6 @@
         9.23
       ],
       "model_url": "/models/tools/99_temp/circle_sup.obj",
-      "usdz_url": "/models/tools/steel_arch.usdz",
       "spec": {
         "function": "以圓弧形鋼構支撐坑道頂部與側壁，能平均分散地壓，較直柱式支撐更穩固",
         "era": "坑道改修工程與地壓較大的區段常用",
@@ -1222,7 +1458,16 @@
         ],
         "correct_index": 0
       },
-      "color": "#3a3a3a"
+      "color": "#3a3a3a",
+      "ar": {
+        "glb": "/models/ar/tool_circle_support.glb",
+        "scale": 0.166,
+        "real_size_m": [
+          2.712,
+          2.573,
+          0.125
+        ]
+      }
     },
     {
       "id": "wip_biglock",
@@ -1254,6 +1499,15 @@
         ],
         "correct_index": 0,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_biglock.glb",
+        "scale": 0.668,
+        "real_size_m": [
+          0.248,
+          0.674,
+          0.154
+        ]
       }
     },
     {
@@ -1293,6 +1547,15 @@
           "隨身放在礦工口袋"
         ],
         "correct_index": 1
+      },
+      "ar": {
+        "glb": "/models/ar/wip_box.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.31,
+          0.12,
+          0.337
+        ]
       }
     },
     {
@@ -1325,6 +1588,15 @@
         ],
         "correct_index": 1,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_doublehammer.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.192,
+          0.037,
+          0.302
+        ]
       }
     },
     {
@@ -1364,6 +1636,15 @@
           "通風換氣"
         ],
         "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_dynamite.glb",
+        "scale": 1.146,
+        "real_size_m": [
+          0.026,
+          0.026,
+          0.131
+        ]
       }
     },
     {
@@ -1396,6 +1677,15 @@
         ],
         "correct_index": 2,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_hook.glb",
+        "scale": 0.895,
+        "real_size_m": [
+          0.163,
+          0.014,
+          0.503
+        ]
       }
     },
     {
@@ -1441,6 +1731,15 @@
           "以柴油動力牽引台車列車"
         ],
         "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_locomotive.glb",
+        "scale": 0.155,
+        "real_size_m": [
+          2.911,
+          1.402,
+          1.273
+        ]
       }
     },
     {
@@ -1473,6 +1772,15 @@
         ],
         "correct_index": 0,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_part1.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.189,
+          0.152,
+          0.054
+        ]
       }
     },
     {
@@ -1505,6 +1813,15 @@
         ],
         "correct_index": 1,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_part2.glb",
+        "scale": 0.65,
+        "real_size_m": [
+          0.693,
+          0.158,
+          0.158
+        ]
       }
     },
     {
@@ -1537,6 +1854,15 @@
         ],
         "correct_index": 2,
         "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_saw.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.078,
+          0.02,
+          0.336
+        ]
       }
     },
     {
@@ -1574,7 +1900,16 @@
         0,
         1.5708,
         0
-      ]
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_shovel.glb",
+        "scale": 0.379,
+        "real_size_m": [
+          0.252,
+          0.072,
+          1.187
+        ]
+      }
     },
     {
       "id": "wip_transmitter",
@@ -1613,6 +1948,15 @@
           "帶動輸送鍊"
         ],
         "correct_index": 1
+      },
+      "ar": {
+        "glb": "/models/ar/wip_transmitter.glb",
+        "scale": 1.097,
+        "real_size_m": [
+          0.095,
+          0.137,
+          0.08
+        ]
       }
     }
   ]

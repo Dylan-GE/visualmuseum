@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useCallback, useMemo, useRef, useState } from 'react';
 import SceneCanvas from './components/SceneCanvas';
 import TunnelPieceTest from './components/TunnelPieceTest';
 import TunnelSegmentTest from './components/TunnelSegmentTest';
@@ -12,11 +12,15 @@ import External2DToggle from './components/External2DToggle';
 import ItemDetailModal from './components/ItemDetailModal';
 import { useMuseumData } from './hooks/useMuseumData';
 import { loadUnlockedItems, saveUnlockedItems } from './utils/progress';
+import { parseARPath } from './utils/arLink';
+
+const ARViewer = lazy(() => import('./components/ARViewer'));
 
 function App() {
   const params = new URLSearchParams(window.location.search);
   const isTunnelTest = params.has('tunnelTest');
   const isTunnelSegment = params.has('tunnelSegment');
+  const arItemId = parseARPath(window.location.pathname);
   const { data, error } = useMuseumData();
   const sceneRef = useRef(null);
   const [currentZone, setCurrentZone] = useState(null);
@@ -55,6 +59,14 @@ function App() {
     setSelectedItem(null);
     setCollectionOpen(true);
   }, []);
+
+  if (arItemId) {
+    return (
+      <Suspense fallback={null}>
+        <ARViewer itemId={arItemId} data={data} error={error} />
+      </Suspense>
+    );
+  }
 
   if (isTunnelTest) {
     return <TunnelPieceTest />;

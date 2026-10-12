@@ -321,6 +321,21 @@ html, body, #root {
   min-width: 0;
 }
 
+.modal-qr-code {
+  flex: none;
+  display: block;
+  padding: 3px;
+  border-radius: 8px;
+  background: #fff;
+  box-sizing: content-box;
+  line-height: 0;
+}
+
+.modal-qr-code img {
+  display: block;
+  border-radius: 4px;
+}
+
 .modal-qr-title {
   font-size: 13px;
   font-weight: 700;
