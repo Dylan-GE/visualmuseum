@@ -245,11 +245,11 @@
       "type": "tool",
       "name": "雷管",
       "rarity": "Common",
-      "zone_id": "zone_main1",
+      "zone_id": "zone_hoist_east",
       "position": [
-        -1.03,
-        0.14,
-        36.18
+        -15.5,
+        -0.08,
+        13.67
       ],
       "model_url": "/models/tools/99_temp/Detonator.obj",
       "spec": {
@@ -972,11 +972,11 @@
       "type": "tool",
       "name": "大掘仔",
       "rarity": "Common",
-      "zone_id": "zone_hoist_room",
+      "zone_id": "zone_hoist_east",
       "position": [
-        -32.41,
-        -0.1,
-        11.66
+        -27.5,
+        -0.08,
+        13.67
       ],
       "model_url": "/models/tools/99_temp/pickaxe_2.obj",
       "spec": {
@@ -997,7 +997,12 @@
         ],
         "correct_index": 1,
         "basis": "appearance"
-      }
+      },
+      "rotation": [
+        0,
+        1.5708,
+        0
+      ]
     },
     {
       "id": "wip_ventilator",
@@ -1224,11 +1229,11 @@
       "type": "transport",
       "name": "大索頭",
       "rarity": "Common",
-      "zone_id": "zone_incline",
+      "zone_id": "zone_hoist_east",
       "position": [
-        0.92,
+        -21.5,
         -0.08,
-        29.96
+        13.67
       ],
       "model_url": "/models/tools/99_temp/biglock.obj",
       "spec": {
@@ -1256,11 +1261,11 @@
       "type": "tool",
       "name": "雷管箱",
       "rarity": "Common",
-      "zone_id": "zone_incline",
+      "zone_id": "zone_hoist_east",
       "position": [
-        -0.75,
+        -18.5,
         -0.08,
-        29
+        11.67
       ],
       "model_url": "/models/tools/99_temp/box.obj",
       "spec": {
@@ -1327,11 +1332,11 @@
       "type": "tool",
       "name": "炸藥",
       "rarity": "Common",
-      "zone_id": "zone_incline",
+      "zone_id": "zone_hoist_east",
       "position": [
-        -1,
+        -12.6,
         -0.08,
-        32.75
+        11.67
       ],
       "model_url": "/models/tools/99_temp/dynamite.obj",
       "spec": {
@@ -1539,11 +1544,11 @@
       "type": "tool",
       "name": "平嘴鏟",
       "rarity": "Common",
-      "zone_id": "zone_incline",
+      "zone_id": "zone_hoist_east",
       "position": [
-        -30.99,
+        -24.5,
         -0.08,
-        8.03
+        11.67
       ],
       "model_url": "/models/tools/99_temp/shovel.obj",
       "spec": {
@@ -1564,18 +1569,23 @@
         ],
         "correct_index": 0,
         "basis": "appearance"
-      }
+      },
+      "rotation": [
+        0,
+        1.5708,
+        0
+      ]
     },
     {
       "id": "wip_transmitter",
       "type": "tool",
       "name": "發爆器",
       "rarity": "Common",
-      "zone_id": "zone_incline",
+      "zone_id": "zone_hoist_east",
       "position": [
-        0.9,
+        -6.9,
         -0.08,
-        35.76
+        13.67
       ],
       "model_url": "/models/tools/99_temp/transmitter.obj",
       "spec": {
