@@ -4,7 +4,7 @@
 // the 108m-long trunk along the panel's long axis and puts the slope/hoist
 // branches (world -X) at the top. Bounds cover every tunnel piece with a margin.
 export const PPM = 6;
-export const BOUNDS = { xMin: -42, xMax: 6, zMin: -56, zMax: 52 };
+export const BOUNDS = { xMin: -42, xMax: 9, zMin: -56, zMax: 52 };
 export const MAP_SIZE = {
   width: (BOUNDS.zMax - BOUNDS.zMin) * PPM,
   height: (BOUNDS.xMax - BOUNDS.xMin) * PPM,

@@ -84,6 +84,7 @@ function App() {
       <MinimapHUD
         zones={data?.zones}
         items={data?.items}
+        connections={data?.connections}
         unlockedItems={unlockedItems}
         currentZoneId={currentZone?.id}
         pose={pose}

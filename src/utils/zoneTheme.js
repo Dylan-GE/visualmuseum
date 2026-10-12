@@ -6,3 +6,10 @@ export const ZONE_THEME = {
 };
 
 export const DEFAULT_THEME = { floor: '#23262f', wall: '#3a3f4d', glow: '#38bdf8' };
+
+// The two hoist-corridor ends share the hoist room's colour.
+const ZONE_THEME_ALIAS = { zone_hoist_west: 'zone_hoist_room', zone_hoist_east: 'zone_hoist_room' };
+
+export function zoneGlow(zoneId) {
+  return (ZONE_THEME[ZONE_THEME_ALIAS[zoneId] ?? zoneId] ?? DEFAULT_THEME).glow;
+}
