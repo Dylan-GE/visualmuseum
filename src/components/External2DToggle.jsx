@@ -3,17 +3,28 @@ import { X } from 'lucide-react';
 import ModelPreview from './ModelPreview';
 import { getItemTypeIcon, getItemTypeLabel } from '../utils/itemTheme';
 
+const hasText = (v) => typeof v === 'string' && v.trim() !== '' && !/待確認|待補/.test(v);
+
 // 2D 網頁版（機具型錄）全螢幕覆蓋層；由頂端列的「2D網頁」按鈕開啟。
 export default function External2DToggle({ open, onClose, items = [], zoneNames = {} }) {
   const [selectedId, setSelectedId] = useState(null);
   const selected = items.find((i) => i.id === selectedId) ?? items[0] ?? null;
+  const story = selected?.history?.mining_story || selected?.history?.use_value;
+  const facts = selected
+    ? [
+        ['用途', selected.spec?.function],
+        ['外觀', selected.spec?.appearance],
+        ['材質', selected.spec?.material],
+        ['歷史故事', story],
+      ].filter(([, text]) => hasText(text))
+    : [];
 
   return (
     <>
       {open && (
         <div className="view2d-overlay">
           <div className="view2d-header">
-            <span>臺灣虛擬礦業博物館・機具型錄核對版</span>
+            <span>臺灣虛擬礦業博物館・2D 展品列表</span>
             <button className="view2d-close" onClick={onClose}>
               <X size={16} />
               關閉
@@ -47,15 +58,16 @@ export default function External2DToggle({ open, onClose, items = [], zoneNames 
                         {getItemTypeIcon(selected.type)} {getItemTypeLabel(selected.type)}
                       </span>
                     </p>
-                    <p className="view2d-info-file">來源檔案：{selected._source_file ?? selected.model_url}</p>
-                    {selected.spec && (
+                    {facts.length > 0 && (
                       <div className="view2d-info-section">
-                        <p>用途：{selected.spec.function}</p>
-                        <p>年代：{selected.spec.era}</p>
-                        <p>材質：{selected.spec.material}</p>
+                        {facts.map(([label, text]) => (
+                          <p key={label}>
+                            {label}：{text}
+                          </p>
+                        ))}
                       </div>
                     )}
-                    <p className="view2d-info-zone">目前放置展間：{zoneNames[selected.zone_id] ?? selected.zone_id}（位置為暫時隨意分配）</p>
+                    <p className="view2d-info-zone">展間：{zoneNames[selected.zone_id] ?? selected.zone_id}</p>
                   </div>
                 )}
               </div>
