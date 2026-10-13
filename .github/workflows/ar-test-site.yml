@@ -1,0 +1,36 @@
+name: Publish temporary AR test site
+
+# Manual only: the site is PUBLIC once published. Run it from the Actions tab,
+# test on a phone, then unpublish (Settings -> Pages -> Unpublish site).
+# It ships only the AR models and trimmed item text — see scripts/build-ar-site.mjs.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build:ar-site
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-ar
+      - id: deployment
+        uses: actions/deploy-pages@v4

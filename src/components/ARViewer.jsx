@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import '@google/model-viewer';
 import './ARViewer.css';
+import { BASE_HREF } from '../utils/assetUrl';
 import { formatRealSize } from '../utils/arLink';
 import { RARITY_LABEL, getItemTypeLabel, getRarityColor } from '../utils/itemTheme';
 
@@ -16,7 +17,7 @@ function Message({ children }) {
   return (
     <div className="ar-message">
       {children}
-      <a href="/">回到博物館</a>
+      <a href={BASE_HREF}>回到首頁</a>
     </div>
   );
 }
@@ -67,8 +68,8 @@ export default function ARViewer({ itemId, data, error }) {
     <div className="ar-page">
       <div className="ar-inner">
         <div className="ar-topbar">
-          <a className="ar-back" href="/">
-            ← 返回博物館
+          <a className="ar-back" href={BASE_HREF}>
+            ← 返回首頁
           </a>
           <span className="ar-rarity" style={{ color }}>
             {RARITY_LABEL[item.rarity] ?? item.rarity}・{getItemTypeLabel(item.type)}

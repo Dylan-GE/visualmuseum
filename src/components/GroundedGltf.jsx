@@ -4,10 +4,11 @@ import { Box3, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import ErrorBoundary from './ErrorBoundary';
+import { assetUrl } from '../utils/assetUrl';
 
 function withDraco(loader) {
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('/draco/');
+  dracoLoader.setDecoderPath(assetUrl('/draco/'));
   loader.setDRACOLoader(dracoLoader);
 }
 

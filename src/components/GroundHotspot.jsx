@@ -5,6 +5,7 @@ import { Box3, Group, PMREMGenerator, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import ErrorBoundary from './ErrorBoundary';
+import { assetUrl } from '../utils/assetUrl';
 
 // Reflections need *something* to reflect — see the metalness note below.
 // Generated procedurally (three's own RoomEnvironment, a simple lit room)
@@ -31,7 +32,7 @@ function getEnvMap(gl) {
 // buildDecorEdge: 0 = local -Z) says which way the arrow's tip should
 // face; callers compute it as the yaw from the viewer's current position
 // toward this hotspot's own position (see SceneCanvas.jsx).
-const ARROW_URL = '/models/scene.gltf';
+const ARROW_URL = assetUrl('/models/scene.gltf');
 // The raw model isn't necessarily modelled pointing along -Z or sized to
 // our scale — MODEL_PRE_ROTATION (Euler, applied before centering/scaling)
 // corrects its native pointing axis to -Z, and ARROW_VISUAL_LENGTH is the

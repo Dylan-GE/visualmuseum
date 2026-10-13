@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "ar:build": "node scripts/build-ar-models.mjs"
+    "ar:build": "node scripts/build-ar-models.mjs",
+    "build:ar-site": "node scripts/build-ar-site.mjs"
   },
   "dependencies": {
     "@google/model-viewer": "^4.3.1",

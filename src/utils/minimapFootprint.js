@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { BCD_PLACEMENTS } from './tunnelLayout';
 import { MAP_SIZE, worldToMap } from './minimapProjection';
+import { assetUrl } from './assetUrl';
 
 // Rasterizes the real tunnel floor plan from the same GLB pieces and
 // placements the 3D scene renders, so the minimap can never drift from the
@@ -143,7 +144,7 @@ function shade(ctx) {
 async function build() {
   const loader = new GLTFLoader();
   const draco = new DRACOLoader();
-  draco.setDecoderPath('/draco/');
+  draco.setDecoderPath(assetUrl('/draco/'));
   loader.setDRACOLoader(draco);
 
   const canvas = document.createElement('canvas');
@@ -154,7 +155,7 @@ async function build() {
   ctx.fillStyle = '#fff';
 
   const pieces = [...new Set(BCD_PLACEMENTS.map((p) => p.name))];
-  const gltfs = await Promise.all(pieces.map((name) => loader.loadAsync(`/models/tunnel_pieces/${name}.glb`)));
+  const gltfs = await Promise.all(pieces.map((name) => loader.loadAsync(assetUrl(`/models/tunnel_pieces/${name}.glb`))));
   BCD_PLACEMENTS.forEach((placement) => drawFloor(ctx, gltfs[pieces.indexOf(placement.name)], placement));
   draco.dispose();
   return shade(ctx);

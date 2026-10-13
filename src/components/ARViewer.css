@@ -131,3 +131,33 @@
 .ar-message a {
   color: #7dd3fc;
 }
+
+.ar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.ar-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f1f5f9;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.ar-list-item:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ar-list-meta {
+  font-size: 12px;
+  white-space: nowrap;
+}

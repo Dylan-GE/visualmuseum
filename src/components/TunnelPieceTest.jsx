@@ -4,6 +4,7 @@ import { OrbitControls, Text } from '@react-three/drei';
 import { Box3, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { assetUrl } from '../utils/assetUrl';
 
 const PIECE_NAMES = [
   'BoxWoodA',
@@ -21,7 +22,7 @@ const CELL_SIZE = 2.4;
 
 function withDraco(loader) {
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath('/draco/');
+  dracoLoader.setDecoderPath(assetUrl('/draco/'));
   loader.setDRACOLoader(dracoLoader);
 }
 
@@ -148,7 +149,7 @@ export default function TunnelPieceTest() {
             <ReportingErrorBoundary onError={(msg) => setStatus(name, 'ERROR: ' + msg)}>
               <Suspense fallback={null}>
                 <GroundedPiece
-                  url={`/models/tunnel_pieces/${name}.glb`}
+                  url={assetUrl(`/models/tunnel_pieces/${name}.glb`)}
                   onBounds={(size) => handleBounds(name, size)}
                   onDebug={(msg) => setStatus(name, msg)}
                 />
