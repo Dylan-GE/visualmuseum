@@ -907,3 +907,67 @@
     transform: none;
   }
 }
+
+/* 瑞三本鑛是本期重點：入口放大、常亮金色光暈，標題與小字也更醒目 */
+.entrance--ruisan {
+  --w: clamp(310px, 32vw, 560px);
+  --h: clamp(150px, 16.5vw, 260px);
+  left: 8vw;
+  top: 33vh;
+  z-index: 5;
+}
+
+.entrance--ruisan .entrance__frame {
+  filter:
+    drop-shadow(0 0 12px rgba(240, 200, 100, 0.55))
+    drop-shadow(0 0 34px rgba(214, 170, 70, 0.35));
+  animation: ruisanGlow 3.4s ease-in-out infinite;
+}
+
+.entrance--ruisan .entrance__title {
+  font-size: 34px;
+  color: #f0d99a;
+  text-shadow: 0 0 18px rgba(240, 200, 100, 0.45);
+}
+
+.entrance--ruisan .entrance__tag {
+  color: rgba(255, 244, 216, 0.78);
+  font-size: 15px;
+}
+
+.entrance--ruisan .orbit {
+  border-color: rgba(240, 217, 154, 0.38);
+}
+
+@keyframes ruisanGlow {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 10px rgba(240, 200, 100, 0.45))
+      drop-shadow(0 0 28px rgba(214, 170, 70, 0.28));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 18px rgba(255, 224, 140, 0.8))
+      drop-shadow(0 0 46px rgba(240, 190, 90, 0.5));
+  }
+}
+
+/* 入場動畫結束後才套用常亮光暈，避免蓋掉淡入動畫 */
+.entrances:not(.is-ready) .entrance--ruisan .entrance__frame {
+  animation: none;
+}
+
+.entrances.is-ready .entrance--ruisan .entrance__frame {
+  animation: entranceFadeIn 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) 0.36s both, ruisanGlow 3.4s ease-in-out 1.3s infinite;
+}
+
+@media (max-width: 980px) {
+  .entrance.entrance--ruisan {
+    --w: min(94vw, 500px);
+    --h: 190px;
+  }
+
+  .entrance--ruisan .entrance__title {
+    font-size: 30px;
+  }
+}

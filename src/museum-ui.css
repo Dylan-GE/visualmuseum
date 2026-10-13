@@ -2504,3 +2504,13 @@
 .mu .hint-list li {
   min-height: 56px;
 }
+
+/* 小地圖在畫面下緣，往上展開：收合時箭頭朝上（點了往上展開），展開時朝下（點了收起）。
+   設計稿共用的是往下展開的方向，這裡反過來。 */
+.mu .minimap-toggle[aria-expanded='false'] .minimap-toggle__icon {
+  transform: none;
+}
+
+.mu .minimap-toggle[aria-expanded='true'] .minimap-toggle__icon {
+  transform: rotate(180deg);
+}
