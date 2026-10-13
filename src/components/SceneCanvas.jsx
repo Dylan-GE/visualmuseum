@@ -47,6 +47,9 @@ const LOOK_AHEAD = 1;
 // minPolarAngle on <OrbitControls> below): atan(1.55 / d) <= 36° needs
 // d >= ~2.2; 5m keeps the arrow at a comfortable ~17° down-angle.
 const STEP_DISTANCE = 5;
+// A junction zone (more than one way on, e.g. 斜坑) only counts as "here" within this
+// many metres of its node; beyond that the walker is in the corridor it is heading into.
+const HUB_RADIUS = 8;
 const STEP_DURATION = 0.6;
 const HEADING_REPORT_INTERVAL = 0.1;
 const DEFAULT_ROOM_SIZE = { x: 20, z: 20 };
@@ -500,6 +503,29 @@ const SceneCanvas = forwardRef(function SceneCanvas(
 
     return exitSpots;
   }, [walk, currentZoneId, adjacency, zoneById, getVia, stepAlongEdge]);
+
+  // The zone the visitor is *in*, for the location label / minimap / progress UI.
+  // `currentZoneId` only changes on arriving at a node (it drives the hotspots), so
+  // on a 47 m corridor it would keep naming the junction until the very end.
+  const displayZoneId = useMemo(() => {
+    if (!walk) return currentZoneId;
+    const from = zoneById[walk.fromId];
+    const to = zoneById[walk.toId];
+    if (!from || !to) return currentZoneId;
+    const len = pathLength(from.coordinates, to.coordinates, getVia(walk.fromId, walk.toId), walk.fromId);
+    const dFrom = walk.t * len;
+    const dTo = (1 - walk.t) * len;
+    const fromHub = (adjacency[from.id]?.length ?? 0) > 1;
+    const toHub = (adjacency[to.id]?.length ?? 0) > 1;
+    if (fromHub && !toHub) return dFrom < HUB_RADIUS ? from.id : to.id;
+    if (toHub && !fromHub) return dTo < HUB_RADIUS ? to.id : from.id;
+    return dFrom <= dTo ? from.id : to.id;
+  }, [walk, currentZoneId, zoneById, adjacency, getVia]);
+
+  useEffect(() => {
+    const zone = zoneById[displayZoneId];
+    if (zone) onSelectZone?.(zone);
+  }, [displayZoneId, zoneById, onSelectZone]);
 
   const currentSize = zoneById[currentZoneId]?.size ?? DEFAULT_ROOM_SIZE;
   const maxDistance = Math.max(currentSize.x, currentSize.z) * 0.4;
