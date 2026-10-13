@@ -10,9 +10,6 @@ import { BASE_HREF } from '../utils/assetUrl';
 // 載入畫面至少顯示這麼久，線稿動畫才不會在還看不到時就跑完。
 const MIN_LOADING_MS = 2800;
 
-const prefersReducedMotion = () =>
-  typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
 function Entrance({ site }) {
   const open = site.status === 'open';
   const body = (
@@ -83,7 +80,7 @@ export default function Portal() {
     img.src = enterBg;
     const ready = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
     ready.then(() => {
-      const wait = prefersReducedMotion() ? 0 : Math.max(0, MIN_LOADING_MS - (Date.now() - start));
+      const wait = Math.max(0, MIN_LOADING_MS - (Date.now() - start));
       setTimeout(() => !cancelled && setLoaded(true), wait);
     });
     return () => {
@@ -97,6 +94,26 @@ export default function Portal() {
     const t = setTimeout(() => setGone(true), 800);
     return () => clearTimeout(t);
   }, [loaded]);
+
+  // 滑鼠視差：把游標相對畫面中心的位移寫進 --mx / --my，由 CSS 決定各層移動多少。
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    let frame = 0;
+    const onMove = (e) => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        root.style.setProperty('--mx', `${e.clientX - window.innerWidth / 2}px`);
+        root.style.setProperty('--my', `${e.clientY - window.innerHeight / 2}px`);
+      });
+    };
+    root.addEventListener('pointermove', onMove);
+    return () => {
+      root.removeEventListener('pointermove', onMove);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, []);
 
   const ready = gone ? ' is-ready' : '';
 

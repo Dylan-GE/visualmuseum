@@ -875,27 +875,35 @@
 }
 
 
-/* 設定「減少動態效果」的使用者：線稿直接畫好、入口直接出現 */
-@media (prefers-reduced-motion: reduce) {
-  .miner-line {
-    stroke-dashoffset: 0;
-    opacity: 0.5;
-  }
+/* 滑鼠視差：Portal.jsx 依游標位置更新 --mx / --my。
+   入口與背景線稿各有不同的位移倍率，營造層次；放在 svg 上以免和外層的搖擺動畫互相覆蓋 transform。 */
+.portal-page .miner-animation svg,
+.portal-page .coal-mine svg,
+.portal-page .miner-wrap svg {
+  transition: transform 0.35s ease-out;
+}
 
-  .miner-animation .miner,
-  .miner-animation .impact-effect,
-  .miner-wrap,
-  .miner-wrap .miner-line,
-  .miner-animation .miner-line,
-  .coal-mine .miner-line,
-  .orbit,
-  .entrance::before,
-  .entrance::after,
-  .entrances .entrance__frame {
-    animation: none !important;
-  }
+.portal-page .miner-animation svg {
+  transform: translate3d(calc(var(--mx) * 0.03), calc(var(--my) * 0.03), 0);
+}
 
-  .entrances .entrance__frame {
-    opacity: 1;
+.portal-page .coal-mine svg {
+  transform: translate3d(calc(var(--mx) * 0.015), calc(var(--my) * 0.015), 0);
+}
+
+.portal-page .miner-wrap svg {
+  transform: translate3d(calc(var(--mx) * 0.04), calc(var(--my) * 0.04), 0);
+}
+
+.portal-page .scene-bg {
+  transform: translate3d(calc(var(--mx) * -0.01), calc(var(--my) * -0.01), 0) scale(1.04);
+}
+
+@media (max-width: 980px) {
+  .portal-page .miner-animation svg,
+  .portal-page .coal-mine svg,
+  .portal-page .miner-wrap svg,
+  .portal-page .scene-bg {
+    transform: none;
   }
 }
