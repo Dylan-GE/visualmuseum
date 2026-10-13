@@ -9,13 +9,13 @@ const GIS_URL = (import.meta.env.VITE_GIS_URL ?? '').trim();
 export const RUISAN_PATH = `${BASE_HREF}ruisan`;
 
 export const SITES = [
-  { id: 'ruisan', title: '瑞三本鑛', status: 'open', href: RUISAN_PATH },
-  { id: 'guoying', title: '國英坑', status: 'soon' },
-  { id: 'shengfu', title: '昇福坑', status: 'soon' },
-  { id: 'taibai', title: '太白山', status: 'soon' },
+  { id: 'ruisan', title: '瑞三本鑛', subtitle: '坑道漫遊', status: 'open', href: RUISAN_PATH },
+  { id: 'guoying', title: '國英坑', subtitle: '三維模型', status: 'soon' },
+  { id: 'shengfu', title: '昇福坑', subtitle: '三維模型', status: 'soon' },
+  { id: 'taibai', title: '太白山', subtitle: '三維模型', status: 'soon' },
   GIS_URL
-    ? { id: 'gis', title: 'GIS 地圖', status: 'open', href: GIS_URL, external: true }
-    : { id: 'gis', title: 'GIS 地圖', status: 'soon' },
+    ? { id: 'gis', title: 'GIS網站', status: 'open', href: GIS_URL, external: true }
+    : { id: 'gis', title: 'GIS網站', status: 'soon' },
 ];
 
 // 入口頁右上角「回到2D網頁」。沒有設定網址就不顯示。

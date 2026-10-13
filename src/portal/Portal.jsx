@@ -20,7 +20,7 @@ function Entrance({ site }) {
       <span className="entrance__frame">
         <span className="entrance__inner">
           <span className="entrance__title">{site.title}</span>
-          {!open && <span className="entrance__tag">即將開放</span>}
+          {site.subtitle && <span className="entrance__tag">{site.subtitle}</span>}
         </span>
       </span>
     </>
