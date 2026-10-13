@@ -240,7 +240,7 @@
       "color": "#4a3c2e",
       "ar": {
         "glb": "/models/ar/tool_single_support.glb",
-        "scale": 0.211,
+        "scale": 1,
         "real_size_m": [
           0.245,
           2.137,
@@ -329,7 +329,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_part3.glb",
-        "scale": 0.773,
+        "scale": 1,
         "real_size_m": [
           0.124,
           0.582,
@@ -435,7 +435,7 @@
       ],
       "ar": {
         "glb": "/models/ar/wip_three_sup.glb",
-        "scale": 0.139,
+        "scale": 1,
         "real_size_m": [
           0.2,
           2.281,
@@ -476,7 +476,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_zhicheng_guding_qi.glb",
-        "scale": 0.219,
+        "scale": 1,
         "real_size_m": [
           0.113,
           0.019,
@@ -655,7 +655,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_conveyortrough.glb",
-        "scale": 0.269,
+        "scale": 1,
         "real_size_m": [
           1.675,
           0.124,
@@ -703,7 +703,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_pickaxe.glb",
-        "scale": 0.584,
+        "scale": 1,
         "real_size_m": [
           0.365,
           0.031,
@@ -750,7 +750,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_pound.glb",
-        "scale": 0.259,
+        "scale": 1,
         "real_size_m": [
           0.042,
           1.737,
@@ -1012,7 +1012,7 @@
       "scale": 0.85,
       "ar": {
         "glb": "/models/ar/tool_hoist_winch.glb",
-        "scale": 0.138,
+        "scale": 1,
         "real_size_m": [
           1.397,
           1.024,
@@ -1052,7 +1052,7 @@
       "color": "#47474a",
       "ar": {
         "glb": "/models/ar/tool_rock_drill.glb",
-        "scale": 0.878,
+        "scale": 1,
         "real_size_m": [
           0.513,
           0.146,
@@ -1092,7 +1092,7 @@
       "color": "#5a4a3a",
       "ar": {
         "glb": "/models/ar/tool_drill_airleg.glb",
-        "scale": 0.443,
+        "scale": 1,
         "real_size_m": [
           0.136,
           1.016,
@@ -1144,7 +1144,7 @@
       ],
       "ar": {
         "glb": "/models/ar/wip_chain.glb",
-        "scale": 0.265,
+        "scale": 1,
         "real_size_m": [
           1.697,
           0.041,
@@ -1190,7 +1190,7 @@
       ],
       "ar": {
         "glb": "/models/ar/wip_pickaxe_2.glb",
-        "scale": 0.538,
+        "scale": 1,
         "real_size_m": [
           0.362,
           0.048,
@@ -1238,7 +1238,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_ventilator.glb",
-        "scale": 0.831,
+        "scale": 1,
         "real_size_m": [
           0.541,
           0.466,
@@ -1296,7 +1296,7 @@
       ],
       "ar": {
         "glb": "/models/ar/wip_winddoor.glb",
-        "scale": 0.192,
+        "scale": 1,
         "real_size_m": [
           2.34,
           2.09,
@@ -1336,7 +1336,7 @@
       "color": "#444444",
       "ar": {
         "glb": "/models/ar/tool_pneumatic_pick.glb",
-        "scale": 0.572,
+        "scale": 1,
         "real_size_m": [
           0.175,
           0.787,
@@ -1376,7 +1376,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_bigsaw.glb",
-        "scale": 0.506,
+        "scale": 1,
         "real_size_m": [
           0.078,
           0.038,
@@ -1421,7 +1421,7 @@
       "color": "#5a3d2e",
       "ar": {
         "glb": "/models/ar/tool_coal_tub.glb",
-        "scale": 0.193,
+        "scale": 1,
         "real_size_m": [
           2.334,
           1.167,
@@ -1461,7 +1461,7 @@
       "color": "#3a3a3a",
       "ar": {
         "glb": "/models/ar/tool_circle_support.glb",
-        "scale": 0.166,
+        "scale": 1,
         "real_size_m": [
           2.712,
           2.573,
@@ -1502,7 +1502,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_biglock.glb",
-        "scale": 0.668,
+        "scale": 1,
         "real_size_m": [
           0.248,
           0.674,
@@ -1639,7 +1639,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_dynamite.glb",
-        "scale": 1.146,
+        "scale": 1,
         "real_size_m": [
           0.026,
           0.026,
@@ -1680,7 +1680,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_hook.glb",
-        "scale": 0.895,
+        "scale": 1,
         "real_size_m": [
           0.163,
           0.014,
@@ -1734,7 +1734,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_locomotive.glb",
-        "scale": 0.155,
+        "scale": 1,
         "real_size_m": [
           2.911,
           1.402,
@@ -1816,7 +1816,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_part2.glb",
-        "scale": 0.65,
+        "scale": 1,
         "real_size_m": [
           0.693,
           0.158,
@@ -1903,7 +1903,7 @@
       ],
       "ar": {
         "glb": "/models/ar/wip_shovel.glb",
-        "scale": 0.379,
+        "scale": 1,
         "real_size_m": [
           0.252,
           0.072,
@@ -1951,7 +1951,7 @@
       },
       "ar": {
         "glb": "/models/ar/wip_transmitter.glb",
-        "scale": 1.097,
+        "scale": 1,
         "real_size_m": [
           0.095,
           0.137,

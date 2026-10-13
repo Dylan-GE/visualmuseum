@@ -1,10 +1,11 @@
-// Builds one tabletop-sized GLB per exhibit item for the AR viewer (/ar/:itemId)
+// Builds one real-size (100%) GLB per exhibit item for the AR viewer (/ar/:itemId)
 // and records its size info in public/data/museum_data.json under `ar`.
 //
 // It reuses the museum's own model pipeline (src/utils/bimModel.js: BIM Z-up ->
 // Y-up rotation, grounding, per-item colour override) so the AR model looks
 // exactly like the one in the tunnel, then centres it on the origin and scales
-// it to a size that suits a table. Only the `ar` field (and the unused legacy
+// it. The model is NOT resized: AR shows every item at its true size (a 3m
+// winch really is 3m long). Only the `ar` field (and the unused legacy
 // `usdz_url`) of each item is touched — all hand edits in museum_data.json are
 // preserved. iOS needs no USDZ: <model-viewer> generates one from the GLB.
 //
@@ -22,11 +23,8 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DATA_PATH = path.join(ROOT, 'public', 'data', 'museum_data.json');
 const OUT_DIR = path.join(ROOT, 'public', 'models', 'ar');
 
-// Longest side of the displayed model, in metres. Real size is kept when it
-// already fits; otherwise the model is scaled into this band so a 3cm detonator
-// is still visible on a table and a 3m winch still fits on one.
-const MIN_LONGEST = 0.15;
-const MAX_LONGEST = 0.45;
+// Uniform scale applied to every AR model (1 = true size).
+const AR_SCALE = 1;
 
 // GLTFExporter reads blobs with FileReader, which Node doesn't have.
 globalThis.FileReader = class {
@@ -90,8 +88,7 @@ async function buildOne(item) {
   model.position.z -= center.z;
   toStandardMaterials(model);
 
-  const longest = Math.max(realSize.x, realSize.y, realSize.z);
-  const scale = longest > 0 ? Math.min(MAX_LONGEST, Math.max(MIN_LONGEST, longest)) / longest : 1;
+  const scale = AR_SCALE;
   const root = new Group();
   root.name = item.id;
   root.scale.setScalar(scale);

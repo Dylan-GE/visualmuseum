@@ -8,9 +8,9 @@ import { RARITY_LABEL, getItemTypeLabel, getRarityColor } from '../utils/itemThe
 const hasText = (v) => typeof v === 'string' && v.trim() !== '' && !/待確認|待補/.test(v);
 
 function scaleNote(scale) {
-  if (Math.abs(scale - 1) < 0.02) return 'AR 以實物大小展示。';
-  if (scale > 1) return `實物很小，AR 已放大為 ${scale.toFixed(1)} 倍方便觀看。`;
-  return `AR 以桌面尺寸展示，約為實物的 ${Math.round(scale * 100)}%。`;
+  if (Math.abs(scale - 1) < 0.02) return 'AR 以 100% 實物大小展示，可以走動繞著它看。';
+  if (scale > 1) return `AR 已放大為實物的 ${scale.toFixed(1)} 倍。`;
+  return `AR 約為實物的 ${Math.round(scale * 100)}%。`;
 }
 
 function Message({ children }) {
@@ -86,6 +86,7 @@ export default function ARViewer({ itemId, data, error }) {
             ar
             ar-modes="webxr scene-viewer quick-look"
             ar-placement="floor"
+            ar-scale="fixed"
             camera-controls
             auto-rotate
             shadow-intensity="1"
@@ -107,7 +108,7 @@ export default function ARViewer({ itemId, data, error }) {
         </div>
 
         <p className="ar-note">
-          {scaleNote(item.ar.scale)}實物最長約 {formatRealSize(item.ar.real_size_m)}。可用兩指縮放、旋轉。
+          {scaleNote(item.ar.scale)}實物最長約 {formatRealSize(item.ar.real_size_m)}。
         </p>
 
         {sections.map(([title, text]) => (
