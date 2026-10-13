@@ -356,7 +356,7 @@
   animation-delay: -2.4s;
 }
 
-.entrance--taibai {
+.entrance--ruishin {
   right: 33vw;
   bottom: 18vh;
   --accent: var(--gold);
@@ -556,7 +556,7 @@
 }
 
 /* 由下至上：位置最低者先出現 */
-.entrances.is-ready .entrance--taibai .entrance__frame   { animation-delay: 0s; }
+.entrances.is-ready .entrance--ruishin .entrance__frame   { animation-delay: 0s; }
 .entrances.is-ready .entrance--gis .entrance__frame      { animation-delay: 0.18s; }
 .entrances.is-ready .entrance--ruisan .entrance__frame   { animation-delay: 0.36s; }
 .entrances.is-ready .entrance--shengfu .entrance__frame  { animation-delay: 0.54s; }

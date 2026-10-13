@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import './SiteModelViewer.css';
 import { BASE_HREF } from '../utils/assetUrl';
 
-// 純展示的三維模型頁（國英坑、昇福坑、太白山）：只能旋轉、縮放、平移，不能走動。
+// 純展示的三維模型頁（國英坑、昇福坑、瑞欣石礦）：只能旋轉、縮放、平移，不能走動。
 // 地形是無人機實景（terrain），坑道內部是雷射掃描點雲（tunnel）；兩者座標已對齊，可以疊合。
 const VIEWS = {
   outside: { label: '坑口外觀', terrain: 1, tunnel: false },
