@@ -30,3 +30,6 @@ dist-ssr
 
 # Over GitHub's 100MB per-file limit (275MB); not referenced by museum_data.json
 public/models/tools/06_機電設備/往復式空氣壓縮機.obj
+
+# Large site scans (rebuilt with scripts/build-site-model.mjs; upload to the server separately)
+public/models/sites/
