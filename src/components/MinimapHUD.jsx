@@ -1,29 +1,51 @@
 import { useMemo, useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 import MinimapView from './MinimapView';
 import { MAP_SIZE } from '../utils/minimapProjection';
-import { zoneGlow } from '../utils/zoneTheme';
 
-export default function MinimapHUD({ zones, items, connections, unlockedItems, currentZoneId, pose, onSelectZone }) {
-  const [collapsed, setCollapsed] = useState(true);
+// 小地圖（美編的玻璃面板外觀，內容仍是即時的坑道平面圖）。預設收合；
+// 窄螢幕由功能選單開啟成置中的浮層（mobileOpen）。
+export default function MinimapHUD({
+  zones,
+  items,
+  connections,
+  unlockedItems,
+  currentZoneId,
+  pose,
+  onSelectZone,
+  mobileOpen = false,
+  onCloseMobile,
+}) {
+  const [expanded, setExpanded] = useState(false);
+  const open = expanded || mobileOpen;
   const currentZone = zones?.find((z) => z.id === currentZoneId);
   const total = items?.length ?? 0;
   const collected = useMemo(() => (items ?? []).filter((i) => unlockedItems?.[i.id]).length, [items, unlockedItems]);
 
+  const toggle = () => {
+    if (mobileOpen) onCloseMobile?.();
+    else setExpanded((v) => !v);
+  };
+
   return (
-    <div className="minimap-hud">
-      {!collapsed && (
-        <div className="minimap-panel">
-          <div className="minimap-header">
-            <span className="minimap-title">坑道地圖</span>
-            {currentZone && (
-              <span className="minimap-here" style={{ '--zone-glow': zoneGlow(currentZone.id) }}>
-                <i />
-                {currentZone.name}
-              </span>
-            )}
-          </div>
-          <div className="minimap-map" style={{ aspectRatio: `${MAP_SIZE.width} / ${MAP_SIZE.height}` }}>
+    <section className={`minimap glass-panel${mobileOpen ? ' is-mobile-open' : ''}`} aria-label="小地圖">
+      <div className="panel-title-row">
+        <div className="panel-title-info">
+          <h2>小地圖</h2>
+          <span className="panel-tag">坑道</span>
+        </div>
+        <button
+          className="minimap-toggle"
+          type="button"
+          aria-expanded={open}
+          aria-label={open ? '收合小地圖' : '展開小地圖'}
+          onClick={toggle}
+        >
+          <span className="minimap-toggle__icon" aria-hidden="true">▲</span>
+        </button>
+      </div>
+      <div className={`minimap__body${open ? '' : ' is-collapsed'}`}>
+        <div>
+          <div className="minimap-map" style={{ aspectRatio: `${MAP_SIZE.width} / ${MAP_SIZE.height}`, marginTop: 14 }}>
             <MinimapView
               zones={zones}
               items={items}
@@ -34,7 +56,7 @@ export default function MinimapHUD({ zones, items, connections, unlockedItems, c
               onSelectZone={onSelectZone}
             />
           </div>
-          <div className="minimap-legend">
+          <div className="minimap-legend" style={{ marginTop: 10 }}>
             <span>
               <i className="minimap-diamond got" />
               已收藏 {collected}
@@ -43,14 +65,13 @@ export default function MinimapHUD({ zones, items, connections, unlockedItems, c
               <i className="minimap-diamond" />
               未收藏 {total - collected}
             </span>
-            <span className="minimap-legend-hint">點區域名稱可跳轉</span>
+          </div>
+          <div className="location-row">
+            <span aria-hidden="true">●</span>
+            當前位置：{currentZone?.name ?? '—'}
           </div>
         </div>
-      )}
-      <button className="minimap-toggle" onClick={() => setCollapsed((v) => !v)}>
-        <span>🗺️ 地圖</span>
-        {collapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-      </button>
-    </div>
+      </div>
+    </section>
   );
 }

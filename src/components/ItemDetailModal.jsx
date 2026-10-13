@@ -1,76 +1,137 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Trophy, X } from 'lucide-react';
 import ModelPreview from './ModelPreview';
 import ItemQRCode from './ItemQRCode';
-import { getItemTypeLabel, getRarityColor, RARITY_LABEL } from '../utils/itemTheme';
+import { ArIcon, CollectIcon, DragIcon, FactIcons, WheelIcon } from './MuseumIcons';
+import { getItemTypeLabel, RARITY_LABEL } from '../utils/itemTheme';
 
 const hasText = (v) => typeof v === 'string' && v.trim() !== '' && !/待確認|待補/.test(v);
+const RARITY_STARS = { Legendary: 5, Epic: 4, Rare: 3, Common: 1 };
 
-function DetailView({ item, onClose, onEnterGame }) {
-  const color = getRarityColor(item.rarity);
-  const story = item.history?.mining_story || item.history?.use_value;
+function Overlay({ onClose, children }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && onClose();
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
 
   return (
-    <div className="modal-card modal-card-split" onClick={(e) => e.stopPropagation()}>
-      <button className="modal-close" onClick={onClose}>
-        <X size={18} />
+    <div className="specimen-overlay" role="dialog" aria-modal="true">
+      <div className="specimen-overlay__backdrop" onClick={onClose} />
+      {children}
+    </div>
+  );
+}
+
+function DetailView({ item, unlocked, onClose, onEnterGame }) {
+  const story = item.history?.mining_story || item.history?.use_value;
+  const stars = RARITY_STARS[item.rarity] ?? 1;
+  const facts = [
+    ['材質', 'material', item.spec?.material],
+    ['用途', 'function', item.spec?.function],
+    ['外觀', 'appearance', item.spec?.appearance],
+    ['歷史故事', 'history', story],
+  ].filter(([, , text]) => hasText(text));
+
+  return (
+    <div className="specimen-modal glass-panel">
+      <button className="specimen-modal__close" type="button" aria-label="關閉" onClick={onClose}>
+        ✕
       </button>
 
-      <div className="modal-preview">
-        <ModelPreview item={item} />
+      <div className="specimen-photo">
+        <div className="specimen-photo__frame" aria-label={`${item.name}三維模型`}>
+          <div className="specimen-preview">
+            <ModelPreview item={item} variant="dark" />
+          </div>
+        </div>
+        <div className="specimen-photo__hints">
+          <span>
+            <DragIcon />
+            拖曳旋轉・滑鼠縮放
+          </span>
+          <span>
+            <WheelIcon />
+            滾輪縮放
+          </span>
+        </div>
       </div>
 
-      <div className="modal-info">
-        <div className="modal-header">
-          <span className="modal-rarity" style={{ color, borderColor: color }}>
-            {RARITY_LABEL[item.rarity] ?? item.rarity}・{getItemTypeLabel(item.type)}
-          </span>
-          <h2>{item.name}</h2>
+      <div className="specimen-info">
+        <div className="specimen-info__top">
+          <div className="specimen-name-block">
+            <h2 className="specimen-name">{item.name}</h2>
+            <span className="specimen-latin">{getItemTypeLabel(item.type)}</span>
+          </div>
+          <div className="specimen-rarity">
+            <span className="specimen-rarity__label">稀有度・{RARITY_LABEL[item.rarity] ?? item.rarity}</span>
+            <div className="specimen-stars" aria-label={`稀有度 ${stars} 顆星`}>
+              {[1, 2, 3, 4, 5].map((n) => (
+                <span key={n} className={`star${n <= stars ? ' filled' : ''}`} aria-hidden="true">
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        {hasText(item.spec?.material) && (
-          <section className="modal-section">
-            <h3>材質</h3>
-            <p>{item.spec.material}</p>
-          </section>
+        {facts.length > 0 && (
+          <>
+            <div className="specimen-section-label">
+              <span className="specimen-section-label__gem" aria-hidden="true">
+                ⚙
+              </span>
+              展品資訊
+            </div>
+            <dl className="specimen-facts">
+              {facts.map(([label, icon, text]) => {
+                const Icon = FactIcons[icon];
+                return (
+                  <div className="specimen-fact" key={label}>
+                    <div className="specimen-fact__icon" aria-hidden="true">
+                      <Icon />
+                    </div>
+                    <div className="specimen-fact__body">
+                      <dt>{label}</dt>
+                      <dd>{text}</dd>
+                    </div>
+                  </div>
+                );
+              })}
+            </dl>
+          </>
         )}
 
-        {hasText(item.spec?.function) && (
-          <section className="modal-section">
-            <h3>用途</h3>
-            <p>{item.spec.function}</p>
-          </section>
-        )}
-
-        {hasText(item.spec?.appearance) && (
-          <section className="modal-section">
-            <h3>外觀</h3>
-            <p>{item.spec.appearance}</p>
-          </section>
-        )}
-
-        {hasText(story) && (
-          <section className="modal-section">
-            <h3>歷史故事</h3>
-            <p className="modal-story">{story}</p>
-          </section>
-        )}
-
-        <div className="modal-footer">
+        <div className="specimen-bottom">
           {item.ar?.glb ? (
-            <div className="modal-qr">
-              <ItemQRCode itemId={item.id} />
-              <div>
-                <div className="modal-qr-title">AR 檢視</div>
-                <div className="modal-qr-caption">用手機掃描，在桌面上看 3D 模型</div>
+            <div className="specimen-ar glass-panel">
+              <div className="specimen-ar__icon" aria-hidden="true">
+                <ArIcon />
+              </div>
+              <div className="specimen-ar__qr">
+                <ItemQRCode itemId={item.id} size={60} />
+              </div>
+              <div className="specimen-ar__text">
+                <strong>AR / QR Code</strong>
+                <p>
+                  用手機掃描 QR Code
+                  <br />
+                  在自己的空間中
+                  <br />
+                  以 1:1 實物大小觀察！
+                </p>
               </div>
             </div>
           ) : (
-            <div className="modal-qr" />
+            <div />
           )}
-          <button className="modal-collection-btn" onClick={onEnterGame}>
-            <Trophy size={16} />
-            遊戲收藏
+          <button className="specimen-collect" type="button" onClick={onEnterGame}>
+            <span className="specimen-collect__icon" aria-hidden="true">
+              <CollectIcon />
+            </span>
+            <span>
+              <b>遊戲收藏</b>
+              <small>{unlocked ? '已收藏・再看看' : '答題加入圖鑑'}</small>
+            </span>
           </button>
         </div>
       </div>
@@ -109,38 +170,44 @@ function GameView({ item, unlocked, onBack, onClose, onOpenCollection, onCorrect
   };
 
   return (
-    <div className="modal-card modal-card-game" onClick={(e) => e.stopPropagation()}>
-      <button className="modal-close" onClick={onClose}>
-        <X size={18} />
+    <div className="quiz-modal glass-panel">
+      <button className="specimen-modal__close" type="button" aria-label="關閉" onClick={onClose}>
+        ✕
       </button>
 
-      <button className="modal-back-btn" onClick={onBack}>
-        <ArrowLeft size={16} />
-        返回
+      <button className="quiz-back" type="button" onClick={onBack}>
+        ‹ 返回
       </button>
 
-      <h2 className="modal-game-title">{item.name}</h2>
+      <h2 className="specimen-name quiz-title">{item.name}</h2>
+      <span className="specimen-latin">遊戲收藏</span>
 
-      {!hasQuiz && <p className="modal-game-empty">測驗尚未提供，敬請期待。</p>}
+      {!hasQuiz && <p className="quiz-empty">測驗尚未提供，敬請期待。</p>}
 
       {hasQuiz && showSuccess && (
-        <div className="modal-game-success">
-          <p className="modal-feedback-correct">✓ 答對了！已收藏「{item.name}」</p>
-          <button className="modal-collection-btn" onClick={onOpenCollection}>
-            <Trophy size={16} />
-            查看圖鑑
+        <div className="quiz-success">
+          <p className="quiz-feedback quiz-feedback--ok">✓ 答對了！已收藏「{item.name}」</p>
+          <button className="specimen-collect" type="button" onClick={onOpenCollection}>
+            <span className="specimen-collect__icon" aria-hidden="true">
+              <CollectIcon />
+            </span>
+            <span>
+              <b>查看圖鑑</b>
+              <small>看看收藏進度</small>
+            </span>
           </button>
         </div>
       )}
 
       {hasQuiz && !showSuccess && (
         <>
-          <p className="modal-quiz-question">{item.quiz.question}</p>
-          <div className="modal-quiz-options">
+          <p className="quiz-question">{item.quiz.question}</p>
+          <div className="quiz-options">
             {item.quiz.options.map((opt, i) => (
               <button
                 key={opt}
-                className={`modal-quiz-option${answerIndex === i ? (i === item.quiz.correct_index ? ' correct' : ' wrong') : ''}`}
+                type="button"
+                className={`quiz-option${answerIndex === i ? (i === item.quiz.correct_index ? ' correct' : ' wrong') : ''}`}
                 disabled={cooldown > 0}
                 onClick={() => handleAnswer(i)}
               >
@@ -149,7 +216,7 @@ function GameView({ item, unlocked, onBack, onClose, onOpenCollection, onCorrect
             ))}
           </div>
           {answerIndex !== null && !isCorrect && (
-            <p className="modal-feedback-wrong">✗ 答錯了，請於 {cooldown} 秒後再試一次</p>
+            <p className="quiz-feedback quiz-feedback--wrong">✗ 答錯了，請於 {cooldown} 秒後再試一次</p>
           )}
         </>
       )}
@@ -167,9 +234,9 @@ export default function ItemDetailModal({ item, unlocked, onClose, onOpenCollect
   if (!item) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <Overlay onClose={onClose}>
       {view === 'detail' ? (
-        <DetailView item={item} onClose={onClose} onEnterGame={() => setView('game')} />
+        <DetailView item={item} unlocked={unlocked} onClose={onClose} onEnterGame={() => setView('game')} />
       ) : (
         <GameView
           item={item}
@@ -180,6 +247,6 @@ export default function ItemDetailModal({ item, unlocked, onClose, onOpenCollect
           onCorrectAnswer={onCorrectAnswer}
         />
       )}
-    </div>
+    </Overlay>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import './portal.css';
-import loadingLogo from './assets/loading.svg';
+import loadingLogo from '../assets/loading.svg';
 import stoneBadge from './assets/stone.webp';
 import enterBg from './assets/enter-bg.webp';
 import { MINER_PATH, COAL_MINE_PATH, PROSPECTOR_PATH } from './linePaths';

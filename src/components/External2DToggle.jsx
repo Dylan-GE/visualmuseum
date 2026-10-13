@@ -1,25 +1,20 @@
 import { useState } from 'react';
-import { LayoutGrid, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import ModelPreview from './ModelPreview';
 import { getItemTypeIcon, getItemTypeLabel } from '../utils/itemTheme';
 
-export default function External2DToggle({ items = [], zoneNames = {} }) {
-  const [open, setOpen] = useState(false);
+// 2D 網頁版（機具型錄）全螢幕覆蓋層；由頂端列的「2D網頁」按鈕開啟。
+export default function External2DToggle({ open, onClose, items = [], zoneNames = {} }) {
   const [selectedId, setSelectedId] = useState(null);
   const selected = items.find((i) => i.id === selectedId) ?? items[0] ?? null;
 
   return (
     <>
-      <button className="toggle-2d-btn" onClick={() => setOpen(true)}>
-        <LayoutGrid size={16} />
-        <span>2D 網頁版</span>
-      </button>
-
       {open && (
         <div className="view2d-overlay">
           <div className="view2d-header">
             <span>臺灣虛擬礦業博物館・機具型錄核對版</span>
-            <button className="view2d-close" onClick={() => setOpen(false)}>
+            <button className="view2d-close" onClick={onClose}>
               <X size={16} />
               關閉
             </button>

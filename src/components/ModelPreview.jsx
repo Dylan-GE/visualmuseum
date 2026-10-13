@@ -35,7 +35,10 @@ function CameraFit({ bounds }) {
   return null;
 }
 
-export default function ModelPreview({ item, background = '#0586c7' }) {
+// variant 'dark'：展品視窗用的暖黑背景；預設是 2D 型錄用的藍底亮格線。
+export default function ModelPreview({ item, variant = 'light' }) {
+  const dark = variant === 'dark';
+  const background = dark ? 'radial-gradient(ellipse at 50% 62%, #2b241a 0%, #0d0b08 78%)' : '#0586c7';
   const [bounds, setBounds] = useState(null);
   const handleBounds = useCallback((size, center) => setBounds({ size, center }), []);
 
@@ -55,7 +58,7 @@ export default function ModelPreview({ item, background = '#0586c7' }) {
         <ambientLight intensity={1} />
         <directionalLight position={[3, 5, 2]} intensity={1.8} />
         <directionalLight position={[-3, 2, -3]} intensity={0.6} />
-        <gridHelper args={[50, 50, '#f1f1f1', '#e6e8ec']} />
+        <gridHelper args={dark ? [50, 50, '#6b5a35', '#2f2819'] : [50, 50, '#f1f1f1', '#e6e8ec']} />
         {hasRealModel ? (
           <ItemModel
             objUrl={item.model_url}

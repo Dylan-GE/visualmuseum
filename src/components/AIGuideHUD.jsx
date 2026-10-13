@@ -1,99 +1,162 @@
-import { useState } from 'react';
-import { MessageCircle, Send, X } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import minerAvatar from '../assets/ai/miner.webp';
+import geologistAvatar from '../assets/ai/geologist.webp';
+import goldRushAvatar from '../assets/ai/goldRush.webp';
+import { SendIcon } from './MuseumIcons';
 
+// key 要對應 server/personas.js；welcome 是第一句開場白。
 const PERSONAS = [
-  { key: 'miner', label: '老礦工', welcome: '少年仔，想問啥米坑道的代誌，儘管問老歐吉桑！' },
-  { key: 'goldRush', label: '淘金客', welcome: '嘿！想聽聽當年九份淘金的瘋狂故事嗎？' },
-  { key: 'geologist', label: '地質學家', welcome: '您好，我是這裡的地質顧問，有任何礦物相關問題都可以問我。' },
+  {
+    key: 'miner',
+    label: '老礦工',
+    role: '資深坑道領路人',
+    avatar: minerAvatar,
+    welcome: '少年仔，想問啥米坑道的代誌，儘管問老歐吉桑！',
+  },
+  {
+    key: 'geologist',
+    label: '地質學家',
+    role: '礦物與地層解說員',
+    avatar: geologistAvatar,
+    welcome: '您好，我是這裡的地質顧問，有任何礦物相關問題都可以問我。',
+  },
+  {
+    key: 'goldRush',
+    label: '淘金客',
+    role: '黃金傳說追尋者',
+    avatar: goldRushAvatar,
+    welcome: '嘿！想聽聽當年九份淘金的瘋狂故事嗎？',
+  },
 ];
 
-export default function AIGuideHUD() {
-  const [open, setOpen] = useState(false);
-  const [persona, setPersona] = useState(PERSONAS[0].key);
-  const [messages, setMessages] = useState({
-    miner: [{ from: 'bot', text: PERSONAS[0].welcome }],
-    goldRush: [{ from: 'bot', text: PERSONAS[1].welcome }],
-    geologist: [{ from: 'bot', text: PERSONAS[2].welcome }],
-  });
+const initialMessages = () =>
+  Object.fromEntries(PERSONAS.map((p) => [p.key, [{ from: 'bot', text: p.welcome }]]));
+
+// 右側滑出的 AI 助手面板（美編設計）：先選導覽夥伴，再對話。
+export default function AIGuideHUD({ open, onClose, zoneName }) {
+  const [personaKey, setPersonaKey] = useState(null); // null = 角色選擇畫面
+  const [messages, setMessages] = useState(initialMessages);
   const [draft, setDraft] = useState('');
   const [sending, setSending] = useState(false);
+  const listRef = useRef(null);
 
-  const currentMessages = messages[persona] ?? [];
+  const persona = PERSONAS.find((p) => p.key === personaKey);
+  const current = personaKey ? messages[personaKey] : [];
 
-  const appendMessage = (personaKey, message) => {
-    setMessages((prev) => ({ ...prev, [personaKey]: [...prev[personaKey], message] }));
-  };
+  // 每次打開都從角色選擇開始
+  useEffect(() => {
+    if (open) setPersonaKey(null);
+  }, [open]);
 
-  const handleSend = async () => {
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = listRef.current.scrollHeight;
+  }, [current.length, sending]);
+
+  const append = (key, message) => setMessages((prev) => ({ ...prev, [key]: [...prev[key], message] }));
+
+  const send = async (e) => {
+    e.preventDefault();
     const text = draft.trim();
-    if (!text || sending) return;
-    const history = currentMessages;
-    appendMessage(persona, { from: 'user', text });
+    if (!text || sending || !persona) return;
+    const key = persona.key;
+    const history = messages[key];
+    append(key, { from: 'user', text });
     setDraft('');
     setSending(true);
     try {
       const res = await fetch('/api/ai-guide/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ persona, message: text, history }),
+        body: JSON.stringify({ persona: key, message: text, history, context: { zone: zoneName } }),
       });
       const data = await res.json();
-      appendMessage(persona, {
-        from: 'bot',
-        text: res.ok ? data.reply : (data.error ?? '（AI 導覽暫時無法回應，請稍後再試）'),
-      });
+      append(key, { from: 'bot', text: res.ok ? data.reply : (data.error ?? '（AI 導覽暫時無法回應，請稍後再試）') });
     } catch {
-      appendMessage(persona, { from: 'bot', text: '（連線失敗，請確認網路後再試一次）' });
+      append(key, { from: 'bot', text: '（連線失敗，請確認網路後再試一次）' });
     } finally {
       setSending(false);
     }
   };
 
   return (
-    <div className="ai-guide-hud">
-      <button className="ai-guide-toggle" onClick={() => setOpen((v) => !v)}>
-        {open ? <X size={16} /> : <MessageCircle size={16} />}
-        <span>AI 地質嚮導</span>
-      </button>
-
-      {open && (
-        <div className="ai-guide-panel">
-          <div className="ai-persona-select">
-            {PERSONAS.map((p) => (
-              <button
-                key={p.key}
-                className={`ai-persona-btn${persona === p.key ? ' active' : ''}`}
-                onClick={() => setPersona(p.key)}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="ai-messages">
-            {currentMessages.map((m, i) => (
-              <div key={i} className={`ai-message ${m.from}`}>
-                {m.text}
-              </div>
-            ))}
-            {sending && <div className="ai-message bot">思考中…</div>}
-          </div>
-
-          <div className="ai-input-row">
-            <input
-              className="ai-input"
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder="輸入問題..."
-              disabled={sending}
-            />
-            <button className="ai-send-btn" onClick={handleSend} disabled={sending}>
-              <Send size={16} />
+    <aside
+      className={`ai-side-panel glass-panel${open ? ' is-open' : ''}`}
+      aria-label="AI 助手"
+      aria-hidden={!open}
+    >
+      {!persona ? (
+        <div className="ai-panel-pickerview">
+          <div className="ai-panel__header">
+            <h2>選擇導覽夥伴</h2>
+            <button className="ai-panel__close" type="button" aria-label="關閉 AI 助手" onClick={onClose}>
+              ✕
             </button>
           </div>
+          <p className="ai-picker__sub">每位角色將以不同視角帶領您探索礦坑</p>
+          <ul className="ai-character-list">
+            {PERSONAS.map((p) => (
+              <li key={p.key}>
+                <button className="ai-character-card" type="button" onClick={() => setPersonaKey(p.key)}>
+                  <img className="ai-avatar" src={p.avatar} alt={p.label} />
+                  <span className="ai-character-info">
+                    <b>{p.label}</b>
+                    <small>{p.role}</small>
+                  </span>
+                  <span className="ai-character-arrow" aria-hidden="true">›</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <div className="ai-panel-chatview">
+          <div className="ai-chat__header">
+            <button className="ai-chat__back" type="button" aria-label="返回角色選擇" onClick={() => setPersonaKey(null)}>
+              ‹
+            </button>
+            <div className="ai-chat__identity">
+              <img className="ai-avatar ai-avatar--sm" src={persona.avatar} alt="" aria-hidden="true" />
+              <div>
+                <h2 className="ai-chat__name">{persona.label}</h2>
+                <small className="ai-chat__role">{persona.role}</small>
+              </div>
+            </div>
+            <div className="ai-chat__header-actions">
+              <button className="ai-panel__close" type="button" aria-label="關閉" onClick={onClose}>
+                ✕
+              </button>
+            </div>
+          </div>
+          <div className="ai-chat__messages" ref={listRef} aria-live="polite">
+            {current.map((m, i) => (
+              <div key={i} className={`ai-msg ai-msg--${m.from}`}>
+                {m.from === 'bot' && <img className="ai-msg__avatar" src={persona.avatar} alt={persona.label} />}
+                <p className="ai-msg__bubble">{m.text}</p>
+              </div>
+            ))}
+            {sending && (
+              <div className="ai-msg ai-msg--bot ai-typing">
+                <img className="ai-msg__avatar" src={persona.avatar} alt={persona.label} />
+                <p className="ai-msg__bubble">正在思考中…</p>
+              </div>
+            )}
+          </div>
+          <form className="ai-chat__input-row" onSubmit={send} autoComplete="off">
+            <input
+              className="ai-chat__input"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder="輸入您的問題…"
+              aria-label="輸入問題"
+              maxLength={200}
+              disabled={sending}
+            />
+            <button className="ai-chat__send" type="submit" aria-label="送出" disabled={sending}>
+              <SendIcon />
+            </button>
+          </form>
         </div>
       )}
-    </div>
+    </aside>
   );
 }

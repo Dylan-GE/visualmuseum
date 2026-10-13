@@ -1,33 +1,49 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Footprints, Move, Wrench, ZoomIn } from 'lucide-react';
 
 const HINTS = [
-  { Icon: Move, text: '滑鼠拖曳：環顧四周' },
-  { Icon: ZoomIn, text: '滾輪：拉近／拉遠' },
-  { Icon: Footprints, text: '點擊地面光點：移動到下個坑道區段' },
-  { Icon: Wrench, text: '點擊坑道設備：查看詳細資料' },
+  { icon: 'mouse', title: '拖曳滑鼠', text: '環視四周' },
+  { icon: 'target', title: '點擊設備', text: '查看詳情' },
+  { icon: 'arrows', title: '點擊地面光點', text: '前往下個區段' },
+  { icon: 'wheel', title: '滾輪縮放', text: '拉近 / 拉遠' },
 ];
 
-export default function ControlHintHUD() {
-  const [collapsed, setCollapsed] = useState(false);
+// 操作提示：預設收合；窄螢幕由功能選單開啟成置中的浮層（mobileOpen）。
+export default function ControlHintHUD({ mobileOpen = false, onCloseMobile }) {
+  const [expanded, setExpanded] = useState(false);
+  const open = expanded || mobileOpen;
+
+  const toggle = () => {
+    if (mobileOpen) onCloseMobile?.();
+    else setExpanded((v) => !v);
+  };
 
   return (
-    <div className="control-hint-hud-wrap">
-      <button className="control-hint-toggle" onClick={() => setCollapsed((v) => !v)}>
-        <span>💡 操作說明</span>
-        {collapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-      </button>
-
-      {!collapsed && (
-        <div className="control-hint-hud">
-          {HINTS.map(({ Icon, text }) => (
-            <div key={text} className="control-hint-row">
-              <Icon size={14} />
-              <span>{text}</span>
-            </div>
+    <aside className={`hint-panel glass-panel${mobileOpen ? ' is-mobile-open' : ''}`} aria-label="操作提示">
+      <div className="hint-panel__header">
+        <h2>操作提示</h2>
+        <button
+          className="hint-toggle"
+          type="button"
+          aria-expanded={open}
+          aria-label={open ? '收合操作提示' : '展開操作提示'}
+          onClick={toggle}
+        >
+          <span className="hint-toggle__icon" aria-hidden="true">▲</span>
+        </button>
+      </div>
+      <div className={`hint-panel__body${open ? '' : ' is-collapsed'}`}>
+        <ul className="hint-list">
+          {HINTS.map((h) => (
+            <li key={h.icon}>
+              <span className={`line-icon ${h.icon}`} aria-hidden="true" />
+              <span>
+                <b>{h.title}</b>
+                <small>{h.text}</small>
+              </span>
+            </li>
           ))}
-        </div>
-      )}
-    </div>
+        </ul>
+      </div>
+    </aside>
   );
 }
