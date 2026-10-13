@@ -1,0 +1,901 @@
+.portal-page {
+  --bg: #2e302f;
+  --bg-2: #222423;
+  --line: rgba(255, 255, 255, .42);
+  --line-soft: rgba(255, 255, 255, .16);
+  --white: #f7f4ed;
+  --ink: #111312;
+  --gold: #d6b66a;
+  --gold-2: #f0d99a;
+  --mine: #a76f3d;
+  --teal: #6ba6a1;
+  --mx: 0px;
+  --my: 0px;
+  --ivory: #fff4d8;
+  --font-serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --font-sans: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+}
+
+.portal-page,
+.portal-page *,
+.portal-page *::before,
+.portal-page *::after {
+  box-sizing: border-box;
+}
+
+/* 入口頁自己捲動（全站預設 overflow:hidden），窄螢幕改為直向堆疊 */
+.portal-page {
+  position: fixed;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #080807;
+  font-family: var(--font-sans);
+  color: var(--ivory);
+}
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #080807;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
+}
+
+.loading-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loading-screen__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+.loading-screen__logo {
+  width: clamp(110px, 16vw, 180px);
+  height: auto;
+  animation: ls-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(215, 184, 116, 0.45));
+}
+
+@keyframes ls-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 10px rgba(215, 184, 116, 0.35));
+  }
+  50% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 0 30px rgba(240, 217, 154, 0.85));
+  }
+}
+
+.loading-screen__title {
+  font-family: var(--font-serif);
+  font-size: clamp(16px, 2.2vw, 24px);
+  letter-spacing: 0.16em;
+  color: var(--gold-2);
+  opacity: 0;
+  animation: ls-fadein 0.6s ease 0.3s forwards;
+}
+
+.loading-screen__bar {
+  width: min(300px, 70vw);
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(255, 244, 216, 0.1);
+  overflow: hidden;
+  opacity: 0;
+  animation: ls-fadein 0.4s ease 0.5s forwards;
+}
+
+.loading-screen__fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-2), var(--gold));
+  background-size: 200% 100%;
+  width: 0%;
+  animation: ls-bar 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards,
+             ls-shimmer 1.4s linear 0.6s infinite;
+}
+
+@keyframes ls-bar {
+  0%   { width: 0%; }
+  55%  { width: 72%; }
+  85%  { width: 90%; }
+  100% { width: 100%; }
+}
+
+@keyframes ls-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loading-screen__hint {
+  font-size: 13px;
+  color: rgba(255, 244, 216, 0.4);
+  letter-spacing: 0.1em;
+  opacity: 0;
+  animation: ls-fadein 0.4s ease 0.7s forwards;
+}
+
+@keyframes ls-fadein {
+  to { opacity: 1; }
+}
+
+.portal-page button,
+.portal-page a {
+  font: inherit;
+}
+
+.portal-page button {
+  border: 0;
+  cursor: pointer;
+}
+
+.scene-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  /* background-image: url("../assets/mine-tunnel-bg4.png"); */
+  background-image: url("./assets/enter-bg.webp");
+  background-size: cover;
+  background-position: center center;
+  transform: scale(var(--scene-scale, 1));
+  transition: transform 260ms ease;
+}
+
+.scene-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+
+}
+
+.scene-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 50%, transparent 28%, #000 90%);
+  opacity: 0.55;
+}
+
+.topbar {
+  position: absolute;
+  top: clamp(18px, 2.2vw, 32px);
+  left: clamp(18px, 2.2vw, 32px);
+  right: clamp(18px, 2.2vw, 32px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  color: var(--ivory);
+  text-decoration: none;
+  text-shadow: 0 4px 16px rgba(0,0,0,0.72);
+  pointer-events: auto;
+}
+
+.brand__badge {
+  width: clamp(58px, 5.4vw, 84px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246,207,132,0.16), rgba(0,0,0,0.42));
+  box-shadow: 0 0 0 8px rgba(215,184,116,0.06), inset 0 0 20px rgba(215,184,116,0.1);
+}
+
+.brand__badge svg {
+  width: 70%;
+  height: 70%;
+  fill: none;
+  stroke: var(--gold-2);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand__badge img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.brand__text strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.8vw, 35px);
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  color: var(--ivory);
+}
+
+.brand__text small {
+  display: block;
+  margin-top: 8px;
+  color: var(--gold-2);
+  font-size: clamp(14px, 1.05vw, 19px);
+  letter-spacing: 0.22em;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--ivory);
+  border-radius: 12px;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.btn--ghost {
+  padding: 10px;
+  background: rgba(13, 11, 8, 0.72);
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 34px rgba(0,0,0,0.38), inset 0 1px 0 rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+}
+
+.btn--ghost:hover {
+  transform: translateY(-2px);
+  background: rgba(37, 29, 18, 0.82);
+  border-color: rgba(240, 217, 154, 0.8);
+}
+
+.btn--return {
+  pointer-events: auto;
+  font-weight: 700;
+  font-size: clamp(16px, 1.2vw, 18px);
+  letter-spacing: 0.04em;
+}
+
+.btn__icon {
+  color: var(--gold-2);
+  font-size: 1.15em;
+}
+
+.portal {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 620px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 78% 48%, rgba(255, 255, 255, .07), transparent 28%),
+    radial-gradient(circle at 24% 44%, rgba(255, 255, 255, .08), transparent 22%),
+    linear-gradient(135deg, #353735 0%, #2d2f2e 46%, #242625 100%);
+  isolation: isolate;
+}
+
+.grain,
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.grain {
+  opacity: .14;
+  mix-blend-mode: overlay;
+  background-image:
+    linear-gradient(0deg, rgba(255,255,255,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 26px 26px, 31px 31px;
+}
+
+.vignette {
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 38%, rgba(0,0,0,.52) 72%, rgba(0,0,0,.82) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.62), transparent 22%, transparent 70%, rgba(0,0,0,.60)),
+    linear-gradient(0deg, rgba(0,0,0,.50), transparent 28%, transparent 72%, rgba(0,0,0,.45));
+}
+
+
+.entrances {
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+}
+
+.entrance {
+  --w: clamp(250px, 25vw, 440px);
+  --h: clamp(120px, 13vw, 205px);
+  position: absolute;
+  width: var(--w);
+  height: var(--h);
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 999px;
+  outline: none;
+  transform: translate3d(calc(var(--mx) * .018), calc(var(--my) * .018), 0);
+}
+
+/* 五個入口的位置（設計稿原本是三個，這裡沿用同樣的錯落排法） */
+.entrance--ruisan {
+  left: 12vw;
+  top: 34vh;
+  --accent: var(--mine);
+  animation-delay: -.2s;
+}
+
+.entrance--guoying {
+  left: 36vw;
+  top: 14vh;
+  --accent: var(--gold);
+  animation-delay: -1.4s;
+}
+
+.entrance--shengfu {
+  right: 20vw;
+  top: 20vh;
+  --accent: var(--teal);
+  animation-delay: -2.4s;
+}
+
+.entrance--taibai {
+  right: 33vw;
+  bottom: 18vh;
+  --accent: var(--gold);
+  animation-delay: -.8s;
+}
+
+.entrance--gis {
+  right: 4vw;
+  top: 46vh;
+  --accent: var(--teal);
+  animation-delay: -1.9s;
+}
+
+.entrance.is-soon {
+  cursor: default;
+}
+
+.entrance.is-soon .entrance__title {
+  color: rgba(200, 164, 76, 0.62);
+}
+
+.entrance__tag {
+  position: relative;
+  z-index: 2;
+  color: rgba(255, 244, 216, 0.5);
+  font-size: 13px;
+  letter-spacing: .24em;
+}
+
+.entrance__frame {
+  position: relative;
+  z-index: 3;
+  width: 75%;
+  height: 55%;
+  display: grid;
+  place-items: center;
+  clip-path: polygon(22% 0%, 78% 0%, 100% 50%, 78% 100%, 22% 100%, 0% 50%);
+  /* 金屬漸層邊框 */
+  background:linear-gradient(158deg, #ffedd3 0%, #f6cf93e0 50%, #feb65680 100%);
+  transition: transform .55s cubic-bezier(.2, .8, .2, 1), filter .55s;
+  opacity: 0;
+}
+
+.entrance__inner {
+  position: relative;
+  width: calc(100% - 5px);
+  height: calc(100% - 5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  overflow: hidden;
+  clip-path: polygon(22% 0%, 78% 0%, 100% 50%, 78% 100%, 22% 100%, 0% 50%);
+  /* 玻璌材質 */
+  background:
+    linear-gradient(155deg, rgba(255,235,165,0.13) 0%, rgba(180,130,40,0.05) 35%, transparent 55%),
+    rgba(7, 5, 2, 0.82);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  transition: background .55s;
+}
+
+.entrance__inner::before {
+  content: "";
+  position: absolute;
+  inset: -40% -12%;
+  opacity: 0;
+  z-index: 1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.75) 48%, transparent 66%);
+  transform: translateX(-65%) rotate(10deg);
+  transition: opacity .4s, transform .78s cubic-bezier(.2, .8, .2, 1);
+}
+
+.entrance__inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* 頂部反光 + 底部陰影模擬立體感 */
+  background:
+    linear-gradient(175deg, rgba(255,235,162,0.11) 0%, transparent 36%),
+    linear-gradient(0deg, rgba(0,0,0,0.26) 0%, transparent 32%);
+}
+
+
+.entrance__title {
+  position: relative;
+  z-index: 2;
+  color: #c8a44c;
+  font-family: "Noto Serif TC", serif;
+  font-size: 25px;
+  font-weight: 900;
+  letter-spacing: .1em;
+  white-space: nowrap;
+}
+
+.orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  border: 1px solid var(--line-soft);
+  transform: translate(-50%, -50%) rotate(-7deg);
+  pointer-events: none;
+  transition: border-color .45s, filter .45s, opacity .45s;
+}
+
+.orbit--a {
+  width: 105%;
+  height: 112%;
+  opacity: .95;
+  animation: orbitFloat 5.6s ease-in-out infinite alternate;
+}
+
+.orbit--b {
+  width: 118%;
+  height: 132%;
+  opacity: .65;
+  animation: orbitFloat 7s ease-in-out infinite alternate-reverse;
+}
+
+.orbit--c {
+  width: 132%;
+  height: 152%;
+  opacity: .44;
+  animation: orbitFloat 9s ease-in-out infinite alternate;
+}
+
+.entrance::before,
+.entrance::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 16px rgba(255,255,255,.98), 0 0 34px color-mix(in srgb, var(--accent) 44%, transparent);
+  animation: dotPulse 2.8s ease-in-out infinite;
+}
+
+.entrance::before {
+  right: 9%;
+  top: 12%;
+}
+
+.entrance::after {
+  left: 12%;
+  bottom: 18%;
+  width: 7px;
+  height: 7px;
+  animation-delay: -1s;
+}
+
+.entrance:hover .entrance__frame,
+.entrance:focus-visible .entrance__frame {
+  transform: scale(1.06);
+  filter:
+    drop-shadow(0 0 10px rgba(222, 180, 72, 0.58))
+    drop-shadow(0 0 28px rgba(200, 155, 50, 0.30));
+}
+
+.entrance:hover .entrance__inner,
+.entrance:focus-visible .entrance__inner {
+  background:
+    linear-gradient(155deg, rgba(255,238,172,0.20) 0%, rgba(180,130,40,0.09) 35%, transparent 55%),
+    rgba(12, 8, 3, 0.86);
+}
+
+.entrance:hover .entrance__inner::before,
+.entrance:focus-visible .entrance__inner::before {
+  opacity: .75;
+  transform: translateX(58%) rotate(10deg);
+}
+
+.entrance:hover .orbit,
+.entrance:focus-visible .orbit {
+  border-color: rgba(255,255,255,.58);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,.28));
+}
+
+@keyframes entranceFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(36px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.entrances.is-ready .entrance__frame {
+  animation: entranceFadeIn 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* 由下至上：位置最低者先出現 */
+.entrances.is-ready .entrance--taibai .entrance__frame   { animation-delay: 0s; }
+.entrances.is-ready .entrance--gis .entrance__frame      { animation-delay: 0.18s; }
+.entrances.is-ready .entrance--ruisan .entrance__frame   { animation-delay: 0.36s; }
+.entrances.is-ready .entrance--shengfu .entrance__frame  { animation-delay: 0.54s; }
+.entrances.is-ready .entrance--guoying .entrance__frame  { animation-delay: 0.72s; }
+
+@keyframes orbitFloat {
+  from {
+    transform: translate(-50%, -50%) rotate(-9deg) scale(1);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(7deg) scale(1.025);
+  }
+}
+
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: .45;
+    transform: scale(.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@media (max-width: 980px) {
+  .portal {
+    height: auto;
+    min-height: 100svh;
+    padding: 54px 22px 64px;
+  }
+
+  .entrances {
+    height: auto;
+    display: grid;
+    gap: 10px;
+    justify-items: center;
+    margin-top: 7rem;
+  }
+
+  .entrance,
+  .entrance[class] {
+    position: relative;
+    inset: auto;
+    --w: min(88vw, 440px);
+    --h: 156px;
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .portal {
+    padding-inline: 18px;
+  }
+
+  .entrance[class] {
+    --h: 136px;
+  }
+
+  .entrance__title {
+    font-size: 24px;
+  }
+}
+
+
+.miner-animation {
+  position: absolute;
+  left: clamp(12px, 2vw, 36px);
+  bottom: clamp(12px, 2vh, 32px);
+  width: 30vw;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.miner-animation svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.coal-mine {
+  position: absolute;
+  bottom: 2%;
+  left: 41%;
+  transform: translateX(-50%);
+  width: 15vw;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.coal-mine svg {
+  width: 100%;
+  overflow: visible;
+}
+
+.miner-wrap {
+  position: absolute;
+  right: 0;
+  bottom: clamp(12px, 2vh, 32px);
+  width: 38vw;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.miner-wrap svg {
+  width: 100%;
+  overflow: visible;
+}
+
+/* 原本線條樣式 */
+.miner-line {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.17px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.42;
+    /*
+   JS 會自動計算真正的 path 長度
+  */
+  stroke-dasharray: var(--path-length);
+  stroke-dashoffset: var(--path-length);
+}
+
+.miner-svg {
+  width: 100%;
+  overflow: visible;
+}
+
+/* --------------------------------
+   礦工採礦動作
+-------------------------------- */
+
+.miner {
+  transform-origin: 335px 330px;
+}
+
+/*
+  動作節奏：
+
+  0–20%    原位
+  20–38%   往後蓄力
+  38–53%   快速往前敲
+  53–58%   撞擊停頓
+  58–68%   反震
+  68–100%  回原位
+*/
+
+@keyframes mining {
+
+  0%,
+  12% {
+    transform:
+      translate(0, 0)
+      rotate(0deg);
+  }
+
+  /* 身體稍微向後蓄力 */
+  28% {
+    transform:
+      translate(5px, -3px)
+      rotate(3deg);
+  }
+
+  /* 準備下敲 */
+  38% {
+    transform:
+      translate(7px, -5px)
+      rotate(4deg);
+  }
+
+  /* 快速揮下 */
+  51% {
+    transform:
+      translate(-7px, 5px)
+      rotate(-4.5deg);
+  }
+
+  /* 撞擊瞬間 */
+  55% {
+    transform:
+      translate(-9px, 7px)
+      rotate(-5deg);
+  }
+
+  /* 撞擊反震 */
+  59% {
+    transform:
+      translate(-4px, 3px)
+      rotate(-2deg);
+  }
+
+  63% {
+    transform:
+      translate(-8px, 5px)
+      rotate(-4deg);
+  }
+
+  /* 回彈 */
+  72% {
+    transform:
+      translate(2px, -1px)
+      rotate(1deg);
+  }
+
+  85%,
+  100% {
+    transform:
+      translate(0, 0)
+      rotate(0deg);
+  }
+}
+
+
+/* --------------------------------
+   撞擊特效
+-------------------------------- */
+
+.impact-effect {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 1.2px;
+  stroke-linecap: round;
+  opacity: 0;
+
+  transform-origin: 185px 220px;
+}
+
+.impact-effect circle {
+  fill: #fff;
+  stroke: none;
+}
+
+@keyframes impact {
+
+  0%,
+  47% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+
+  /* 鎬頭碰到岩壁 */
+  52% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+
+  55% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+
+  62% {
+    opacity: 0.3;
+    transform: scale(1.25);
+  }
+
+  70%,
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+
+/* =========================
+   線條逐漸被畫出
+========================= */
+
+.miner-animation.is-ready .miner-line,
+.miner-wrap.is-ready .miner-line,
+.coal-mine.is-ready .miner-line {
+  animation: drawMiner 9s cubic-bezier(.45, 0, .25, 1) forwards;
+}
+
+.miner-animation.is-ready .miner {
+  animation: mining 1.8s 9s infinite;
+}
+
+.miner-animation.is-ready .impact-effect {
+  animation: impact 1.8s 9s infinite backwards;
+}
+
+.miner-wrap.is-ready {
+  animation: sway 7s 9s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+@keyframes drawMiner {
+
+  0% {
+    stroke-dashoffset: var(--path-length);
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 0.25;
+  }
+
+  30% {
+    opacity: 0.42;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.55;
+  }
+}
+
+@keyframes sway {
+  0%, 22%, 100% { transform: rotate(0deg); }
+  7%            { transform: rotate(1.5deg); }
+  15%           { transform: rotate(-0.5deg); }
+}
+
+
+/* 設定「減少動態效果」的使用者：線稿直接畫好、入口直接出現 */
+@media (prefers-reduced-motion: reduce) {
+  .miner-line {
+    stroke-dashoffset: 0;
+    opacity: 0.5;
+  }
+
+  .miner-animation .miner,
+  .miner-animation .impact-effect,
+  .miner-wrap,
+  .miner-wrap .miner-line,
+  .miner-animation .miner-line,
+  .coal-mine .miner-line,
+  .orbit,
+  .entrance::before,
+  .entrance::after,
+  .entrances .entrance__frame {
+    animation: none !important;
+  }
+
+  .entrances .entrance__frame {
+    opacity: 1;
+  }
+}

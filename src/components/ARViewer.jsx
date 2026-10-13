@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import '@google/model-viewer';
 import './ARViewer.css';
 import { BASE_HREF } from '../utils/assetUrl';
+import { RUISAN_PATH } from '../portal/sites';
+
+// 正式站的 AR 頁從博物館過來，返回博物館；AR 測試站沒有博物館，返回它自己的清單。
+const BACK_HREF = import.meta.env.VITE_AR_ONLY === 'true' ? BASE_HREF : RUISAN_PATH;
 import { formatRealSize } from '../utils/arLink';
 import { RARITY_LABEL, getItemTypeLabel, getRarityColor } from '../utils/itemTheme';
 
@@ -17,7 +21,7 @@ function Message({ children }) {
   return (
     <div className="ar-message">
       {children}
-      <a href={BASE_HREF}>回到首頁</a>
+      <a href={BACK_HREF}>回到首頁</a>
     </div>
   );
 }
@@ -68,8 +72,8 @@ export default function ARViewer({ itemId, data, error }) {
     <div className="ar-page">
       <div className="ar-inner">
         <div className="ar-topbar">
-          <a className="ar-back" href={BASE_HREF}>
-            ← 返回首頁
+          <a className="ar-back" href={BACK_HREF}>
+            ← 返回博物館
           </a>
           <span className="ar-rarity" style={{ color }}>
             {RARITY_LABEL[item.rarity] ?? item.rarity}・{getItemTypeLabel(item.type)}
