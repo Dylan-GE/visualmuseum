@@ -183,6 +183,8 @@ for (const p of primitives) {
   }
 }
 console.log(`size ${(maxX - minX).toFixed(0)} x ${(maxY - minY).toFixed(0)} x ${(maxZ - minZ).toFixed(0)} m`);
+// absolute height range in the OBJ's local frame, handy for lining up other scans
+console.log(`height ${minY.toFixed(1)} .. ${maxY.toFixed(1)} m, local x ${(minX).toFixed(1)}..${maxX.toFixed(1)}, local north ${(-maxZ).toFixed(1)}..${(-minZ).toFixed(1)}`);
 
 // textures: resize with Pillow (one jpg per atlas actually used)
 const texDir = path.join(path.dirname(outPath), `.tex-${path.basename(outPath, '.glb')}`);
@@ -276,7 +278,7 @@ const json = {
   extensionsUsed: ['KHR_materials_unlit'],
   scene: 0,
   scenes: [{ nodes: [0] }],
-  nodes: [{ mesh: 0, name: path.basename(outPath, '.glb') }],
+  nodes: [{ mesh: 0, name: path.basename(outPath, '.glb'), extras: { shift: [cx, minY, cz] } }],
   meshes: [{ primitives: meshPrimitives }],
   materials: gltfMaterials,
   textures,

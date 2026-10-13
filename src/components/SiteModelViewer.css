@@ -109,3 +109,49 @@
   color: rgba(255, 244, 216, 0.55);
   pointer-events: none;
 }
+
+.site-views {
+  position: absolute;
+  left: 50%;
+  top: max(16px, env(safe-area-inset-top));
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 14px;
+  background: rgba(13, 11, 8, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.site-view {
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: rgba(255, 244, 216, 0.7);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.site-view:hover {
+  color: #fff4d8;
+}
+
+.site-view.is-active {
+  background: rgba(214, 182, 106, 0.28);
+  color: #f0d99a;
+}
+
+/* 窄螢幕：切換鈕移到底部，避免和返回鍵、標題擠在同一列 */
+@media (max-width: 640px) {
+  .site-views {
+    top: auto;
+    bottom: max(44px, calc(env(safe-area-inset-bottom) + 30px));
+  }
+}

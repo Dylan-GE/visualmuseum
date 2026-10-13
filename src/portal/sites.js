@@ -11,8 +11,8 @@ export const RUISAN_PATH = `${BASE_HREF}ruisan`;
 
 export const SITES = [
   { id: 'ruisan', title: '瑞三本鑛', subtitle: '坑道漫遊', status: 'open', href: RUISAN_PATH },
-  { id: 'guoying', title: '國英坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}guoying`, model: assetUrl('/models/sites/guoying.glb') },
-  { id: 'shengfu', title: '昇福坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}shengfu`, model: assetUrl('/models/sites/shengfu.glb') },
+  { id: 'guoying', title: '國英坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}guoying`, model: { terrain: assetUrl('/models/sites/guoying.glb'), tunnel: assetUrl('/models/sites/guoying-tunnel.glb') } },
+  { id: 'shengfu', title: '昇福坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}shengfu`, model: { terrain: assetUrl('/models/sites/shengfu.glb'), tunnel: assetUrl('/models/sites/shengfu-tunnel.glb') } },
   { id: 'taibai', title: '太白山', subtitle: '三維模型', status: 'soon' },
   GIS_URL
     ? { id: 'gis', title: 'GIS網站', status: 'open', href: GIS_URL, external: true }
