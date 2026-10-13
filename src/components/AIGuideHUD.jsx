@@ -3,6 +3,11 @@ import minerAvatar from '../assets/ai/miner.webp';
 import geologistAvatar from '../assets/ai/geologist.webp';
 import goldRushAvatar from '../assets/ai/goldRush.webp';
 import { SendIcon } from './MuseumIcons';
+import { SUGGESTED_QUESTIONS, scriptedReply } from '../utils/scriptedGuide';
+
+// 目前還沒有串接真正的 AI，預設用預先寫好的問答（scripted）。
+// 之後有 API 金鑰、後端上線時，把 VITE_AI_MODE 設成 api 就會改呼叫 /api/ai-guide/chat。
+const USE_API = import.meta.env.VITE_AI_MODE === 'api';
 
 // key 要對應 server/personas.js；welcome 是第一句開場白。
 const PERSONAS = [
@@ -33,7 +38,8 @@ const initialMessages = () =>
   Object.fromEntries(PERSONAS.map((p) => [p.key, [{ from: 'bot', text: p.welcome }]]));
 
 // 右側滑出的 AI 助手面板（美編設計）：先選導覽夥伴，再對話。
-export default function AIGuideHUD({ open, onClose, zoneName }) {
+export default function AIGuideHUD({ open, onClose, zone, items = [], zones = [] }) {
+  const zoneName = zone?.name;
   const [personaKey, setPersonaKey] = useState(null); // null = 角色選擇畫面
   const [messages, setMessages] = useState(initialMessages);
   const [draft, setDraft] = useState('');
@@ -54,9 +60,8 @@ export default function AIGuideHUD({ open, onClose, zoneName }) {
 
   const append = (key, message) => setMessages((prev) => ({ ...prev, [key]: [...prev[key], message] }));
 
-  const send = async (e) => {
-    e.preventDefault();
-    const text = draft.trim();
+  const ask = async (rawText) => {
+    const text = rawText.trim();
     if (!text || sending || !persona) return;
     const key = persona.key;
     const history = messages[key];
@@ -64,6 +69,12 @@ export default function AIGuideHUD({ open, onClose, zoneName }) {
     setDraft('');
     setSending(true);
     try {
+      if (!USE_API) {
+        // 假裝想一下，比較像在對話
+        await new Promise((r) => setTimeout(r, 500 + Math.random() * 500));
+        append(key, { from: 'bot', text: scriptedReply(key, text, { items, zones, currentZone: zone }) });
+        return;
+      }
       const res = await fetch('/api/ai-guide/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -76,6 +87,11 @@ export default function AIGuideHUD({ open, onClose, zoneName }) {
     } finally {
       setSending(false);
     }
+  };
+
+  const send = (e) => {
+    e.preventDefault();
+    ask(draft);
   };
 
   return (
@@ -127,6 +143,7 @@ export default function AIGuideHUD({ open, onClose, zoneName }) {
               </button>
             </div>
           </div>
+          {!USE_API && <p className="ai-test-note">測試版：目前只能回答預先準備好的問題</p>}
           <div className="ai-chat__messages" ref={listRef} aria-live="polite">
             {current.map((m, i) => (
               <div key={i} className={`ai-msg ai-msg--${m.from}`}>
@@ -141,6 +158,15 @@ export default function AIGuideHUD({ open, onClose, zoneName }) {
               </div>
             )}
           </div>
+          {!USE_API && (
+            <div className="ai-suggest" aria-label="建議問題">
+              {SUGGESTED_QUESTIONS.map((q) => (
+                <button key={q} type="button" className="ai-suggest__chip" disabled={sending} onClick={() => ask(q)}>
+                  {q}
+                </button>
+              ))}
+            </div>
+          )}
           <form className="ai-chat__input-row" onSubmit={send} autoComplete="off">
             <input
               className="ai-chat__input"

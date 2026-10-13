@@ -190,7 +190,13 @@ function Museum() {
           onToggleList={() => setSceneListOpen((v) => !v)}
         />
         <Toast toast={toast} />
-        <AIGuideHUD open={aiOpen} onClose={() => setAiOpen(false)} zoneName={currentZone?.name} />
+        <AIGuideHUD
+          open={aiOpen}
+          onClose={() => setAiOpen(false)}
+          zone={currentZone}
+          items={items}
+          zones={data?.zones}
+        />
         {data && (
           <CollectionHUD
             items={data.items}
