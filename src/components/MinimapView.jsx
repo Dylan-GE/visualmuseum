@@ -14,11 +14,12 @@ const LABEL_H = 25;
 const DIAMOND = 'M0,-4.4 L4.4,0 L0,4.4 L-4.4,0 Z';
 
 // Where each zone's name sits relative to its node: below the trunk nodes
-// (centered), to the right of the nodes on the vertical hoist corridor.
+// (centered), to the left of the nodes on the vertical hoist corridor (the right
+// side is where the slope leaves for 斜坑, and its label would get covered).
 const LABEL_PLACEMENT = {
-  zone_hoist_room: 'right',
-  zone_hoist_west: 'right',
-  zone_hoist_east: 'right',
+  zone_hoist_room: 'left',
+  zone_hoist_west: 'left',
+  zone_hoist_east: 'left',
 };
 
 // CJK glyphs are ~1em wide, Latin/digits ~0.58em — close enough to size a pill
@@ -42,9 +43,10 @@ function ZoneNode({ zone, active, onSelect }) {
   const [x, y] = zone.point;
   const glow = active ? TEAL : GOLD;
   const w = labelWidth(zone.name);
-  const right = LABEL_PLACEMENT[zone.id] === 'right';
-  const pillX = right ? x + 14 : x - w / 2;
-  const pillY = right ? y - LABEL_H / 2 : y + 15;
+  const side = LABEL_PLACEMENT[zone.id];
+  const beside = side === 'left' || side === 'right';
+  const pillX = side === 'right' ? x + 14 : side === 'left' ? x - 14 - w : x - w / 2;
+  const pillY = beside ? y - LABEL_H / 2 : y + 15;
 
   return (
     <g
