@@ -9,7 +9,7 @@ export default function LoadingScreen({ done, progress, title = '礦業虛擬博
 
   useEffect(() => {
     if (!done) return undefined;
-    const t = setTimeout(() => setGone(true), 800); // 配合 0.7s 的淡出
+    const t = setTimeout(() => setGone(true), 550); // 配合 0.45s 的淡出
     return () => clearTimeout(t);
   }, [done]);
 

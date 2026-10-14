@@ -50,6 +50,18 @@ const STEP_DISTANCE = 5;
 // A junction zone (more than one way on, e.g. 斜坑) only counts as "here" within this
 // many metres of its node; beyond that the walker is in the corridor it is heading into.
 const HUB_RADIUS = 8;
+// A step that would stop within this many metres of either end of an edge goes all the
+// way instead. Otherwise you can end up ~1 m short of a dead end, facing the wall, with
+// the arrival arrow almost under your feet and no automatic turn-around.
+const END_SNAP = 2.5;
+const snapT = (t, edgeLen) => {
+  if ((1 - t) * edgeLen < END_SNAP) return 1;
+  if (t * edgeLen < END_SNAP) return 0;
+  return t;
+};
+// A corridor between two junction zones takes its name from one of them: the slope
+// between 斜坑 and 天車間 is still 斜坑 until you are near the hoist room itself.
+const CORRIDOR_OWNER = { 'zone_hoist_room|zone_incline': 'zone_incline' };
 const STEP_DURATION = 0.6;
 const HEADING_REPORT_INTERVAL = 0.1;
 const DEFAULT_ROOM_SIZE = { x: 20, z: 20 };
@@ -449,7 +461,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
       // step forward/back along the same corridor.
       const curPos = pathLerp(from.coordinates, to.coordinates, walk.t, via, walk.fromId);
       if (walk.t < 1) {
-        const newT = Math.min(1, walk.t + stepT);
+        const newT = snapT(Math.min(1, walk.t + stepT), edgeLen);
         const pos = pathLerp(from.coordinates, to.coordinates, newT, via, walk.fromId);
         spots.push({
           key: 'forward',
@@ -460,7 +472,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         });
       }
       if (walk.t > 0) {
-        const newT = Math.max(0, walk.t - stepT);
+        const newT = snapT(Math.max(0, walk.t - stepT), edgeLen);
         const pos = pathLerp(from.coordinates, to.coordinates, newT, via, walk.fromId);
         spots.push({
           key: 'backward',
@@ -490,7 +502,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
       .map((neighbor) => {
         const via = getVia(currentZoneId, neighbor.id);
         const edgeLen = pathLength(current.coordinates, neighbor.coordinates, via, currentZoneId);
-        const newT = Math.min(1, STEP_DISTANCE / edgeLen);
+        const newT = snapT(Math.min(1, STEP_DISTANCE / edgeLen), edgeLen);
         const pos = pathLerp(current.coordinates, neighbor.coordinates, newT, via, currentZoneId);
         return {
           key: neighbor.id,
@@ -519,6 +531,12 @@ const SceneCanvas = forwardRef(function SceneCanvas(
     const toHub = (adjacency[to.id]?.length ?? 0) > 1;
     if (fromHub && !toHub) return dFrom < HUB_RADIUS ? from.id : to.id;
     if (toHub && !fromHub) return dTo < HUB_RADIUS ? to.id : from.id;
+    const owner = CORRIDOR_OWNER[[from.id, to.id].sort().join('|')];
+    if (owner) {
+      const other = owner === from.id ? to : from;
+      const dOther = owner === from.id ? dTo : dFrom;
+      return dOther < HUB_RADIUS ? other.id : owner;
+    }
     return dFrom <= dTo ? from.id : to.id;
   }, [walk, currentZoneId, zoneById, adjacency, getVia]);
 

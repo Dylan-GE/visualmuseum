@@ -8,7 +8,22 @@ import { SITES, HOME_2D_URL } from './sites';
 import { BASE_HREF } from '../utils/assetUrl';
 
 // 載入畫面至少顯示這麼久，線稿動畫才不會在還看不到時就跑完。
-const MIN_LOADING_MS = 2800;
+// 第一次進來停久一點讓開場動畫看得到；同一個分頁之後再回到入口（例如從博物館返回）就很快放行。
+const FIRST_VISIT_MS = 1600;
+const REVISIT_MS = 500;
+
+// 整個頁面載入只算一次（開發模式的 StrictMode 會讓 effect 跑兩次，不能放進 effect 裡）
+function minLoadingMs() {
+  try {
+    const seen = window.sessionStorage.getItem('portal_seen') === '1';
+    window.sessionStorage.setItem('portal_seen', '1');
+    return seen ? REVISIT_MS : FIRST_VISIT_MS;
+  } catch {
+    return FIRST_VISIT_MS;
+  }
+}
+
+const MIN_MS = minLoadingMs();
 
 function Entrance({ site }) {
   const open = site.status === 'open';
@@ -72,7 +87,7 @@ export default function Portal() {
     }
   }, []);
 
-  // 背景圖載入完成且至少過了 MIN_LOADING_MS 才收起載入畫面。
+  // 背景圖載入完成且至少過了最短停留時間才收起載入畫面。
   useEffect(() => {
     let cancelled = false;
     const start = Date.now();
@@ -80,7 +95,7 @@ export default function Portal() {
     img.src = enterBg;
     const ready = img.decode ? img.decode().catch(() => {}) : Promise.resolve();
     ready.then(() => {
-      const wait = Math.max(0, MIN_LOADING_MS - (Date.now() - start));
+      const wait = Math.max(0, MIN_MS - (Date.now() - start));
       setTimeout(() => !cancelled && setLoaded(true), wait);
     });
     return () => {
@@ -91,7 +106,7 @@ export default function Portal() {
   // 淡出動畫結束後移除載入畫面。transitionend 萬一沒觸發也有保底計時。
   useEffect(() => {
     if (!loaded) return;
-    const t = setTimeout(() => setGone(true), 800);
+    const t = setTimeout(() => setGone(true), 550);
     return () => clearTimeout(t);
   }, [loaded]);
 
