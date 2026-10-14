@@ -143,7 +143,6 @@ export default function AIGuideHUD({ open, onClose, zone, items = [], zones = []
               </button>
             </div>
           </div>
-          {!USE_API && <p className="ai-test-note">測試版：目前只能回答預先準備好的問題</p>}
           <div className="ai-chat__messages" ref={listRef} aria-live="polite">
             {current.map((m, i) => (
               <div key={i} className={`ai-msg ai-msg--${m.from}`}>

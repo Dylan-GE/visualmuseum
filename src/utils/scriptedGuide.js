@@ -183,5 +183,5 @@ export function scriptedReply(persona, rawText, context = {}) {
     return wrapEnd(persona, '歡迎來到瑞三本鑛！想看什麼，儘管問我。', text);
   }
 
-  return `${v.unknown}目前是測試版，只能回答預先準備好的問題，可以試試下面的建議問題。`;
+  return `${v.unknown}可以試試下面的建議問題。`;
 }

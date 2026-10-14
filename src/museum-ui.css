@@ -2541,17 +2541,6 @@
   cursor: not-allowed;
 }
 
-.mu .ai-test-note {
-  margin: 0;
-  padding: 6px 14px;
-  text-align: center;
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  color: rgba(255, 244, 216, 0.5);
-  background: rgba(215, 184, 116, 0.07);
-  border-bottom: 1px solid var(--soft-line);
-  flex-shrink: 0;
-}
 
 /* ───────── 2D 展品列表（與 3D 展間同一套主視覺） ───────── */
 .mu .view2d-overlay {
@@ -2939,9 +2928,6 @@
     flex: none;
   }
 
-  .mu .ai-test-note {
-    padding: 3px 14px;
-  }
 
   /* 視窗類：留出可捲動的空間、縮小 3D 預覽的最小高度 */
   .mu .specimen-overlay,
