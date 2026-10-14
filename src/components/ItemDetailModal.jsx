@@ -47,7 +47,7 @@ function DetailView({ item, unlocked, onClose, onEnterGame }) {
         <div className="specimen-photo__hints">
           <span>
             <DragIcon />
-            拖曳旋轉・滑鼠縮放
+            拖曳旋轉
           </span>
           <span>
             <WheelIcon />

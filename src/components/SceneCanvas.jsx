@@ -259,14 +259,16 @@ function CameraController({ controlsRef, flightRef }) {
 // Reports the camera's world X/Z and heading (atan2(dirZ, dirX)) for the
 // minimap, at most every HEADING_REPORT_INTERVAL and only when it moved or
 // turned enough to matter, so standing still doesn't re-render the app.
+// (Dev only: also exposes the live R3F state as window.__r3f for scratch/item_clash_check.js.)
 function PoseReporter({ onPoseChange }) {
   const { camera } = useThree();
   const lastReport = useRef(0);
   const lastPose = useRef(null);
   const dirRef = useRef(new Vector3());
 
-  useFrame(({ clock }) => {
-    const now = clock.getElapsedTime();
+  useFrame((state) => {
+    if (import.meta.env.DEV) window.__r3f = state;
+    const now = state.clock.getElapsedTime();
     if (now - lastReport.current < HEADING_REPORT_INTERVAL) return;
     lastReport.current = now;
     camera.getWorldDirection(dirRef.current);
