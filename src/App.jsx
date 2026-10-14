@@ -27,7 +27,7 @@ const ARViewer = lazy(() => import('./components/ARViewer'));
 // 載入畫面至少停留的時間，以及「沒有新資源在載入」要持續多久才算場景準備好。
 // 場景的模型是一個個陸續載入、陸續冒出來的，不擋住的話訪客會看到零碎的畫面。
 const MIN_LOADING_MS = 1500;
-const SETTLE_MS = 900;
+const SETTLE_MS = 1500;
 const GIVE_UP_MS = 30000;
 
 function useSceneReady(dataLoaded) {
