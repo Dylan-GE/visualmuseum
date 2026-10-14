@@ -1,0 +1,1 @@
+var e=`/visualmuseum/`.replace(/\/+$/,``);function t(t){return typeof t!=`string`||!t.startsWith(`/`)||e&&t.startsWith(`${e}/`)?t:e+t}function n(t){return e&&t.startsWith(e)?t.slice(e.length)||`/`:t}var r=`${e}/`;export{t as n,n as r,r as t};

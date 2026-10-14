@@ -1,0 +1,1974 @@
+{
+  "_note": "2026-08-12 重新設計：拿掉手動裁切、不規則的路口素材（SlopeB 裁出來的 TunnelJunction），換成掃描資料裡真正互相密合、已驗證座標重疊的 4 塊真實模組（TunnelB/TunnelC/TunnelD/SlopeA），組成一個真正的三岔路口（斜坑 zone_incline），連接主坑1(TunnelB)、主坑2(TunnelC)、天車間(經SlopeA)。右片/左片先擱置（見 tunnelLayout.js 的 BCD_PIECE_NAMES 註解），原本掛在這兩個 zone 底下的物件已併入其他 4 個展區。3D 幾何由 TunnelZoneScene.jsx 的 buildBcdTopology()（見 tunnelLayout.js）渲染，跟這份資料共用同一套座標，不會跑掉。",
+  "route": [
+    "zone_main1",
+    "zone_incline",
+    "zone_main2",
+    "zone_hoist_room"
+  ],
+  "connections": [
+    [
+      "zone_main1",
+      "zone_incline",
+      [
+        {
+          "x": 0.25,
+          "y": -1.14,
+          "z": 36
+        },
+        {
+          "x": 0.12,
+          "y": -1.15,
+          "z": 24
+        },
+        {
+          "x": 0.1,
+          "y": -1.17,
+          "z": 10
+        }
+      ]
+    ],
+    [
+      "zone_main2",
+      "zone_incline",
+      [
+        {
+          "x": 0.17,
+          "y": -1.3,
+          "z": -45
+        },
+        {
+          "x": 0.12,
+          "y": -1.25,
+          "z": -30
+        },
+        {
+          "x": 0.11,
+          "y": -1.2,
+          "z": -12
+        }
+      ]
+    ],
+    [
+      "zone_incline",
+      "zone_hoist_room",
+      [
+        {
+          "x": -5.79,
+          "y": -1.18,
+          "z": -4.2
+        },
+        {
+          "x": -8.88,
+          "y": -1.18,
+          "z": -3.9
+        },
+        {
+          "x": -17.14,
+          "y": -1.17,
+          "z": 0.74
+        },
+        {
+          "x": -20.97,
+          "y": -1.17,
+          "z": 2.65
+        },
+        {
+          "x": -24.32,
+          "y": -1.17,
+          "z": 4.05
+        },
+        {
+          "x": -27.78,
+          "y": -1.17,
+          "z": 5.65
+        },
+        {
+          "x": -29.25,
+          "y": -1.17,
+          "z": 7
+        },
+        {
+          "x": -30.1,
+          "y": -1.17,
+          "z": 8.7
+        },
+        {
+          "x": -29.9,
+          "y": -1.17,
+          "z": 10.3
+        }
+      ]
+    ],
+    [
+      "zone_hoist_room",
+      "zone_hoist_west"
+    ],
+    [
+      "zone_hoist_room",
+      "zone_hoist_east"
+    ]
+  ],
+  "zones": [
+    {
+      "id": "zone_main1",
+      "name": "主坑1",
+      "size": {
+        "x": 4,
+        "z": 4
+      },
+      "style": "主坑道，紅磚拱門",
+      "coordinates": {
+        "x": 0.22,
+        "y": -1.14,
+        "z": 45.5
+      }
+    },
+    {
+      "id": "zone_incline",
+      "name": "斜坑",
+      "size": {
+        "x": 5,
+        "z": 5
+      },
+      "style": "三岔路口，真實坑道彎折段",
+      "coordinates": {
+        "x": -0.04,
+        "y": -1.18,
+        "z": -2.75
+      },
+      "exploreSpots": [
+        {
+          "x": 0.86,
+          "y": -1.18,
+          "z": 1.24
+        },
+        {
+          "x": -0.95,
+          "y": -1.18,
+          "z": -6.75
+        }
+      ]
+    },
+    {
+      "id": "zone_main2",
+      "name": "主坑2",
+      "size": {
+        "x": 4,
+        "z": 4
+      },
+      "style": "主坑道另一側",
+      "coordinates": {
+        "x": 0.22,
+        "y": -1.32,
+        "z": -50
+      }
+    },
+    {
+      "id": "zone_hoist_room",
+      "name": "天車間",
+      "size": {
+        "x": 4,
+        "z": 4
+      },
+      "style": "天車間（SlopeA 坑道交會處，可往東西兩端）",
+      "coordinates": {
+        "x": -30.2,
+        "y": -1.16,
+        "z": 12.7
+      }
+    },
+    {
+      "id": "zone_hoist_west",
+      "name": "天車間西端",
+      "size": {
+        "x": 4,
+        "z": 4
+      },
+      "style": "SlopeA 西側坑口",
+      "coordinates": {
+        "x": -34.7,
+        "y": -1.25,
+        "z": 12.7
+      }
+    },
+    {
+      "id": "zone_hoist_east",
+      "name": "天車間東端",
+      "size": {
+        "x": 4,
+        "z": 4
+      },
+      "style": "SlopeA 東側盡頭",
+      "coordinates": {
+        "x": -4.6,
+        "y": -1.14,
+        "z": 12.6
+      }
+    }
+  ],
+  "items": [
+    {
+      "id": "tool_single_support",
+      "type": "support",
+      "name": "單柱支撐",
+      "rarity": "Common",
+      "zone_id": "zone_main1",
+      "position": [
+        0.616,
+        -0.08,
+        35.185
+      ],
+      "model_url": "/models/tools/99_temp/SingleSupport.obj",
+      "spec": {
+        "function": "以單根立柱搭配頂板支撐坑道局部區域，構造簡單、施作快速",
+        "era": "各時期坑道皆常見的基本支撐形式",
+        "material": "原木或鋼管立柱"
+      },
+      "history": {
+        "use_value": "是坑道支撐系統中最基本的形式，多用於坑況較穩定的區段，施工快速、成本較低。",
+        "mining_story": "老礦工說，單柱支撐雖然簡單，但柱子擺放的角度跟間距全靠經驗判斷，差之毫釐可能就撐不住頂板。"
+      },
+      "quiz": {
+        "question": "單柱支撐相較其他支撐方式的特色是？",
+        "options": [
+          "構造簡單、施作快速",
+          "承重能力最強"
+        ],
+        "correct_index": 0
+      },
+      "color": "#4a3c2e",
+      "ar": {
+        "glb": "/models/ar/tool_single_support.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.245,
+          2.137,
+          0.304
+        ]
+      },
+      "scale": 0.9
+    },
+    {
+      "id": "wip_detonator",
+      "type": "tool",
+      "name": "雷管",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -15.5,
+        -0.08,
+        13.67
+      ],
+      "model_url": "/models/tools/99_temp/Detonator.obj",
+      "spec": {
+        "function": "接於炸藥上，以電氣方式引爆炸藥",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "Detonator.obj",
+      "color": "#c0c0c0",
+      "history": {
+        "mining_story": "坑內爆破規定以電氣方式引爆，電雷管裝入炸藥之前，必須由安全人員用導通試驗器檢查線路是否通電，不通的雷管不得使用；放炮前還要先量測可燃氣體、處理煤塵，確認安全後才能引爆，足見雷管在高瓦斯、多煤塵的煤礦裡是需要嚴格管制的危險品。",
+        "use_value": "雷管是啟動炸藥爆破的起爆元件，讓掘進、開鑿坑道的鑽孔爆破得以進行，但也因為一旦誤爆後果嚴重，才有一套檢測與專人管理的安全流程。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=112000000216&indexCode=MOCCOLLECTIONS (電雷管引發導通試驗器｜國家文化記憶庫，新北市立黃金博物館典藏)",
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則，1992年廢止)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616017 (煤礦坑內作業（一）礦工的工種｜國家文化記憶庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "雷管在爆破作業中扮演什麼角色？",
+        "options": [
+          "接在炸藥上，負責引爆炸藥",
+          "固定坑道頂板的支撐",
+          "排除坑內的有害氣體"
+        ],
+        "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_detonator.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.029,
+          0.006,
+          0.209
+        ]
+      },
+      "scale": 3
+    },
+    {
+      "id": "wip_part3",
+      "type": "support",
+      "name": "安全插銷",
+      "rarity": "Common",
+      "zone_id": "zone_main1",
+      "position": [
+        0.13,
+        -0.07,
+        27.2
+      ],
+      "model_url": "/models/tools/99_temp/part3.obj",
+      "spec": {
+        "function": "插入固定支撐構件，防止鬆脫滑動",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "細長的棕褐色桿件，上段有環繞糾結的結構。"
+      },
+      "_source_file": "part3.obj",
+      "color": "#5a4a3a",
+      "history": {},
+      "quiz": {
+        "question": "安全插銷的外形最接近哪一種？",
+        "options": [
+          "細長桿件，上段有環繞糾結的結構",
+          "寬大的長方形箱體",
+          "六角形的厚實輪盤"
+        ],
+        "correct_index": 0,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_part3.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.124,
+          0.582,
+          0.101
+        ]
+      }
+    },
+    {
+      "id": "wip_save_foothold",
+      "type": "support",
+      "name": "安全支撐",
+      "rarity": "Common",
+      "zone_id": "zone_main1",
+      "position": [
+        -0.78,
+        -0.04,
+        18.21
+      ],
+      "model_url": "/models/tools/99_temp/save_foothold.obj",
+      "spec": {
+        "function": "短型木楔，輔助局部支撐與定位",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "save_foothold.obj",
+      "color": "#6b5335",
+      "history": {
+        "mining_story": "臺灣煤礦的坑道支撐早期以相思木裁切加工，由改修工架設在坑道頂部與兩側，用來承受上方與側向岩盤的壓力、保護坑道結構；後來因相思木不易取得，才改用鋼樑與水泥柱。",
+        "use_value": "坑內支撐是防止落磐、維持坑道通行與作業空間的基本安全設施，木楔與襯木則用來把支撐與岩壁間的空隙填緊以免鬆動。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=616026&indexCode=Culture_Invisible (煤礦坑內作業（三）保命的坑木｜國家文化記憶庫)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=315592 (侯硐礦場-支撐｜國家文化記憶庫)",
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則：支架頂部與兩側應以襯木填緊)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "安全支撐是一種什麼樣的構件？",
+        "options": [
+          "用電力驅動的運煤機械",
+          "專門存放炸藥的木箱",
+          "短型木楔，輔助局部支撐與定位"
+        ],
+        "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_save_foothold.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.143,
+          0.362,
+          0.211
+        ]
+      }
+    },
+    {
+      "id": "wip_three_sup",
+      "type": "support",
+      "name": "三節支撐",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.18,
+        -0.18,
+        -14
+      ],
+      "rotation": [
+        0,
+        1.57,
+        0
+      ],
+      "model_url": "/models/tools/99_temp/three_sup.obj",
+      "spec": {
+        "function": "由頂樑與左右兩柱組成ㄇ字形框架的三節式支撐，用於坑道支撐",
+        "era": "待確認",
+        "material": "相思木（原木，早期）；後期改用鋼樑與水泥柱"
+      },
+      "_source_file": "three_sup.obj",
+      "color": "#5a4635",
+      "history": {
+        "mining_story": "三節支撐是煤礦坑道最典型的支撐形式：由改修工把相思木加工後，在坑道頂部與左右兩側各架一節，組成ㄇ字形的框架，用來扛住上方與兩側的岩層壓力。相思木質地緻密堅硬，在承壓將斷之前會發出連續的劈啪聲，有經驗的礦工聽到就知道要趕快撤離，因此被稱為保命的坑木。",
+        "use_value": "三節支撐是維持坑道不坍塌的基本結構，讓採煤與運煤能在坑內持續進行，同時兼具以聲響預警的安全作用。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=315592 (侯硐礦場-支撐｜國家文化記憶庫)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=616026&indexCode=Culture_Invisible (煤礦坑內作業（三）保命的坑木｜國家文化記憶庫)",
+          "https://www.tmaroc.org.tw/2023article46/ (【博物之島專文】為己、為礦、為家人！重啟猴硐的礦工記憶)"
+        ],
+        "confidence": "high"
+      },
+      "quiz": {
+        "question": "三節支撐的作用是？",
+        "options": [
+          "在坑道頂部與兩側架設框架，撐住岩層壓力",
+          "引導坑內風流方向",
+          "把煤炭沿槽道滑送出去"
+        ],
+        "correct_index": 0
+      },
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_three_sup.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.2,
+          2.281,
+          3.242
+        ]
+      }
+    },
+    {
+      "id": "wip_zhicheng_guding_qi",
+      "type": "support",
+      "name": "支撐固定器",
+      "rarity": "Common",
+      "zone_id": "zone_main1",
+      "position": [
+        -0.25,
+        -0.04,
+        0.24
+      ],
+      "model_url": "/models/tools/99_temp/支撐固定器.obj",
+      "spec": {
+        "function": "固定支撐構件位置的細長零件",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "非常細長的直桿狀零件，外形單純。"
+      },
+      "_source_file": "支撐固定器.obj",
+      "color": "#4a4a4a",
+      "history": {},
+      "quiz": {
+        "question": "支撐固定器的外形是？",
+        "options": [
+          "寬大的長方形木箱",
+          "非常細長的直桿狀",
+          "多環相連的鍊條"
+        ],
+        "correct_index": 1,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_zhicheng_guding_qi.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.113,
+          0.019,
+          2.052
+        ]
+      }
+    },
+    {
+      "id": "wip_box_2",
+      "type": "tool",
+      "name": "炸藥箱",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        -0.416,
+        -0.07,
+        -45.843
+      ],
+      "model_url": "/models/tools/99_temp/box_2.obj",
+      "spec": {
+        "function": "存放炸藥的木箱",
+        "era": "待確認",
+        "material": "木（法規規定用木造等牢固的絕緣容器）"
+      },
+      "_source_file": "box_2.obj",
+      "color": "#8b6b47",
+      "history": {
+        "mining_story": "坑內放炮用的炸藥與雷管必須分開裝在標示明確的木箱中，箱內不得放其他物品，放置處要離工作面保持適當距離，並由專人專車攜帶，每天收工後剩餘或不良的爆炸物必須退回火藥庫保管，不能留在坑內。",
+        "use_value": "炸藥箱把爆炸物與雷管隔離、限制在受管制的範圍內運送與暫存，是防止誤爆與意外的關鍵管理設施。",
+        "sources": [
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則，1992年廢止)",
+          "https://law.moea.gov.tw/LawContent.aspx?id=FL010988 (礦場安全法施行細則；僅見搜尋摘要，WebFetch 回 403 未能開啟全文)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "坑內的炸藥應該如何存放？",
+        "options": [
+          "與雷管混放在同一個箱子",
+          "直接散放在工作面旁",
+          "裝在標示明確的木箱，與雷管分開"
+        ],
+        "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_box_2.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.31,
+          0.12,
+          0.337
+        ]
+      }
+    },
+    {
+      "id": "wip_chopper",
+      "type": "tool",
+      "name": "改修斧頭",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.85,
+        -0.06,
+        -45.5
+      ],
+      "model_url": "/models/tools/99_temp/chopper.obj",
+      "spec": {
+        "function": "坑道改修工程使用的斧頭",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頭部一側為方塊狀錘面、另一側為尖窄的鑿刃。"
+      },
+      "_source_file": "chopper.obj",
+      "color": "#3a3a3a",
+      "quiz": {
+        "question": "改修斧頭的頭部有什麼特徵？",
+        "options": [
+          "兩側都是圓形的環",
+          "只有單一的扁平鏟面",
+          "一側為方塊錘面，另一側為尖窄的鑿刃"
+        ],
+        "correct_index": 2,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_chopper.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.269,
+          0.026,
+          0.409
+        ]
+      }
+    },
+    {
+      "id": "wip_chopper_2",
+      "type": "tool",
+      "name": "炭嘴斧頭",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        -0.778,
+        -0.02,
+        -41.061
+      ],
+      "model_url": "/models/tools/99_temp/chopper_2.obj",
+      "spec": {
+        "function": "採煤面使用的斧頭",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頭部一側為方塊狀錘面、另一側為較寬的扁平斧刃。"
+      },
+      "_source_file": "chopper_2.obj",
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "炭嘴斧頭的頭部有什麼特徵？",
+        "options": [
+          "一側為方塊錘面，另一側為較寬的扁平斧刃",
+          "整個頭部呈圓球狀",
+          "沒有長柄，只有一個鐵環"
+        ],
+        "correct_index": 0,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_chopper_2.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.198,
+          0.028,
+          0.332
+        ]
+      }
+    },
+    {
+      "id": "wip_conveyortrough",
+      "type": "transport",
+      "name": "輸送槽",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.62,
+        -0.06,
+        -36.66
+      ],
+      "rotation": [
+        0,
+        1.57,
+        0
+      ],
+      "model_url": "/models/tools/99_temp/conveyortrough.obj",
+      "spec": {
+        "function": "煤炭沿槽狀溝道滑送",
+        "era": "1980年代（民國70年代）瑞三鑛業復興坑採煤面照片可證；使用時期更早者未查得",
+        "material": "待確認"
+      },
+      "_source_file": "conveyortrough.obj",
+      "color": "#4a4a4a",
+      "history": {
+        "mining_story": "在採煤面上，礦工把剛採下的煤塊集中、撥入輸送槽，再由輸送系統送往後方裝入礦車。國家文化記憶庫收錄的瑞三鑛業復興坑採煤面照片即記錄此作業姿態。",
+        "use_value": "輸送槽讓採煤面的煤炭得以集中並沿槽道往外送，減少全靠人力搬運的負擔。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=220821 (復興煤礦採煤面煤炭集中｜國家文化記憶庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "輸送槽的作用是？",
+        "options": [
+          "把礦工送下坑道",
+          "排放坑內積水",
+          "讓煤炭沿槽狀溝道滑送"
+        ],
+        "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_conveyortrough.glb",
+        "scale": 1,
+        "real_size_m": [
+          1.675,
+          0.124,
+          0.248
+        ]
+      }
+    },
+    {
+      "id": "wip_pickaxe",
+      "type": "tool",
+      "name": "炭掘仔",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        -0.873,
+        -0.1,
+        -32.189
+      ],
+      "model_url": "/models/tools/99_temp/pickaxe.obj",
+      "spec": {
+        "function": "人工手持鑿挖煤層工具",
+        "era": "日治時期至戰後，約至民國70年代（1980年代）瑞三一帶仍有此器物紀錄",
+        "material": "木柄搭配金屬（鐵／鋼）鎬頭（指雙頭十字鎬，即雙頭掘仔）"
+      },
+      "_source_file": "pickaxe.obj",
+      "color": "#3a3a3a",
+      "history": {
+        "mining_story": "在氣動鎬煤機普及之前，礦工採煤主要靠雙頭十字鎬（台語稱掘仔）。礦工可在打鐵店或礦工用具店購得，並依身高、力氣與工作習慣挑選約2.5至3.5台斤的重量，還會自行鍛鍊、磨尖鎬頭以提高效率。",
+        "use_value": "它是氣動鎬煤機出現前最重要的人力採煤工具，礦工下坑必備，象徵挖礦工作本身。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=216402&indexCode=Culture_Object (雙頭十字鎬，國家文化記憶庫，新北市政府文化局；瑞三本坑旁展示室)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=600059&indexCode=Culture_Object (雙頭十字鎬-1，山佳煤礦文物館)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=600049 (十字鎬，三峽利豐煤礦，國家文化記憶庫)"
+        ],
+        "confidence": "medium（以雙頭掘仔推論）"
+      },
+      "quiz": {
+        "question": "炭掘仔是什麼樣的工具？",
+        "options": [
+          "人工手持鑿挖煤層的工具",
+          "引爆炸藥的起爆器",
+          "運煤的台車"
+        ],
+        "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_pickaxe.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.365,
+          0.031,
+          0.77
+        ]
+      }
+    },
+    {
+      "id": "wip_pound",
+      "type": "tool",
+      "name": "鑿桿",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.95,
+        -0.08,
+        -27.83
+      ],
+      "model_url": "/models/tools/99_temp/pound.obj",
+      "spec": {
+        "function": "搭配鑿岩機使用的長鋼桿",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "pound.obj",
+      "color": "#4a4a4a",
+      "history": {
+        "mining_story": "掘進工以十字鎬、鑽桿甚至炸藥在岩層中開闢坑道；鑽鑿孔洞後裝填炸藥爆破，是開路與取煤的前置步驟。",
+        "use_value": "鑽鑿岩壁孔洞以裝藥爆破，是掘進（開闢坑道）工序的關鍵工具。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616017 (煤礦坑內作業（一）礦工的工種，苗栗縣政府文化觀光局建檔)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616018 (煤礦坑內作業（二）礦工的裝備與使用機具)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "鑿桿通常搭配什麼設備使用？",
+        "options": [
+          "輸送槽",
+          "鑿岩機",
+          "局部風扇"
+        ],
+        "correct_index": 1
+      },
+      "ar": {
+        "glb": "/models/ar/wip_pound.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.042,
+          1.737,
+          0.037
+        ]
+      }
+    },
+    {
+      "id": "wip_respirator",
+      "type": "electrical",
+      "name": "一氧化碳自救呼吸器",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        -0.6,
+        -0.1,
+        -23.42
+      ],
+      "model_url": "/models/tools/99_temp/respirator.obj",
+      "spec": {
+        "function": "坑內意外時提供自救用氧氣/濾毒",
+        "era": "戰後時期；臺灣省礦務局於1984年12月前後統一調查並彙整採購（與1984年海山、煤山等礦災後加強礦工安全防護有關）",
+        "material": "外殼為鐵製（金屬罐體，瓶蓋以金屬扣片固定）"
+      },
+      "_source_file": "respirator.obj",
+      "color": "#c0c0c0",
+      "history": {
+        "mining_story": "礦坑遇火災或爆炸產生大量一氧化碳時，礦工可打開密封的鐵罐，把頭罩套上、口含呼吸管並夾住鼻子，靠罐內氧氣撐約40分鐘，爭取逃出坑外的時間。瑞三煤礦也曾在1984年回報礦務局持有自救呼吸器、並申請增購。",
+        "use_value": "它是坑內發生災變時讓礦工有限時間內脫離有毒氣體的個人最後一道保命裝備，使用時間有限，仍須在期限內逃出礦坑。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=312690 (文山煤礦礦工一氧化碳自救呼吸罐｜國家文化記憶庫 2.0，新北市政府文化局建檔)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=225071&indexCode=Culture_Object (台灣省礦務局統一購買一氧化碳自救呼吸器｜國家文化記憶庫，涉及瑞三鑛業)",
+          "https://www.tmaroc.org.tw/2023article46/ (【博物之島專文】為己、為礦、為家人！重啟猴硐的礦工記憶，提到CO自救救命器的用途)",
+          "https://citycat.neocities.org/coal01 (煤礦風光 1，煤山煤礦災變：備有100個自救器卻未發給礦工，屬轉述性網站，僅作輔助)"
+        ],
+        "confidence": "high"
+      },
+      "quiz": {
+        "question": "一氧化碳自救呼吸器在什麼時候使用？",
+        "options": [
+          "平時採煤作業時",
+          "運煤台車脫軌時",
+          "坑內發生災變、有毒氣體瀰漫時"
+        ],
+        "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_respirator.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.099,
+          0.163,
+          0.124
+        ]
+      }
+    },
+    {
+      "id": "wip_sandbag",
+      "type": "tool",
+      "name": "爆破砂袋",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.89,
+        -0.08,
+        -19
+      ],
+      "model_url": "/models/tools/99_temp/sandbag.obj",
+      "spec": {
+        "function": "爆破時填塞炮孔，防止火焰引燃坑內瓦斯與煤塵",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "sandbag.obj",
+      "color": "#3b6ea5",
+      "history": {
+        "mining_story": "依臺灣礦場安全法施行細則，炸藥裝入炮孔後，要用黏土、砂袋或其他不燃性物質把炮孔充分填塞，不可使用可燃物，避免爆破時火焰與高溫外洩引燃坑內瓦斯或煤塵。",
+        "use_value": "砂袋是炮孔填塞材料之一，讓爆破能量留在孔內作用於煤岩，同時降低引燃可燃氣體的風險。",
+        "sources": [
+          "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=J0020018 (礦場安全法施行細則 第121條，地下礦場第八節 爆炸物及爆破，全國法規資料庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "爆破砂袋在爆破中的用途是？",
+        "options": [
+          "填塞炮孔，防止火焰引燃瓦斯與煤塵",
+          "照亮工作面",
+          "支撐坑道頂板"
+        ],
+        "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_sandbag.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.03,
+          0.022,
+          0.186
+        ]
+      }
+    },
+    {
+      "id": "wip_six",
+      "type": "transport",
+      "name": "六角輪",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.56,
+        -0.08,
+        -14.58
+      ],
+      "model_url": "/models/tools/99_temp/six.obj",
+      "spec": {
+        "function": "六角形滑輪/輪組零件",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "灰色、厚實的塊狀金屬件，上方有斜面凹槽，下方帶有框架底座。"
+      },
+      "_source_file": "six.obj",
+      "color": "#5a5d61",
+      "history": {},
+      "quiz": {
+        "question": "六角輪的外形最接近哪一種？",
+        "options": [
+          "青綠色的細長袋狀物",
+          "灰色厚實的塊狀金屬件，帶有斜面與底座框架",
+          "棕色的長方形木箱"
+        ],
+        "correct_index": 1,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_six.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.292,
+          0.246,
+          0.249
+        ]
+      }
+    },
+    {
+      "id": "wip_waterbag",
+      "type": "tool",
+      "name": "爆破水袋",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        0.66,
+        -0.08,
+        -10.17
+      ],
+      "model_url": "/models/tools/99_temp/waterbag.obj",
+      "spec": {
+        "function": "爆破時用水袋協助抑制粉塵",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "青綠色的圓柱形長條袋狀物。"
+      },
+      "_source_file": "waterbag.obj",
+      "color": "#4a9b8e",
+      "quiz": {
+        "question": "爆破水袋是什麼樣子？",
+        "options": [
+          "灰色厚實的金屬塊",
+          "鏽棕色的鍊條",
+          "青綠色的圓柱形長條袋狀物"
+        ],
+        "correct_index": 2,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_waterbag.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.03,
+          0.022,
+          0.186
+        ]
+      }
+    },
+    {
+      "id": "wip_watersandbox",
+      "type": "tool",
+      "name": "砂袋水袋箱",
+      "rarity": "Common",
+      "zone_id": "zone_main2",
+      "position": [
+        -0.5,
+        0.0,
+        -6.194
+      ],
+      "model_url": "/models/tools/99_temp/watersandbox.obj",
+      "spec": {
+        "function": "存放砂袋與水袋的箱體",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "棕褐色的長方形木箱，一側有突出的把手。"
+      },
+      "_source_file": "watersandbox.obj",
+      "color": "#8b6b47",
+      "quiz": {
+        "question": "砂袋水袋箱的外形是？",
+        "options": [
+          "棕褐色的長方形木箱，一側有突出的把手",
+          "圓柱形的鐵桶",
+          "細長的金屬長柄"
+        ],
+        "correct_index": 0,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_watersandbox.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.255,
+          0.092,
+          0.098
+        ]
+      },
+      "scale": 0.8
+    },
+    {
+      "id": "tool_hoist_winch",
+      "type": "electrical",
+      "name": "捲揚機",
+      "rarity": "Legendary",
+      "zone_id": "zone_incline",
+      "position": [
+        -14.5,
+        -0.08,
+        1.2
+      ],
+      "model_url": "/models/tools/99_temp/machine_A.obj",
+      "spec": {
+        "function": "利用電力驅動鋼索，牽引台車或運載人員上下坑道與豎坑",
+        "era": "機電化運輸時期核心設備",
+        "material": "電動馬達、鋼索、捲筒"
+      },
+      "history": {
+        "use_value": "取代人力牽引，大幅提升坑內外運輸效率，也讓深部開採與豎坑運輸成為可能。",
+        "mining_story": "捲揚機房的老師傅得靠聲音判斷機器狀況，鋼索一旦磨損斷裂後果不堪設想，是坑內最需要謹慎維護的機電設備之一。"
+      },
+      "quiz": {
+        "question": "捲揚機主要靠什麼驅動？",
+        "options": [
+          "電力馬達",
+          "蒸汽機"
+        ],
+        "correct_index": 0
+      },
+      "color": "#3d3d40",
+      "rotation": [
+        0,
+        -1.059,
+        0
+      ],
+      "scale": 0.85,
+      "ar": {
+        "glb": "/models/ar/tool_hoist_winch.glb",
+        "scale": 1,
+        "real_size_m": [
+          1.397,
+          1.024,
+          3.264
+        ]
+      }
+    },
+    {
+      "id": "tool_rock_drill",
+      "type": "tool",
+      "name": "氣動鑿岩機",
+      "rarity": "Rare",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        -30.49,
+        -0.1,
+        13.54
+      ],
+      "model_url": "/models/tools/99_temp/AirLegA_2.obj",
+      "spec": {
+        "function": "利用壓縮空氣鑽鑿岩層與煤層，加速掘進與開採效率",
+        "era": "機械化開採時期引進",
+        "material": "鋼鐵機身、碳化鎢鑽頭"
+      },
+      "history": {
+        "use_value": "取代傳統十字鎬人工開鑿，大幅提升掘進坑道與開採的速度。",
+        "mining_story": "操作風鑽是體力活也是技術活，長期使用甚至會讓礦工罹患職業性的白手病（振動病）。"
+      },
+      "quiz": {
+        "question": "氣動鑿岩機是靠什麼動力運作？",
+        "options": [
+          "壓縮空氣",
+          "電力馬達"
+        ],
+        "correct_index": 0
+      },
+      "color": "#47474a",
+      "ar": {
+        "glb": "/models/ar/tool_rock_drill.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.513,
+          0.146,
+          0.254
+        ]
+      }
+    },
+    {
+      "id": "tool_drill_airleg",
+      "type": "tool",
+      "name": "鑿岩機風腿",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        -31.16,
+        -0.09,
+        11.4
+      ],
+      "model_url": "/models/tools/99_temp/jackLegB.obj",
+      "spec": {
+        "function": "以壓縮空氣頂撐鑿岩機機身，抵銷鑽鑿時的後座力，讓機身穩定貼緊岩面",
+        "era": "與氣動鑿岩機搭配使用的標準配件",
+        "material": "鋼鐵氣壓筒"
+      },
+      "history": {
+        "use_value": "沒有風腿支撐，鑿岩機在鑽鑿時會因後座力不斷彈跳，風腿讓礦工能穩定操作、精準鑽孔。",
+        "mining_story": "風腿的頂撐力道要跟著岩面角度調整，是礦工們熟能生巧才能抓準的手感。"
+      },
+      "quiz": {
+        "question": "鑿岩機風腿主要的功能是？",
+        "options": [
+          "頂撐機身抵銷後座力",
+          "運送岩石碎屑"
+        ],
+        "correct_index": 0
+      },
+      "color": "#5a4a3a",
+      "ar": {
+        "glb": "/models/ar/tool_drill_airleg.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.136,
+          1.016,
+          0.143
+        ]
+      }
+    },
+    {
+      "id": "wip_chain",
+      "type": "transport",
+      "name": "輸送鍊",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -8.83,
+        -0.08,
+        -4.51
+      ],
+      "model_url": "/models/tools/99_temp/chain.obj",
+      "spec": {
+        "function": "搭配輸送槽使用的鍊條，帶動煤炭移動",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "chain.obj",
+      "color": "#4a4a4a",
+      "history": {
+        "mining_story": "採煤面常以鍊條運煤機（chain conveyor）配合截煤機、電鑽，把煤沿工作面運往坑道，再裝入礦車。臺灣記憶相關報導也提到煤礦以鏈式輸送機將煤運至坑口附近再裝車。",
+        "use_value": "鍊條帶動煤炭在槽內移動，是採煤面機械化運煤的核心零件。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=258745&indexCode=Culture_Object (〈基隆炭礦株式會社〉主要礦場設備一覽表｜國家文化記憶庫，載有「煤面運煤機（鍊條運煤機）」)",
+          "https://www.twreporter.org/a/bookreview-the-coal-mining-village-deep-in-memory (報導者書摘，提到鏈式輸送機)"
+        ],
+        "confidence": "low"
+      },
+      "quiz": {
+        "question": "輸送鍊搭配什麼設備使用？",
+        "options": [
+          "鑿岩機",
+          "輸送槽，帶動煤炭移動",
+          "風門"
+        ],
+        "correct_index": 1
+      },
+      "rotation": [
+        0,
+        -3.045,
+        0
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_chain.glb",
+        "scale": 1,
+        "real_size_m": [
+          1.697,
+          0.041,
+          0.092
+        ]
+      }
+    },
+    {
+      "id": "wip_pickaxe_2",
+      "type": "tool",
+      "name": "大掘仔",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -27.5,
+        -0.08,
+        13.67
+      ],
+      "model_url": "/models/tools/99_temp/pickaxe_2.obj",
+      "spec": {
+        "function": "較大型的人工鑿挖工具",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頭部呈尖嘴狀，像細長的十字鎬。"
+      },
+      "_source_file": "pickaxe_2.obj",
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "大掘仔的外形最接近哪一種？",
+        "options": [
+          "寬大的方形木箱",
+          "長柄，頭部呈尖嘴狀",
+          "數個環相接的鍊條"
+        ],
+        "correct_index": 1,
+        "basis": "appearance"
+      },
+      "rotation": [
+        0,
+        1.5708,
+        0
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_pickaxe_2.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.362,
+          0.048,
+          0.837
+        ]
+      }
+    },
+    {
+      "id": "wip_ventilator",
+      "type": "ventilation",
+      "name": "局部風扇",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -8.64,
+        -0.08,
+        -2.52
+      ],
+      "model_url": "/models/tools/99_temp/ventilator.obj",
+      "spec": {
+        "function": "局部強制通風換氣，改善坑道末端空氣品質",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "ventilator.obj",
+      "color": "#408080",
+      "history": {
+        "mining_story": "在掘進工作面這類總風流難以到達的地方，礦場要另設電動或氣動的局部扇風機，再接風管把新鮮空氣送到工作面，以沖淡爆破後的有害氣體與粉塵。臺灣規定開動前須先測定可燃性氣體，確認合格才能送電。",
+        "use_value": "局部風扇補足主通風系統到不了的掘進末端，是讓盡頭工作面保持可呼吸、可作業空氣的設備。",
+        "sources": [
+          "https://law.moj.gov.tw/LawClass/LawParaDeatil.aspx?pcode=J0020018&bp=11 (礦場安全法施行細則 第81、82條，局部扇風機設置與運轉)",
+          "http://www.rootlaw.com.tw/LawArticle.aspx?LawID=A040100041001400-1130429 (煤礦通風安全設施要點 第五條，局部扇風機的設置條件：快速掘進區、通風不易到達處等)",
+          "https://patents.google.com/patent/CN115750418A/zh (搜尋摘要：局部通風用於掘進面供氧、稀釋瓦斯與爆破有害氣體，屬中國技術背景說明)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "局部風扇的功能是？",
+        "options": [
+          "局部強制通風，改善坑道末端空氣品質",
+          "引爆炸藥",
+          "牽引礦車"
+        ],
+        "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_ventilator.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.541,
+          0.466,
+          0.401
+        ]
+      }
+    },
+    {
+      "id": "wip_winddoor",
+      "type": "ventilation",
+      "name": "風門",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_room",
+      "position": [
+        -36,
+        -0.72,
+        10.99
+      ],
+      "model_url": "/models/tools/99_temp/winddoor.obj",
+      "spec": {
+        "function": "控制坑道風流方向的門扇",
+        "era": "待確認",
+        "material": "待確認"
+      },
+      "_source_file": "winddoor.obj",
+      "color": "#45484c",
+      "history": {
+        "mining_story": "礦坑靠風門與遮斷壁、風橋等設施把主入風坑與主出風坑間的風流導向各工作面，法規要求相隔適當距離至少設兩道風門，讓人車通過時輪流開關，避免風流短路。災變時風門也影響救災：煤山煤礦火災中，有督察員進入坑道把風門打開讓濃煙就近排出；海山一坑礦災後搶救人員也曾修復被炸壞的風門。",
+        "use_value": "風門用來控制與分配坑道風流方向，風門受損會直接影響通風與救援。",
+        "sources": [
+          "https://law.moj.gov.tw/LawClass/LawParaDeatil.aspx?pcode=J0020018&bp=11 (礦場安全法施行細則 第83條，風門/調節風門/風橋；搜尋摘要稱需至少兩道、輪流開關)",
+          "https://citycat.neocities.org/coal01 (煤礦風光 1，煤山煤礦災變中打開風門排煙的紀錄；轉述性網站)",
+          "https://storystudio.tw/article/gushi/history-of-taiwan-coal-mine (被遺忘的礦工們與臺灣曾經的煤礦榮景，海山礦災後修復被炸壞的風門)"
+        ],
+        "confidence": "high"
+      },
+      "quiz": {
+        "question": "風門的作用是？",
+        "options": [
+          "運送煤炭",
+          "控制與分配坑道的風流方向",
+          "照明坑道"
+        ],
+        "correct_index": 1
+      },
+      "rotation": [
+        0,
+        1.5708,
+        0
+      ],
+      "scale": [
+        1.24,
+        1.03,
+        1
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_winddoor.glb",
+        "scale": 1,
+        "real_size_m": [
+          2.34,
+          2.09,
+          0.274
+        ]
+      }
+    },
+    {
+      "id": "tool_pneumatic_pick",
+      "type": "tool",
+      "name": "氣動鎬煤機",
+      "rarity": "Rare",
+      "zone_id": "zone_incline",
+      "position": [
+        -8.9,
+        -0.08,
+        -5.2
+      ],
+      "model_url": "/models/tools/99_temp/Pneumatic.obj",
+      "spec": {
+        "function": "利用壓縮空氣驅動鎬頭反覆撞擊，鬆動並鑿落煤層",
+        "era": "機械化採煤時期引進，取代人工鎬煤",
+        "material": "鋼鐵機身、耐磨鎬頭"
+      },
+      "history": {
+        "use_value": "比起人工用鎬煤，氣動鎬煤機能大幅縮短採煤時間，是機械化採煤的重要過渡工具。",
+        "mining_story": "操作鎬煤機時全身都跟著震動，礦工們常說「一天鎬下來，骨頭都要散了」。"
+      },
+      "quiz": {
+        "question": "氣動鎬煤機主要靠什麼方式鬆動煤層？",
+        "options": [
+          "高速撞擊",
+          "高溫燃燒"
+        ],
+        "correct_index": 0
+      },
+      "color": "#444444",
+      "ar": {
+        "glb": "/models/ar/tool_pneumatic_pick.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.175,
+          0.787,
+          0.119
+        ]
+      }
+    },
+    {
+      "id": "wip_bigsaw",
+      "type": "tool",
+      "name": "改修鋸",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -0.661,
+        -0.08,
+        6.655
+      ],
+      "model_url": "/models/tools/99_temp/bigsaw.obj",
+      "spec": {
+        "function": "坑道改修工程使用的鋸具",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "細長扁平的深灰色鋸身，一端較尖。"
+      },
+      "_source_file": "bigsaw.obj",
+      "color": "#3a3a3a",
+      "quiz": {
+        "question": "改修鋸的鋸身是什麼形狀？",
+        "options": [
+          "圓形的大輪盤",
+          "短粗的圓柱體",
+          "細長扁平，一端較尖"
+        ],
+        "correct_index": 2,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_bigsaw.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.078,
+          0.038,
+          0.89
+        ]
+      }
+    },
+    {
+      "id": "tool_coal_tub",
+      "type": "transport",
+      "name": "礦車",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        0.7,
+        -0.08,
+        -33.256
+      ],
+      "rotation": [
+        0,
+        -1.57,
+        0
+      ],
+      "model_url": "/models/tools/99_temp/minecart.obj",
+      "spec": {
+        "function": "沿軌道載運坑內開採出的煤炭至坑口",
+        "era": "日治時期至戰後皆廣泛使用於台灣煤礦坑道",
+        "material": "鑄鐵車體、木製擋板"
+      },
+      "history": {
+        "use_value": "是坑內外運輸的核心工具，一台台車可裝載數百公斤煤炭，靠人力或小型機車牽引沿軌道進出坑道。",
+        "mining_story": "礦工們稱推車為「放天車」，滿載的台車下坡時煞車全靠經驗，稍有不慎便會翻覆傷人。"
+      },
+      "quiz": {
+        "question": "運煤台車主要沿著什麼移動？",
+        "options": [
+          "軌道",
+          "皮帶輸送帶"
+        ],
+        "correct_index": 0
+      },
+      "color": "#5a3d2e",
+      "ar": {
+        "glb": "/models/ar/tool_coal_tub.glb",
+        "scale": 1,
+        "real_size_m": [
+          2.334,
+          1.167,
+          0.92
+        ]
+      },
+      "scale": 0.9
+    },
+    {
+      "id": "tool_circle_support",
+      "type": "support",
+      "name": "圓拱支撐",
+      "rarity": "Rare",
+      "zone_id": "zone_main1",
+      "position": [
+        0.1,
+        -0.26,
+        9.23
+      ],
+      "model_url": "/models/tools/99_temp/circle_sup.obj",
+      "spec": {
+        "function": "以圓弧形鋼構支撐坑道頂部與側壁，能平均分散地壓，較直柱式支撐更穩固",
+        "era": "坑道改修工程與地壓較大的區段常用",
+        "material": "型鋼、鋼板"
+      },
+      "history": {
+        "use_value": "圓拱形狀能有效分散坑道頂部的地壓，在地質條件較差或需要長期維持的坑道區段特別重要，也可回收重複使用。",
+        "mining_story": "架設圓拱支撐需要多人合力，對位要精準，是坑內少數需要團隊分工合作才能完成的工程。"
+      },
+      "quiz": {
+        "question": "圓拱支撐的形狀設計主要是為了？",
+        "options": [
+          "平均分散地壓",
+          "節省材料成本"
+        ],
+        "correct_index": 0
+      },
+      "color": "#3a3a3a",
+      "ar": {
+        "glb": "/models/ar/tool_circle_support.glb",
+        "scale": 1,
+        "real_size_m": [
+          2.712,
+          2.573,
+          0.125
+        ]
+      },
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": "wip_biglock",
+      "type": "transport",
+      "name": "大索頭",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -21.5,
+        -0.08,
+        13.67
+      ],
+      "model_url": "/models/tools/99_temp/biglock.obj",
+      "spec": {
+        "function": "鋼索末端的大型固定/連接五金",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "白色金屬鍊環串接而成，下方連著一個尖錐形的金屬頭。"
+      },
+      "_source_file": "biglock.obj",
+      "color": "#a8a9ad",
+      "history": {},
+      "quiz": {
+        "question": "大索頭的外形特徵是？",
+        "options": [
+          "鍊環串接，下方連著尖錐形金屬頭",
+          "長柄加上錘頭",
+          "扁平的長方形木箱"
+        ],
+        "correct_index": 0,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_biglock.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.248,
+          0.674,
+          0.154
+        ]
+      }
+    },
+    {
+      "id": "wip_box",
+      "type": "tool",
+      "name": "雷管箱",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -18.5,
+        -0.08,
+        11.67
+      ],
+      "model_url": "/models/tools/99_temp/box.obj",
+      "spec": {
+        "function": "存放雷管的木箱",
+        "era": "待確認",
+        "material": "木（法規規定用木造等牢固的絕緣容器）"
+      },
+      "_source_file": "box.obj",
+      "color": "#8b6b47",
+      "history": {
+        "mining_story": "雷管和炸藥一樣要用有特殊標誌的木箱分開存放，不可混放其他物品，並且要放在遠離鐵軌、電池、高壓電線、火源與機電設備的安全地點，避免日曬雨淋；使用電雷管前，還要經過導通試驗才能裝入炸藥。",
+        "use_value": "把最敏感的起爆元件單獨裝箱管理，可避免雷管與炸藥同時意外引爆，是坑內爆炸物管制的一環。",
+        "sources": [
+          "https://www.rootlaw.com.tw/LawArticle.aspx?LawID=B240060050001100-0811208 (礦場安全法臺灣省煤礦施行細則，1992年廢止)",
+          "https://law.moea.gov.tw/LawContent.aspx?id=FL010988 (礦場安全法施行細則；僅見搜尋摘要，全文未能開啟)",
+          "https://tcmb.culture.tw/zh-tw/detail?id=112000000216&indexCode=MOCCOLLECTIONS (電雷管引發導通試驗器｜國家文化記憶庫)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "雷管應該如何存放？",
+        "options": [
+          "與炸藥混放在同一個箱子",
+          "裝在標示明確的木箱，與炸藥分開",
+          "隨身放在礦工口袋"
+        ],
+        "correct_index": 1
+      },
+      "ar": {
+        "glb": "/models/ar/wip_box.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.31,
+          0.12,
+          0.337
+        ]
+      }
+    },
+    {
+      "id": "wip_doublehammer",
+      "type": "tool",
+      "name": "雙頭錘",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -12.2,
+        -0.08,
+        -0.74
+      ],
+      "model_url": "/models/tools/99_temp/doublehammer.obj",
+      "spec": {
+        "function": "雙面錘頭，用於敲擊/拆卸作業",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "深灰色的長柄工具，頂端為橫向的 T 字形，兩側都是方塊狀錘頭。"
+      },
+      "_source_file": "doublehammer.obj",
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "雙頭錘的頂端是什麼形狀？",
+        "options": [
+          "單一的尖嘴",
+          "橫向的 T 字形，兩側都是錘頭",
+          "圓形的環"
+        ],
+        "correct_index": 1,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_doublehammer.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.192,
+          0.037,
+          0.302
+        ]
+      }
+    },
+    {
+      "id": "wip_dynamite",
+      "type": "tool",
+      "name": "炸藥",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -12.6,
+        -0.08,
+        11.67
+      ],
+      "model_url": "/models/tools/99_temp/dynamite.obj",
+      "spec": {
+        "function": "坑道開鑿爆破用炸藥",
+        "era": "1950年代起（黃金博物館典藏紀錄提到自1955年起自日本進口炸藥；典藏品為戰後民國時期）",
+        "material": "膠質炸藥，以浸蠟紙卷包裝，直徑約3公分（黃金博物館典藏品）"
+      },
+      "_source_file": "dynamite.obj",
+      "color": "#6b4a35",
+      "history": {
+        "mining_story": "煤礦掘進工在開鑿坑道、穿越岩層時用炸藥鑽孔爆破；早期以導火線配黑火藥點火，後來改用電雷管引爆。戰後臺灣的礦用炸藥一度仰賴進口，典藏品為符合煤礦許用標準的膠質炸藥。",
+        "use_value": "炸藥是掘進與開鑿岩層、延伸坑道的主要手段，讓礦工得以到達煤層，但因坑內有瓦斯與煤塵，必須配合嚴格的安全規定使用。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=MOCCOLLECTIONS&id=112000000193 (炸藥｜國家文化記憶庫，新北市立黃金博物館典藏)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Invisible&id=616017 (煤礦坑內作業（一）礦工的工種｜國家文化記憶庫)",
+          "https://e-info.org.tw/node/237660 (環境資訊中心：台灣煤礦業退場故事)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "炸藥在煤礦中主要用於？",
+        "options": [
+          "坑道開鑿與岩層爆破",
+          "驅動運煤車",
+          "通風換氣"
+        ],
+        "correct_index": 0
+      },
+      "ar": {
+        "glb": "/models/ar/wip_dynamite.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.026,
+          0.026,
+          0.131
+        ]
+      }
+    },
+    {
+      "id": "wip_hook",
+      "type": "transport",
+      "name": "押車鉤",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -17.39,
+        -0.08,
+        -1.02
+      ],
+      "model_url": "/models/tools/99_temp/hook.obj",
+      "spec": {
+        "function": "勾住台車進行推送調度",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "細長的棕色彎鉤，鉤尖向外彎曲，另一端有小環。"
+      },
+      "_source_file": "hook.obj",
+      "color": "#5a4a3a",
+      "history": {},
+      "quiz": {
+        "question": "押車鉤的外形是？",
+        "options": [
+          "筆直的實心長桿",
+          "方正的木箱",
+          "細長的彎鉤，鉤尖向外彎曲"
+        ],
+        "correct_index": 2,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_hook.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.163,
+          0.014,
+          0.503
+        ]
+      }
+    },
+    {
+      "id": "wip_locomotive",
+      "type": "transport",
+      "name": "柴油機車頭",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        0.791,
+        -0.08,
+        -42.142
+      ],
+      "rotation": [
+        0,
+        1.57,
+        0
+      ],
+      "model_url": "/models/tools/99_temp/locomotive.obj",
+      "spec": {
+        "function": "柴油動力牽引台車列車",
+        "era": "瑞三礦業使用至1990年停採；機關車庫資料標示日治時期與戰後時期，廠牌為加藤製作所（該公司1923年起製造鐵道內燃機）。確切製造年份未查得",
+        "material": "待確認"
+      },
+      "_source_file": "locomotive.obj",
+      "color": "#3f6b7a",
+      "history": {
+        "mining_story": "瑞三礦業以柴油機關車拖動煤車出入水平坑道，與斜坑改用捲揚機牽引不同。園區另有資料指出有加裝車頂駕駛座的機車（編號6、7）供坑外台車牽引與調度。",
+        "use_value": "柴油機關車以內燃機動力取代人力推車，是水平坑道及坑外煤車運送的主要動力。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?id=211376&indexCode=Culture_Place (瑞三鑛業公司柴油機關車庫｜國家文化記憶庫)",
+          "http://blair-train.blogspot.com/2017/07/blog-post.html (Blair's 鐵道攝影：瑞三煤礦柴油機車，個人部落格，僅作旁證)",
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=Culture_Object&id=315313 (武丹山礦場事業計畫書-搬運｜國家文化記憶庫，1962年，另一礦場，僅作一般背景)",
+          "https://zh.wikipedia.org/zh-tw/%E7%8C%B4%E7%A1%90%E7%85%A4%E7%A4%A6%E5%8D%9A%E7%89%A9%E5%9C%92%E5%8D%80 (猴硐煤礦博物園區｜維基百科，1990年停採)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "柴油機車頭的作用是？",
+        "options": [
+          "抽排坑內積水",
+          "鑿開岩壁",
+          "以柴油動力牽引台車列車"
+        ],
+        "correct_index": 2
+      },
+      "ar": {
+        "glb": "/models/ar/wip_locomotive.glb",
+        "scale": 1,
+        "real_size_m": [
+          2.911,
+          1.402,
+          1.273
+        ]
+      },
+      "scale": 0.7
+    },
+    {
+      "id": "wip_part1",
+      "type": "transport",
+      "name": "礦車連接器",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -21.34,
+        -0.08,
+        1.35
+      ],
+      "model_url": "/models/tools/99_temp/part1.obj",
+      "spec": {
+        "function": "連接兩節礦車，讓多台礦車串聯牽引",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "鏽棕色的 U 形環，開口處有一支橫向插銷固定。"
+      },
+      "_source_file": "part1.obj",
+      "color": "#5c4a3a",
+      "history": {},
+      "quiz": {
+        "question": "礦車連接器的外形是？",
+        "options": [
+          "U 形環，開口處有橫向插銷固定",
+          "細長的直桿",
+          "圓柱形的長條袋"
+        ],
+        "correct_index": 0,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_part1.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.189,
+          0.152,
+          0.054
+        ]
+      }
+    },
+    {
+      "id": "wip_part2",
+      "type": "transport",
+      "name": "三環鍊",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -24.11,
+        -0.08,
+        5.71
+      ],
+      "model_url": "/models/tools/99_temp/part2.obj",
+      "spec": {
+        "function": "短粗鍊環，用於吊掛或連接重物",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "數個橢圓形鐵環相互串接而成的短鍊條，呈鏽棕色。"
+      },
+      "_source_file": "part2.obj",
+      "color": "#5c4a3a",
+      "history": {},
+      "quiz": {
+        "question": "三環鍊的外形是？",
+        "options": [
+          "單一的長直桿",
+          "數個橢圓形鐵環相互串接的短鍊條",
+          "扁平的鏟狀長柄"
+        ],
+        "correct_index": 1,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_part2.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.693,
+          0.158,
+          0.158
+        ]
+      }
+    },
+    {
+      "id": "wip_saw",
+      "type": "tool",
+      "name": "炭嘴鋸",
+      "rarity": "Common",
+      "zone_id": "zone_incline",
+      "position": [
+        -29.17,
+        -0.08,
+        5.16
+      ],
+      "model_url": "/models/tools/99_temp/saw.obj",
+      "spec": {
+        "function": "採煤面使用的鋸具",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "深灰色、略微彎曲的扁平鋸身，一端有握柄。"
+      },
+      "_source_file": "saw.obj",
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "炭嘴鋸的鋸身有什麼特徵？",
+        "options": [
+          "圓形的輪盤",
+          "兩側都是方塊錘頭",
+          "略微彎曲的扁平鋸身，一端有握柄"
+        ],
+        "correct_index": 2,
+        "basis": "appearance"
+      },
+      "ar": {
+        "glb": "/models/ar/wip_saw.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.078,
+          0.02,
+          0.336
+        ]
+      }
+    },
+    {
+      "id": "wip_shovel",
+      "type": "tool",
+      "name": "平嘴鏟",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -24.5,
+        -0.08,
+        11.67
+      ],
+      "model_url": "/models/tools/99_temp/shovel.obj",
+      "spec": {
+        "function": "鏟除坑道內碎屑與煤渣",
+        "era": "待確認",
+        "material": "待確認",
+        "appearance": "細長的長柄，末端為扁平的鏟面。"
+      },
+      "_source_file": "shovel.obj",
+      "color": "#3a3a3a",
+      "history": {},
+      "quiz": {
+        "question": "平嘴鏟的末端是什麼形狀？",
+        "options": [
+          "扁平的鏟面",
+          "尖錐形的金屬頭",
+          "橫向的 T 字形錘頭"
+        ],
+        "correct_index": 0,
+        "basis": "appearance"
+      },
+      "rotation": [
+        0,
+        1.5708,
+        0
+      ],
+      "ar": {
+        "glb": "/models/ar/wip_shovel.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.252,
+          0.072,
+          1.187
+        ]
+      }
+    },
+    {
+      "id": "wip_transmitter",
+      "type": "tool",
+      "name": "發爆器",
+      "rarity": "Common",
+      "zone_id": "zone_hoist_east",
+      "position": [
+        -6.9,
+        -0.08,
+        13.67
+      ],
+      "model_url": "/models/tools/99_temp/transmitter.obj",
+      "spec": {
+        "function": "供電給電雷管的起爆裝置，觸發雷管引爆",
+        "era": "待確認",
+        "material": "待確認",
+        "material_note": "（黃金博物館藏安全發爆器為電容式、橘紅色外殼配黃色外袋，但這是單一館藏品，不一定代表瑞三所用，故不當作材質）"
+      },
+      "_source_file": "transmitter.obj",
+      "color": "#2b2b2b",
+      "history": {
+        "mining_story": "煤礦含有瓦斯與煤塵，不能用明火引爆，地下爆破須使用煤礦准用炸藥與電雷管，由發爆器供電起爆。使用前要逐一檢查電雷管導通並量測整個線路電阻，充電後才引爆，發爆器的開關鑰匙由爆破人員親自攜帶，不可插在機器上。",
+        "use_value": "發爆器是電雷管起爆系統的電源與觸發端，搭配檢驗合格要求與開關由專人保管的規定，兼顧爆破效率與安全。",
+        "sources": [
+          "https://tcmb.culture.tw/zh-tw/detail?indexCode=MOCCOLLECTIONS&id=112000000217 (安全發爆器｜國家文化記憶庫，新北市立黃金博物館館藏，電容式、可接100枚雷管、直流1200V、使用注意事項)",
+          "https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=J0020018 (礦場安全法施行細則 第6條將發爆器列為須檢驗合格才能裝設使用的設備；地下礦場爆炸物及爆破章節規定使用電雷管)",
+          "https://baike.baidu.com/item/%E5%8F%91%E7%88%86%E5%99%A8/4135493 (发爆器，百度百科，搜尋摘要：發電式與電容式兩類，煤礦廣泛使用，僅作背景)"
+        ],
+        "confidence": "medium"
+      },
+      "quiz": {
+        "question": "發爆器的功能是？",
+        "options": [
+          "抽出坑內積水",
+          "供電給電雷管，觸發雷管起爆",
+          "帶動輸送鍊"
+        ],
+        "correct_index": 1
+      },
+      "ar": {
+        "glb": "/models/ar/wip_transmitter.glb",
+        "scale": 1,
+        "real_size_m": [
+          0.095,
+          0.137,
+          0.08
+        ]
+      }
+    }
+  ]
+}
