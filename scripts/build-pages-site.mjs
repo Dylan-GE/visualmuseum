@@ -27,7 +27,7 @@ const vite = path.join(ROOT, 'node_modules', 'vite', 'bin', 'vite.js');
 const build = spawnSync(process.execPath, [vite, 'build', '--outDir', 'dist-pages', '--emptyOutDir'], {
   cwd: ROOT,
   stdio: 'inherit',
-  env: { ...process.env, VITE_BASE: base, VITE_PUBLIC_BASE_URL: publicUrl + base.replace(/\/$/, '') },
+  env: { ...process.env, VITE_BASE: base, VITE_PUBLIC_BASE_URL: publicUrl }, // origin only: buildARUrl() adds the base path itself
 });
 if (build.status !== 0) process.exit(build.status ?? 1);
 
