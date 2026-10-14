@@ -33,3 +33,4 @@ public/models/tools/06_機電設備/往復式空氣壓縮機.obj
 
 # Large site scans (rebuilt with scripts/build-site-model.mjs; upload to the server separately)
 public/models/sites/
+dist-pages

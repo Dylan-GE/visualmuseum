@@ -1,0 +1,40 @@
+name: Publish museum to GitHub Pages (temporary test)
+
+# Manual only. The site is PUBLIC once published (noindex, but anyone with the URL can open it).
+#
+# The built site is NOT created here: the large model files (the three site scans, ~270 MB)
+# are not in git. Instead, build it on your own machine:
+#
+#   npm run build:pages
+#   bash scripts/publish-pages-branch.sh        # pushes dist-pages to the gh-pages branch
+#
+# then run this workflow from the Actions tab: it publishes the gh-pages branch as-is.
+# To take the site down again: Settings -> Pages -> Unpublish site (and delete the gh-pages branch).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - run: rm -rf .git .github
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
