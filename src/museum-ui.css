@@ -2796,3 +2796,187 @@
 .mu .fieldguide-modal__body {
   padding-bottom: 20px;
 }
+
+/* ───────── 橫拿手機／矮視窗（高度 ≤ 520px） ─────────
+   設計稿只有直式與寬螢幕的版面：矮視窗下場景卡會吃掉大半畫面、右側按鈕壓到頂端列。
+   這裡把常駐面板收掉，改由漢堡選單開啟，場景卡縮成一小條。 */
+@media (max-height: 520px) {
+  .mu .topbar {
+    top: 8px;
+    left: 12px;
+    right: 12px;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .mu .brand {
+    gap: 10px;
+  }
+
+  .mu .brand__badge {
+    width: 40px;
+    box-shadow: 0 0 0 4px rgba(215, 184, 116, 0.06);
+  }
+
+  .mu .brand__text strong {
+    font-size: 18px;
+  }
+
+  .mu .brand__text small {
+    display: none;
+  }
+
+  .mu .btn--return {
+    padding: 7px 11px;
+    font-size: 13px;
+    gap: 6px;
+  }
+
+  .mu .topbar__actions {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .mu .mobile-menu-btn {
+    display: flex;
+    width: 36px;
+    height: 36px;
+  }
+
+  /* 常駐的側邊面板收起來，從漢堡選單開啟 */
+  .mu .hint-panel:not(.is-mobile-open),
+  .mu .minimap:not(.is-mobile-open),
+  .mu .quick-actions,
+  .mu .breadcrumb {
+    display: none;
+  }
+
+  .mu .hint-panel.is-mobile-open,
+  .mu .minimap.is-mobile-open {
+    max-height: calc(100svh - 24px);
+  }
+
+  /* 場景卡：右下一小條 */
+  .mu .scene-card {
+    left: auto;
+    right: 12px;
+    bottom: 10px;
+    width: min(440px, calc(100vw - 24px));
+    min-height: 0;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    padding: 8px 12px;
+  }
+
+  .mu .scene-card__text {
+    padding-right: 12px;
+  }
+
+  .mu .scene-card h2 {
+    font-size: 16px;
+  }
+
+  .mu .scene-card p {
+    display: none;
+  }
+
+  .mu .scene-title-row {
+    margin-bottom: 4px;
+  }
+
+  .mu .progress-row {
+    font-size: 12px;
+    gap: 8px;
+  }
+
+  .mu .tool-grid {
+    gap: 8px;
+  }
+
+  .mu .tool-grid button {
+    min-width: 40px;
+    gap: 2px;
+  }
+
+  .mu .tool-grid span {
+    font-size: 20px;
+  }
+
+  .mu .tool-grid small {
+    display: block;
+    font-size: 11px;
+  }
+
+  .mu .scene-list {
+    right: 12px;
+    bottom: 76px;
+    max-height: calc(100svh - 96px);
+  }
+
+  .mu .ai-side-panel {
+    top: 8px;
+    right: 12px;
+    max-height: calc(100svh - 16px);
+  }
+
+  .mu .ai-panel-chatview {
+    height: calc(100svh - 24px);
+  }
+
+  .mu .toast {
+    bottom: 76px;
+  }
+
+  /* 建議問題改成一排可橫向滑動，把垂直空間留給對話 */
+  .mu .ai-suggest {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .mu .ai-suggest__chip {
+    flex: none;
+  }
+
+  .mu .ai-test-note {
+    padding: 3px 14px;
+  }
+
+  /* 視窗類：留出可捲動的空間、縮小 3D 預覽的最小高度 */
+  .mu .specimen-overlay,
+  .mu .fieldguide-overlay {
+    padding: 8px;
+  }
+
+  .mu .specimen-modal,
+  .mu .fieldguide-modal,
+  .mu .quiz-modal {
+    max-height: calc(100svh - 16px);
+  }
+
+  .mu .specimen-photo__frame {
+    min-height: 120px;
+  }
+
+  .mu .specimen-info {
+    padding: 16px 18px 14px;
+  }
+
+  .mu .fieldguide-modal__header {
+    padding: 12px 18px 8px;
+  }
+
+  .mu .view2d-overlay {
+    padding: 8px 12px;
+    gap: 8px;
+  }
+
+  .mu .view2d-badge {
+    width: 36px;
+  }
+
+  .mu .view2d-brand__text small {
+    display: none;
+  }
+}
