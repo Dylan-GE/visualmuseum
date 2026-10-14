@@ -123,9 +123,10 @@ function shade(ctx) {
       a = outA;
     };
 
-    over(56, 189, 248, (1 - cover) * m2 * 0.5);
-    over(lerp(24, 59, depth), lerp(58, 130, depth), lerp(92, 184, depth), cover * lerp(0.62, 0.86, depth));
-    over(165, 224, 255, clamp01(1 - Math.abs(m1 - 0.5) / 0.08) * 0.95);
+    // 配色跟主視覺一致：暖褐底、金色外暈、象牙白邊線（原本是藍色）
+    over(215, 184, 116, (1 - cover) * m2 * 0.45);
+    over(lerp(46, 128, depth), lerp(36, 98, depth), lerp(22, 54, depth), cover * lerp(0.62, 0.86, depth));
+    over(255, 244, 216, clamp01(1 - Math.abs(m1 - 0.5) / 0.08) * 0.9);
 
     if (a <= 0.004) continue;
     const o = i * 4;

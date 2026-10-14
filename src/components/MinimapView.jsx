@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { MAP_SIZE, PPM, headingToMapDegrees, worldToMap } from '../utils/minimapProjection';
 import { loadMinimapFootprint } from '../utils/minimapFootprint';
-import { zoneGlow } from '../utils/zoneTheme';
+
+// 配色跟主視覺（金色、象牙白、青綠點綴）一致
+const GOLD = '#d7b874';
+const GOLD_2 = '#f0d99a';
+const IVORY = '#fff4d8';
+const TEAL = '#5db7bd';
+const INK = '#0d0b08';
 
 const LABEL_FONT = 17;
 const LABEL_H = 25;
@@ -34,7 +40,7 @@ function useUnwrappedAngle(deg) {
 
 function ZoneNode({ zone, active, onSelect }) {
   const [x, y] = zone.point;
-  const glow = zone.glow;
+  const glow = active ? TEAL : GOLD;
   const w = labelWidth(zone.name);
   const right = LABEL_PLACEMENT[zone.id] === 'right';
   const pillX = right ? x + 14 : x - w / 2;
@@ -54,8 +60,8 @@ function ZoneNode({ zone, active, onSelect }) {
       <circle cx={x} cy={y} r={18} fill="transparent" />
       <g className="mm-zone-dot">
         {active && <circle cx={x} cy={y} r={13} fill={glow} opacity={0.22} />}
-        <circle cx={x} cy={y} r={active ? 9 : 7.5} fill="#0b1220" stroke={glow} strokeWidth={2.4} />
-        <circle cx={x} cy={y} r={active ? 4.2 : 3} fill={active ? glow : '#e2e8f0'} />
+        <circle cx={x} cy={y} r={active ? 9 : 7.5} fill={INK} stroke={glow} strokeWidth={2.4} />
+        <circle cx={x} cy={y} r={active ? 4.2 : 3} fill={active ? glow : IVORY} />
       </g>
       <g className="mm-zone-label" style={{ pointerEvents: 'none' }}>
         <rect
@@ -64,8 +70,8 @@ function ZoneNode({ zone, active, onSelect }) {
           width={w}
           height={LABEL_H}
           rx={LABEL_H / 2}
-          fill="rgba(10,14,20,0.82)"
-          stroke={active ? glow : 'rgba(255,255,255,0.2)'}
+          fill="rgba(14,12,9,0.84)"
+          stroke={active ? glow : 'rgba(215,184,116,0.38)'}
           strokeWidth={active ? 1.6 : 1}
         />
         <text
@@ -73,7 +79,7 @@ function ZoneNode({ zone, active, onSelect }) {
           y={pillY + LABEL_H / 2 + 0.5}
           fontSize={LABEL_FONT}
           fontWeight={active ? 700 : 500}
-          fill={active ? '#fff' : '#cbd5e1'}
+          fill={active ? '#fff' : 'rgba(255,244,216,0.82)'}
           textAnchor="middle"
           dominantBaseline="central"
         >
@@ -113,7 +119,6 @@ export default function MinimapView({
         id: z.id,
         name: z.name,
         point: worldToMap(z.coordinates.x, z.coordinates.z),
-        glow: zoneGlow(z.id),
       })),
     [zones],
   );
@@ -146,11 +151,11 @@ export default function MinimapView({
     >
       <defs>
         <pattern id="mm-grid" width={10 * PPM} height={10 * PPM} patternUnits="userSpaceOnUse">
-          <circle cx={0} cy={0} r={1.4} fill="rgba(148,163,184,0.28)" />
+          <circle cx={0} cy={0} r={1.4} fill="rgba(240,217,154,0.16)" />
         </pattern>
         <radialGradient id="mm-cone" cx="0" cy="0" r="46" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#facc15" stopOpacity="0.8" />
-          <stop offset="1" stopColor="#facc15" stopOpacity="0" />
+          <stop offset="0" stopColor={GOLD_2} stopOpacity="0.75" />
+          <stop offset="1" stopColor={GOLD_2} stopOpacity="0" />
         </radialGradient>
       </defs>
 
@@ -159,7 +164,7 @@ export default function MinimapView({
       {footprint ? (
         <image href={footprint} width={W} height={H} />
       ) : (
-        <text x={W / 2} y={H / 2} textAnchor="middle" fontSize={18} fill="#64748b">
+        <text x={W / 2} y={H / 2} textAnchor="middle" fontSize={18} fill="rgba(255,244,216,0.5)">
           地圖繪製中…
         </text>
       )}
@@ -169,7 +174,7 @@ export default function MinimapView({
           key={pts}
           points={pts}
           fill="none"
-          stroke="rgba(224,242,254,0.55)"
+          stroke="rgba(240,217,154,0.55)"
           strokeWidth={1.6}
           strokeDasharray="5 6"
           strokeLinecap="round"
@@ -183,11 +188,11 @@ export default function MinimapView({
         return (
           <g key={item.id} transform={`translate(${x} ${y})`}>
             <title>{got ? `${item.name}（已收藏）` : item.name}</title>
-            {got && <circle r={8} fill="#4ade80" opacity={0.22} />}
+            {got && <circle r={8} fill={GOLD_2} opacity={0.25} />}
             <path
               d={DIAMOND}
-              fill={got ? '#4ade80' : '#475569'}
-              stroke={got ? '#052e16' : '#0b1220'}
+              fill={got ? GOLD_2 : 'rgba(255,244,216,0.3)'}
+              stroke={got ? '#3a2a0a' : INK}
               strokeWidth={1.2}
               opacity={got ? 1 : 0.9}
             />
@@ -202,18 +207,18 @@ export default function MinimapView({
       {player && (
         <g className="mm-player" style={{ transform: `translate(${player[0]}px, ${player[1]}px) rotate(${angle}deg)`, pointerEvents: 'none' }}>
           <path d="M 0 0 L 40 -21 A 45 45 0 0 1 40 21 Z" fill="url(#mm-cone)" />
-          <circle r={7} fill="none" stroke="#facc15" strokeWidth={1.6}>
+          <circle r={7} fill="none" stroke={GOLD_2} strokeWidth={1.6}>
             <animate attributeName="r" values="7;19" dur="2s" repeatCount="indefinite" />
             <animate attributeName="opacity" values="0.8;0" dur="2s" repeatCount="indefinite" />
           </circle>
-          <circle r={7.5} fill="#facc15" stroke="#0a0e14" strokeWidth={2.2} />
-          <circle r={3} fill="#fff7d6" />
+          <circle r={7.5} fill={GOLD_2} stroke={INK} strokeWidth={2.2} />
+          <circle r={3} fill={IVORY} />
         </g>
       )}
 
       <g style={{ pointerEvents: 'none' }} transform={`translate(${W - 16 - 10 * PPM} 20)`}>
-        <path d={`M0,-5 V0 H${10 * PPM} V-5`} fill="none" stroke="rgba(226,232,240,0.7)" strokeWidth={1.6} />
-        <text x={(10 * PPM) / 2} y={19} textAnchor="middle" fontSize={14} fill="rgba(226,232,240,0.8)">
+        <path d={`M0,-5 V0 H${10 * PPM} V-5`} fill="none" stroke="rgba(255,244,216,0.7)" strokeWidth={1.6} />
+        <text x={(10 * PPM) / 2} y={19} textAnchor="middle" fontSize={14} fill="rgba(255,244,216,0.8)">
           10 m
         </text>
       </g>

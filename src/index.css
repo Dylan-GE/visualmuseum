@@ -31,8 +31,8 @@ html, body, #root {
   border-radius: 10px;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 50% 60%, rgba(30, 58, 95, 0.55), rgba(8, 12, 20, 0.92) 78%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    radial-gradient(ellipse at 50% 60%, rgba(64, 48, 26, 0.6), rgba(13, 11, 8, 0.94) 78%);
+  border: 1px solid rgba(230, 197, 121, 0.22);
 }
 
 .minimap-legend {
@@ -40,7 +40,7 @@ html, body, #root {
   align-items: center;
   gap: 14px;
   font-size: 12px;
-  color: #cbd5e1;
+  color: rgba(255, 244, 216, 0.72);
 }
 
 .minimap-legend span {
@@ -57,14 +57,14 @@ html, body, #root {
 .minimap-diamond {
   width: 8px;
   height: 8px;
-  background: #475569;
+  background: rgba(255, 244, 216, 0.3);
   transform: rotate(45deg);
-  border: 1px solid #0b1220;
+  border: 1px solid #0d0b08;
 }
 
 .minimap-diamond.got {
-  background: #4ade80;
-  box-shadow: 0 0 6px rgba(74, 222, 128, 0.7);
+  background: #f0d99a;
+  box-shadow: 0 0 6px rgba(240, 217, 154, 0.7);
 }
 
 .mm-zone {
@@ -84,7 +84,7 @@ html, body, #root {
 }
 
 .mm-zone:hover .mm-zone-label rect {
-  fill: rgba(30, 41, 59, 0.95);
+  fill: rgba(37, 29, 18, 0.95);
 }
 
 .mm-player {
