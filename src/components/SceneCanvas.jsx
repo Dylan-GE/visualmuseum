@@ -204,8 +204,9 @@ function pathFollowLookAt(from, to, t, viaInfo, fromId, movingForward) {
   return lookAtTowards(pos, aheadPos);
 }
 
-function CameraController({ controlsRef, flightRef }) {
+function CameraController({ controlsRef, flightRef, pathFlightRef, cameraRef }) {
   const { camera } = useThree();
+  cameraRef.current = camera;
 
   // `lookAt`: an absolute [x,y,z] point to face (used for teleports, where
   // there's no meaningful "current direction" to carry over) — OR `null` to
@@ -253,6 +254,81 @@ function CameraController({ controlsRef, flightRef }) {
     applyTargetTween();
   };
 
+  // Fast travel along a corridor polyline (eye-height points) instead of a straight line through
+  // the rock. The view faces the direction of travel, then settles on `lookAt` at the end.
+  pathFlightRef.current = (points, lookAt, duration) => {
+    const controls = controlsRef.current;
+    if (!controls || points.length < 2) return false;
+    gsap.killTweensOf(camera.position);
+    gsap.killTweensOf(controls.target);
+    gsap.killTweensOf(pathFlightRef);
+
+    const seg = [];
+    let total = 0;
+    for (let i = 0; i < points.length - 1; i++) {
+      const d = Math.hypot(points[i + 1][0] - points[i][0], points[i + 1][2] - points[i][2]);
+      seg.push(d);
+      total += d;
+    }
+    if (!total) return false;
+    const at = (dist) => {
+      let d = Math.min(total, Math.max(0, dist));
+      for (let i = 0; i < seg.length; i++) {
+        if (d <= seg[i] || i === seg.length - 1) {
+          const t = seg[i] ? Math.min(1, d / seg[i]) : 0;
+          const a = points[i];
+          const b = points[i + 1];
+          return { pos: [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t], dir: [b[0] - a[0], b[2] - a[2]] };
+        }
+        d -= seg[i];
+      }
+      return { pos: points[points.length - 1], dir: [0, -1] };
+    };
+
+    const startTarget = controls.target.clone();
+    const state = { p: 0 };
+    const endBlendStart = 0.82; // last part of the flight: turn toward the final look-at
+    gsap.to(state, {
+      p: 1,
+      duration,
+      ease: 'power2.inOut',
+      overwrite: true,
+      onUpdate: () => {
+        const { pos, dir } = at(state.p * total);
+        camera.position.set(pos[0], pos[1], pos[2]);
+        const len = Math.hypot(dir[0], dir[1]) || 1;
+        // look a few metres ahead along the path, slightly downward like every other arrival
+        const ahead = at(state.p * total + 4);
+        const travel = {
+          x: ahead.pos[0] + (dir[0] / len) * 0.01,
+          y: pos[1] - 0.35,
+          z: ahead.pos[2] + (dir[1] / len) * 0.01,
+        };
+        let tx = travel.x;
+        let ty = travel.y;
+        let tz = travel.z;
+        if (state.p < 0.12) {
+          const k = state.p / 0.12; // ease from the old view direction into the travel direction
+          tx = startTarget.x + (tx - startTarget.x) * k;
+          ty = startTarget.y + (ty - startTarget.y) * k;
+          tz = startTarget.z + (tz - startTarget.z) * k;
+        } else if (state.p > endBlendStart && lookAt) {
+          const k = (state.p - endBlendStart) / (1 - endBlendStart);
+          tx += (lookAt[0] - tx) * k;
+          ty += (lookAt[1] - ty) * k;
+          tz += (lookAt[2] - tz) * k;
+        }
+        controls.target.set(tx, ty, tz);
+        controls.update();
+      },
+      onComplete: () => {
+        if (lookAt) controls.target.set(lookAt[0], lookAt[1], lookAt[2]);
+        controls.update();
+      },
+    });
+    return true;
+  };
+
   return null;
 }
 
@@ -292,6 +368,8 @@ const SceneCanvas = forwardRef(function SceneCanvas(
 ) {
   const controlsRef = useRef();
   const flightRef = useRef(null);
+  const pathFlightRef = useRef(null);
+  const cameraRef = useRef(null);
   const hasInitialized = useRef(false);
   const [currentZoneId, setCurrentZoneId] = useState(null);
   // Mid-corridor walking state: null while standing exactly at a zone;
@@ -357,6 +435,84 @@ const SceneCanvas = forwardRef(function SceneCanvas(
     callFlight();
   }, []);
 
+  // Eye-height waypoints that follow the corridors from where the camera is now to `target`,
+  // so fast travel never cuts a straight line through the rock. Null when there is nothing to
+  // follow (already there, no route) and the caller should fall back to a plain fly-to.
+  const travelPoints = useCallback(
+    (target) => {
+      const cam = cameraRef.current;
+      if (!cam) return null;
+      const eye = (c) => [c.x, c.y + FLOOR_LIFT + EYE_HEIGHT, c.z];
+
+      const nodePath = (fromId, toId) => {
+        if (fromId === toId) return [fromId];
+        const prev = { [fromId]: null };
+        const queue = [fromId];
+        while (queue.length) {
+          const cur = queue.shift();
+          for (const n of adjacency[cur] ?? []) {
+            if (n in prev) continue;
+            prev[n] = cur;
+            if (n === toId) {
+              const ids = [n];
+              for (let c = cur; c !== null; c = prev[c]) ids.unshift(c);
+              return ids;
+            }
+            queue.push(n);
+          }
+        }
+        return null;
+      };
+
+      const corridor = (ids) => {
+        const pts = [];
+        for (let i = 0; i < ids.length - 1; i++) {
+          const a = zoneById[ids[i]];
+          const b = zoneById[ids[i + 1]];
+          const leg = pathPoints(a.coordinates, b.coordinates, getVia(a.id, b.id), a.id).map(eye);
+          pts.push(...(i === 0 ? leg : leg.slice(1)));
+        }
+        return pts;
+      };
+
+      const length = (pts) => {
+        let total = 0;
+        for (let i = 0; i < pts.length - 1; i++) total += Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][2] - pts[i][2]);
+        return total;
+      };
+
+      const here = [cam.position.x, cam.position.y, cam.position.z];
+      let best = null;
+
+      if (walk) {
+        // Mid-corridor: leave along the edge toward whichever end gives the shorter trip.
+        const from = zoneById[walk.fromId];
+        const to = zoneById[walk.toId];
+        if (!from || !to) return null;
+        const via = getVia(walk.fromId, walk.toId);
+        const edgeLen = pathLength(from.coordinates, to.coordinates, via, walk.fromId);
+        const along = (t0, t1) => {
+          const n = Math.max(2, Math.ceil((Math.abs(t1 - t0) * edgeLen) / 2));
+          return Array.from({ length: n + 1 }, (_, i) =>
+            eye(pathLerp(from.coordinates, to.coordinates, t0 + ((t1 - t0) * i) / n, via, walk.fromId)),
+          );
+        };
+        for (const [endId, t1] of [[walk.toId, 1], [walk.fromId, 0]]) {
+          const rest = nodePath(endId, target.id);
+          if (!rest) continue;
+          const pts = [here, ...along(walk.t, t1).slice(1), ...corridor(rest).slice(1)];
+          if (!best || length(pts) < length(best)) best = pts;
+        }
+      } else if (currentZoneId) {
+        const ids = nodePath(currentZoneId, target.id);
+        if (ids) best = [here, ...corridor(ids).slice(1)];
+      }
+
+      return best && length(best) > 3 ? best : null;
+    },
+    [walk, currentZoneId, adjacency, zoneById, getVia],
+  );
+
   const flyToNode = useCallback(
     (zone, opts = {}) => {
       const neighborIds = adjacency[zone.id] ?? [];
@@ -371,12 +527,24 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         ? lookAtTowards(zone.coordinates, firstViaPoint ?? firstNeighbor.coordinates)
         : [zone.coordinates.x, zone.coordinates.y + FLOOR_LIFT + EYE_HEIGHT, zone.coordinates.z - LOOK_AHEAD];
 
+      // Fast travel (minimap / scene list): follow the corridors instead of flying through rock.
+      let flewAlongPath = false;
+      if (!opts.instant && pathFlightRef.current) {
+        const pts = travelPoints(zone);
+        if (pts) {
+          let total = 0;
+          for (let i = 0; i < pts.length - 1; i++) total += Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][2] - pts[i][2]);
+          const duration = Math.min(3.6, Math.max(1.1, 0.8 + total / 28));
+          flewAlongPath = pathFlightRef.current(pts, lookAt, duration);
+        }
+      }
+
       setWalk(null);
-      flyToPosition(zone.coordinates, lookAt, opts.instant ? 0.01 : 1.5);
+      if (!flewAlongPath) flyToPosition(zone.coordinates, lookAt, opts.instant ? 0.01 : 1.5);
       setCurrentZoneId(zone.id);
       onSelectZone?.(zone);
     },
-    [adjacency, zoneById, getVia, onSelectZone, flyToPosition],
+    [adjacency, zoneById, getVia, onSelectZone, flyToPosition, travelPoints],
   );
 
   // Move a short, human-scale step along the fromId->toId edge instead of
@@ -623,7 +791,7 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         minDistance={0.4}
         maxDistance={maxDistance}
       />
-      <CameraController controlsRef={controlsRef} flightRef={flightRef} />
+      <CameraController controlsRef={controlsRef} flightRef={flightRef} pathFlightRef={pathFlightRef} cameraRef={cameraRef} />
       <PoseReporter onPoseChange={onPoseChange} />
     </Canvas>
   );
