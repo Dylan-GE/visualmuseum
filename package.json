@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "ar:build": "node scripts/build-ar-models.mjs",
     "build:ar-site": "node scripts/build-ar-site.mjs",
-    "build:pages": "node scripts/build-pages-site.mjs"
+    "build:pages": "node scripts/build-pages-site.mjs",
+    "build:release": "node scripts/build-release.mjs"
   },
   "dependencies": {
     "@google/model-viewer": "^4.3.1",
