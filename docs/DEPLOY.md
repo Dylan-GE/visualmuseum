@@ -13,6 +13,8 @@
 | `THIRD_PARTY_LICENSES.csv` | 使用的第三方套件與授權。 |
 | `MANIFEST.txt` | 每個檔案的大小與 SHA-256，用來確認複製過程沒有損毀；也記錄了打包的版本與設定。 |
 
+> 使用 IIS 的話，請直接看 `IIS_上架步驟.md`（逐步操作，含安裝、設定、驗收、疑難排解）。
+
 ## 2. 伺服器需求
 
 1. **HTTPS（必須）**：手機 AR（Android Scene Viewer、iPhone Quick Look）只在 HTTPS 下運作。

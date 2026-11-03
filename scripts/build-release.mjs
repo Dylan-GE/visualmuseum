@@ -208,8 +208,10 @@ fs.writeFileSync(
 console.log(`\nrelease/museum-site: ${manifest.length} files, ${(total / 1e6).toFixed(0)} MB, base ${base}`);
 
 // 7) documents + source archive
-const deploy = path.join(ROOT, 'docs', 'DEPLOY.md');
-if (fs.existsSync(deploy)) fs.copyFileSync(deploy, path.join(REL, 'DEPLOY.md'));
+for (const doc of ['DEPLOY.md', 'IIS_上架步驟.md']) {
+  const src = path.join(ROOT, 'docs', doc);
+  if (fs.existsSync(src)) fs.copyFileSync(src, path.join(REL, doc));
+}
 // scratch/ holds ~230 MB of intermediate tunnel exports; the full history stays in the git repository.
 execFileSync('git', ['archive', '--format=zip', '-o', path.join(REL, `source-code-${commit}.zip`), 'HEAD', '--', '.', ':(exclude)scratch'], { cwd: ROOT });
 console.log(`release/source-code-${commit}.zip (tracked source files without scratch/; the large model files are inside museum-site/models/)`);
