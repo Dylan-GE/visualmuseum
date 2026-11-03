@@ -9,7 +9,7 @@
 | --- | --- |
 | `museum-site/` | 整個網站，約 300 MB。把整個資料夾的內容放到網頁伺服器的網站根目錄即可。 |
 | `server-configs/` | nginx、Apache、IIS 的設定範例（`museum-site/` 裡已經附了 `.htaccess` 和 `web.config`）。 |
-| `source-code-*.zip` | 原始碼（不含大型模型檔，模型檔在 `museum-site/models/`）。 |
+| `source-code-*.zip` | 原始碼（不含大型模型檔，模型檔在 `museum-site/models/`；也不含 `scratch/` 這個存放隧道模型中間檔的資料夾，約 230 MB，完整內容在 git 倉庫裡）。 |
 | `THIRD_PARTY_LICENSES.csv` | 使用的第三方套件與授權。 |
 | `MANIFEST.txt` | 每個檔案的大小與 SHA-256，用來確認複製過程沒有損毀；也記錄了打包的版本與設定。 |
 

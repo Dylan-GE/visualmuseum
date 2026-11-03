@@ -171,7 +171,14 @@ for (const [key, info] of Object.entries(lock.packages ?? {})) {
   if (!fs.existsSync(pj)) continue;
   const meta = JSON.parse(fs.readFileSync(pj, 'utf8'));
   const lic = typeof meta.license === 'string' ? meta.license : meta.license?.type ?? (meta.licenses ?? []).map((l) => l.type).join(' OR ');
-  rows.push([meta.name, meta.version, lic || 'UNKNOWN', meta.homepage ?? '']);
+  let licence = lic;
+  if (!licence) {
+    // no "license" field: fall back to the licence file shipped with the package
+    const file = ['LICENSE', 'LICENSE.md', 'LICENSE.txt', 'license'].map((f) => path.join(ROOT, key, f)).find((f) => fs.existsSync(f));
+    const head = file ? fs.readFileSync(file, 'utf8').slice(0, 400) : '';
+    licence = /MIT License/i.test(head) ? 'MIT (from LICENSE file)' : /Apache License/i.test(head) ? 'Apache-2.0 (from LICENSE file)' : 'UNKNOWN';
+  }
+  rows.push([meta.name, meta.version, licence, meta.homepage ?? '']);
 }
 fs.writeFileSync(
   path.join(REL, 'THIRD_PARTY_LICENSES.csv'),
@@ -203,5 +210,6 @@ console.log(`\nrelease/museum-site: ${manifest.length} files, ${(total / 1e6).to
 // 7) documents + source archive
 const deploy = path.join(ROOT, 'docs', 'DEPLOY.md');
 if (fs.existsSync(deploy)) fs.copyFileSync(deploy, path.join(REL, 'DEPLOY.md'));
-execFileSync('git', ['archive', '--format=zip', '-o', path.join(REL, `source-code-${commit}.zip`), 'HEAD'], { cwd: ROOT });
-console.log(`release/source-code-${commit}.zip (tracked source files; the large model files are inside museum-site/models/)`);
+// scratch/ holds ~230 MB of intermediate tunnel exports; the full history stays in the git repository.
+execFileSync('git', ['archive', '--format=zip', '-o', path.join(REL, `source-code-${commit}.zip`), 'HEAD', '--', '.', ':(exclude)scratch'], { cwd: ROOT });
+console.log(`release/source-code-${commit}.zip (tracked source files without scratch/; the large model files are inside museum-site/models/)`);
