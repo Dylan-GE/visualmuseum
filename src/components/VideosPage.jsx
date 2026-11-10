@@ -60,8 +60,8 @@ export default function VideosPage() {
             <img src={stoneBadge} alt="" />
           </span>
           <span>
-            <strong>影像紀實</strong>
-            <small>礦業虛擬博物館</small>
+            <strong>瑞欣石礦</strong>
+            <small>720°環景</small>
           </span>
         </div>
       </header>
