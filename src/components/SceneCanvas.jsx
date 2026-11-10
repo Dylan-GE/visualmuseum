@@ -435,14 +435,16 @@ const SceneCanvas = forwardRef(function SceneCanvas(
     callFlight();
   }, []);
 
-  // Eye-height waypoints that follow the corridors from where the camera is now to `target`,
-  // so fast travel never cuts a straight line through the rock. Null when there is nothing to
-  // follow (already there, no route) and the caller should fall back to a plain fly-to.
+  // Eye-height waypoints that follow the corridors from where the camera is now to a target
+  // location: {node: zoneId} or {edge: {fromId, toId, t}} (a spot partway along a corridor).
+  // Fast travel therefore never cuts a straight line through the rock. Null when there is
+  // nothing to follow (already there / no route) and the caller falls back to a plain fly-to.
   const travelPoints = useCallback(
     (target) => {
       const cam = cameraRef.current;
       if (!cam) return null;
       const eye = (c) => [c.x, c.y + FLOOR_LIFT + EYE_HEIGHT, c.z];
+      const here = [cam.position.x, cam.position.y, cam.position.z];
 
       const nodePath = (fromId, toId) => {
         if (fromId === toId) return [fromId];
@@ -481,37 +483,67 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         return total;
       };
 
-      const here = [cam.position.x, cam.position.y, cam.position.z];
-      let best = null;
+      // points along an edge between two t values (inclusive), ~2 m apart, oriented fromId -> toId
+      const along = (fromId, toId, t0, t1) => {
+        const from = zoneById[fromId];
+        const to = zoneById[toId];
+        const via = getVia(fromId, toId);
+        const edgeLen = pathLength(from.coordinates, to.coordinates, via, fromId);
+        const n = Math.max(2, Math.ceil((Math.abs(t1 - t0) * edgeLen) / 2));
+        return Array.from({ length: n + 1 }, (_, i) =>
+          eye(pathLerp(from.coordinates, to.coordinates, t0 + ((t1 - t0) * i) / n, via, fromId)),
+        );
+      };
 
-      if (walk) {
-        // Mid-corridor: leave along the edge toward whichever end gives the shorter trip.
-        const from = zoneById[walk.fromId];
-        const to = zoneById[walk.toId];
-        if (!from || !to) return null;
-        const via = getVia(walk.fromId, walk.toId);
-        const edgeLen = pathLength(from.coordinates, to.coordinates, via, walk.fromId);
-        const along = (t0, t1) => {
-          const n = Math.max(2, Math.ceil((Math.abs(t1 - t0) * edgeLen) / 2));
-          return Array.from({ length: n + 1 }, (_, i) =>
-            eye(pathLerp(from.coordinates, to.coordinates, t0 + ((t1 - t0) * i) / n, via, walk.fromId)),
-          );
-        };
-        for (const [endId, t1] of [[walk.toId, 1], [walk.fromId, 0]]) {
-          const rest = nodePath(endId, target.id);
-          if (!rest) continue;
-          const pts = [here, ...along(walk.t, t1).slice(1), ...corridor(rest).slice(1)];
-          if (!best || length(pts) < length(best)) best = pts;
+      // where we are now
+      const start = walk ? { edge: { fromId: walk.fromId, toId: walk.toId, t: walk.t } } : { node: currentZoneId };
+      if (!start.edge && !start.node) return null;
+
+      // same corridor: just slide along it
+      if (start.edge && target.edge) {
+        const a = start.edge;
+        const b = target.edge;
+        const same = a.fromId === b.fromId && a.toId === b.toId;
+        const flipped = a.fromId === b.toId && a.toId === b.fromId;
+        if (same || flipped) {
+          const tb = same ? b.t : 1 - b.t;
+          const pts = [here, ...along(a.fromId, a.toId, a.t, tb).slice(1)];
+          return length(pts) > 3 ? pts : null;
         }
-      } else if (currentZoneId) {
-        const ids = nodePath(currentZoneId, target.id);
-        if (ids) best = [here, ...corridor(ids).slice(1)];
       }
 
+      const exits = start.edge
+        ? [
+            { id: start.edge.toId, rest: along(start.edge.fromId, start.edge.toId, start.edge.t, 1).slice(1) },
+            { id: start.edge.fromId, rest: along(start.edge.fromId, start.edge.toId, start.edge.t, 0).slice(1) },
+          ]
+        : [{ id: start.node, rest: [] }];
+      const entries = target.edge
+        ? [
+            { id: target.edge.fromId, rest: along(target.edge.fromId, target.edge.toId, 0, target.edge.t).slice(1) },
+            { id: target.edge.toId, rest: along(target.edge.fromId, target.edge.toId, 1, target.edge.t).slice(1) },
+          ]
+        : [{ id: target.node, rest: [] }];
+
+      let best = null;
+      for (const ex of exits) {
+        for (const en of entries) {
+          const ids = nodePath(ex.id, en.id);
+          if (!ids) continue;
+          const pts = [here, ...ex.rest, ...corridor(ids).slice(1), ...en.rest];
+          if (!best || length(pts) < length(best)) best = pts;
+        }
+      }
       return best && length(best) > 3 ? best : null;
     },
     [walk, currentZoneId, adjacency, zoneById, getVia],
   );
+
+  const flightDuration = (pts) => {
+    let total = 0;
+    for (let i = 0; i < pts.length - 1; i++) total += Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][2] - pts[i][2]);
+    return Math.min(3.6, Math.max(1.1, 0.8 + total / 28));
+  };
 
   const flyToNode = useCallback(
     (zone, opts = {}) => {
@@ -530,13 +562,8 @@ const SceneCanvas = forwardRef(function SceneCanvas(
       // Fast travel (minimap / scene list): follow the corridors instead of flying through rock.
       let flewAlongPath = false;
       if (!opts.instant && pathFlightRef.current) {
-        const pts = travelPoints(zone);
-        if (pts) {
-          let total = 0;
-          for (let i = 0; i < pts.length - 1; i++) total += Math.hypot(pts[i + 1][0] - pts[i][0], pts[i + 1][2] - pts[i][2]);
-          const duration = Math.min(3.6, Math.max(1.1, 0.8 + total / 28));
-          flewAlongPath = pathFlightRef.current(pts, lookAt, duration);
-        }
+        const pts = travelPoints({ node: zone.id });
+        if (pts) flewAlongPath = pathFlightRef.current(pts, lookAt, flightDuration(pts));
       }
 
       setWalk(null);
@@ -545,6 +572,84 @@ const SceneCanvas = forwardRef(function SceneCanvas(
       onSelectZone?.(zone);
     },
     [adjacency, zoneById, getVia, onSelectZone, flyToPosition, travelPoints],
+  );
+
+  // Walk the visitor to a spot about 3 m from an exhibit, facing it. The spot is on the corridor
+  // nearest to the item, on the side the visitor is already on; afterwards the ground arrows work
+  // from there like after any other step.
+  const flyToItem = useCallback(
+    (itemId) => {
+      const item = (data?.items ?? []).find((i) => i.id === itemId);
+      const cam = cameraRef.current;
+      if (!item || !cam) return false;
+      const [ix, , iz] = item.position;
+
+      // nearest point of any corridor to the item
+      let best = null;
+      for (const [aId, bId] of edges) {
+        const a = zoneById[aId];
+        const b = zoneById[bId];
+        if (!a || !b) continue;
+        const via = getVia(aId, bId);
+        const pts = pathPoints(a.coordinates, b.coordinates, via, aId);
+        const total = pathLength(a.coordinates, b.coordinates, via, aId);
+        let acc = 0;
+        for (let i = 0; i < pts.length - 1; i++) {
+          const p = pts[i];
+          const q = pts[i + 1];
+          const dx = q.x - p.x;
+          const dz = q.z - p.z;
+          const segLen = Math.hypot(dx, dz);
+          const u = segLen ? Math.max(0, Math.min(1, ((ix - p.x) * dx + (iz - p.z) * dz) / (segLen * segLen))) : 0;
+          const d = Math.hypot(p.x + dx * u - ix, p.z + dz * u - iz);
+          if (!best || d < best.d) best = { d, fromId: aId, toId: bId, t: (acc + segLen * u) / total, total };
+          acc += segLen;
+        }
+      }
+      if (!best) return false;
+
+      // stand APPROACH metres back along the corridor, on the visitor's side
+      const APPROACH = 3;
+      const dt = APPROACH / best.total;
+      const from = zoneById[best.fromId];
+      const to = zoneById[best.toId];
+      const via = getVia(best.fromId, best.toId);
+      const clamp01 = (t) => Math.max(0, Math.min(1, t));
+      const cand = [best.t - dt, best.t + dt].map((t) => {
+        const p = pathLerp(from.coordinates, to.coordinates, clamp01(t), via, best.fromId);
+        return { t: clamp01(t), p, far: Math.hypot(p.x - cam.position.x, p.z - cam.position.z) };
+      });
+      const pick = cand[0].far <= cand[1].far ? cand[0] : cand[1];
+
+      const atNode = pick.t <= 0.001 ? best.fromId : pick.t >= 0.999 ? best.toId : null;
+      const target = atNode ? { node: atNode } : { edge: { fromId: best.fromId, toId: best.toId, t: pick.t } };
+      const spot = atNode ? zoneById[atNode].coordinates : pick.p;
+
+      // Face the exhibit, but keep the look-at point only LOOK_AHEAD metres in front of the eye:
+      // OrbitControls pulls the camera in whenever the target is farther than its maxDistance,
+      // which would drag the camera off the spot (and down toward the floor).
+      const ux = ix - spot.x;
+      const uz = iz - spot.z;
+      const ulen = Math.hypot(ux, uz) || 1;
+      const eyeY = spot.y + FLOOR_LIFT + EYE_HEIGHT;
+      const lookAt = [spot.x + (ux / ulen) * LOOK_AHEAD, eyeY - 0.45, spot.z + (uz / ulen) * LOOK_AHEAD];
+
+      let flew = false;
+      const pts = pathFlightRef.current ? travelPoints(target) : null;
+      if (pts) flew = pathFlightRef.current(pts, lookAt, flightDuration(pts));
+      if (!flew) flyToPosition(spot, lookAt, 1.5);
+
+      if (atNode) {
+        setWalk(null);
+        setCurrentZoneId(atNode);
+        onSelectZone?.(zoneById[atNode]);
+      } else {
+        setCurrentZoneId(best.fromId);
+        setWalk({ fromId: best.fromId, toId: best.toId, t: pick.t });
+      }
+      return true;
+    },
+    [data, edges, zoneById, getVia, travelPoints, flyToPosition, onSelectZone],
   );
 
   // Move a short, human-scale step along the fromId->toId edge instead of
@@ -612,8 +717,9 @@ const SceneCanvas = forwardRef(function SceneCanvas(
         const zone = zoneById[zoneId];
         if (zone) flyToNode(zone);
       },
+      flyToItem,
     }),
-    [zoneById, flyToNode],
+    [zoneById, flyToNode, flyToItem],
   );
 
   const visibleHotspots = useMemo(() => {

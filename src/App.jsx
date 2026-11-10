@@ -55,6 +55,7 @@ function Museum() {
   const { data, error } = useMuseumData();
   const { ready, progress } = useSceneReady(!!data);
   const sceneRef = useRef(null);
+  if (import.meta.env.DEV) window.__sceneApi = sceneRef; // dev only: drive the camera from the console
   const [currentZone, setCurrentZone] = useState(null);
   const [pose, setPose] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -123,6 +124,13 @@ function Museum() {
   }, []);
 
   // 圖鑑裡點已收藏的展品 → 關掉圖鑑、打開展品詳細資料
+  // AI 助手回答完之後把訪客帶到展品／空間；窄螢幕上面板會擋住畫面，先收起來。
+  const handleAINavigate = useCallback((action) => {
+    if (action.type === 'item') sceneRef.current?.flyToItem(action.id);
+    else if (action.type === 'zone') sceneRef.current?.flyToZone(action.id);
+    if (window.matchMedia('(max-width: 900px), (max-height: 520px)').matches) setAiOpen(false);
+  }, []);
+
   const handleSelectFromCollection = useCallback((item) => {
     setCollectionOpen(false);
     setSelectedItem(item);
@@ -196,6 +204,8 @@ function Museum() {
           zone={currentZone}
           items={items}
           zones={data?.zones}
+          pose={pose}
+          onNavigate={handleAINavigate}
         />
         {data && (
           <CollectionHUD

@@ -38,7 +38,7 @@ const initialMessages = () =>
   Object.fromEntries(PERSONAS.map((p) => [p.key, [{ from: 'bot', text: p.welcome }]]));
 
 // 右側滑出的 AI 助手面板（美編設計）：先選導覽夥伴，再對話。
-export default function AIGuideHUD({ open, onClose, zone, items = [], zones = [] }) {
+export default function AIGuideHUD({ open, onClose, zone, items = [], zones = [], pose, onNavigate }) {
   const zoneName = zone?.name;
   const [personaKey, setPersonaKey] = useState(null); // null = 角色選擇畫面
   const [messages, setMessages] = useState(initialMessages);
@@ -72,7 +72,9 @@ export default function AIGuideHUD({ open, onClose, zone, items = [], zones = []
       if (!USE_API) {
         // 假裝想一下，比較像在對話
         await new Promise((r) => setTimeout(r, 500 + Math.random() * 500));
-        append(key, { from: 'bot', text: scriptedReply(key, text, { items, zones, currentZone: zone }) });
+        const reply = scriptedReply(key, text, { items, zones, currentZone: zone, pose });
+        append(key, { from: 'bot', text: reply.text });
+        if (reply.action) onNavigate?.(reply.action); // 問到展品或空間：把訪客帶過去
         return;
       }
       const res = await fetch('/api/ai-guide/chat', {

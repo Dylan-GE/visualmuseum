@@ -97,8 +97,23 @@ function findItem(text, items) {
   });
 }
 
-// context: { items, zones, currentZone }
+// 問到展品或空間時，除了回答，也回傳 action 讓畫面把訪客帶過去：
+//   { type: 'item', id } 走到展品旁邊面對它；{ type: 'zone', id } 走到該區。
+// 回傳 { text, action? }。context: { items, zones, currentZone, pose }
 export function scriptedReply(persona, rawText, context = {}) {
+  const out = compute(persona, rawText, context);
+  return typeof out === 'string' ? { text: out } : out;
+}
+
+const nearestTo = (list, pose) =>
+  !pose
+    ? list[0]
+    : [...list].sort(
+        (a, b) =>
+          Math.hypot(a.position[0] - pose.x, a.position[2] - pose.z) - Math.hypot(b.position[0] - pose.x, b.position[2] - pose.z),
+      )[0];
+
+function compute(persona, rawText, context) {
   const text = rawText.replace(/\s+/g, '');
   const items = context.items ?? [];
   const zone = context.currentZone;
@@ -106,7 +121,31 @@ export function scriptedReply(persona, rawText, context = {}) {
 
   // 1. 問到某個具體展品
   const item = findItem(text, items);
-  if (item) return wrapEnd(persona, itemAnswer(item), text);
+  if (item) {
+    return {
+      text: wrap(persona, `${itemAnswer(item)}我帶你走到它旁邊，到了可以點它看詳細資料。`, text),
+      action: { type: 'item', id: item.id },
+    };
+  }
+
+  // 1b. 問到某個空間（區域名稱）→ 回答並帶過去
+  const zones = context.zones ?? [];
+  const named = zones
+    .filter((z) => text.includes(z.name))
+    .sort((a, b) => b.name.length - a.name.length)[0];
+  if (named) {
+    const here = items.filter((i) => i.zone_id === named.id);
+    const what = here.length
+      ? `這一區放了 ${here.length} 件展品，像是${here
+          .slice(0, 5)
+          .map((i) => i.name)
+          .join('、')}${here.length > 5 ? ' 等' : ''}。`
+      : '這一區沒有放展品，是通往其他地方的坑道。';
+    return {
+      text: wrap(persona, `「${named.name}」${what}我帶你過去！`, text),
+      action: { type: 'zone', id: named.id },
+    };
+  }
 
   // 2. 目前在哪一區
   if (/(這一區|這區|現在|目前|位置|在哪)/.test(text) && /(有什麼|有哪些|展品|位置|哪裡|哪)/.test(text) && zone) {
@@ -141,7 +180,13 @@ export function scriptedReply(persona, rawText, context = {}) {
   for (const [type, words] of TYPE_KEYWORDS) {
     if (words.some((w) => text.includes(w))) {
       const answer = typeAnswer(type, items);
-      if (answer) return wrapEnd(persona, answer, text);
+      if (answer) {
+        const near = nearestTo(items.filter((i) => i.type === type), context.pose);
+        return {
+          text: wrap(persona, `${answer}離你最近的是「${near.name}」，我帶你過去看。`, text),
+          action: { type: 'item', id: near.id },
+        };
+      }
     }
   }
 
