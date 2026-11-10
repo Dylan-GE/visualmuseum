@@ -68,7 +68,7 @@ node scripts/build-release.mjs            # 輸出到 release/
 - 網站**不蒐集個人資料**，不使用 Cookie、不使用第三方統計。收藏進度只存在訪客自己瀏覽器的 localStorage，不會傳到伺服器。
 - 網站執行時**不連到外部網站**，例外有兩個：
   - 入口頁的「GIS網站」連結（訪客點擊後另開新分頁）。
-  - 「影像紀實」頁（`/videos`）的兩支影片是嵌入 YouTube（`youtube-nocookie.com`），訪客按下播放才會連線；若主機或訪客端網路擋 YouTube（或政府資安政策限制內嵌 iframe／CSP `frame-src`），影片會黑畫面，頁面上的「在 YouTube 觀看」連結仍可另開。要換影片或加影片，改 `src/components/VideosPage.jsx` 最上方的 `VIDEOS` 清單，縮圖放 `src/assets/videos/<影片代碼>.jpg`。
+  - 「720°環景」（`/panorama`）與「影片紀實」（`/documentary`）兩頁各嵌入一支 YouTube 影片（`youtube-nocookie.com`），訪客按下播放才會連線；若主機或訪客端網路擋 YouTube（或政府資安政策限制內嵌 iframe／CSP `frame-src`），影片會黑畫面，頁面上的「在 YouTube 觀看」連結仍可另開。要換影片，改 `src/components/VideosPage.jsx` 最上方的 `VIDEO_PAGES`，縮圖放 `src/assets/videos/<影片代碼>.jpg`。
   程式碼內含 `gstatic.com`、`cdn.jsdelivr.net` 的字串（3D 函式庫的預設解碼器網址），目前使用的模型不會用到，所以實際不會連線。
 - 「AI 助手」目前是預先寫好的問答，不呼叫任何外部 AI 服務；若日後要串接真正的 AI，需要另外架設後端並設定 API 金鑰，見 `server/`。
 

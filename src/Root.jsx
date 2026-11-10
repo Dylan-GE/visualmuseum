@@ -18,10 +18,12 @@ export default function Root() {
   const path = routePath(pathname).replace(/\/+$/, '');
   const modelSite = SITES.find((s) => s.model && s.status === 'open' && path === `/${s.id}`);
 
+  const videoPageId = ['panorama', 'documentary'].find((id) => path === `/${id}`);
+
   let page;
   let fallback = null;
   if (modelSite) page = <SiteModelViewer site={modelSite} />;
-  else if (path === '/videos' && !isDevTestPage) page = <VideosPage />;
+  else if (videoPageId && !isDevTestPage) page = <VideosPage pageId={videoPageId} />;
   else if (isHome(pathname) && !isDevTestPage) page = <Portal />;
   else {
     page = <MuseumApp />;
