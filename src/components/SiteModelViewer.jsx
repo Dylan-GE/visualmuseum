@@ -40,6 +40,8 @@ function Terrain({ url, opacity, onBounds }) {
   return <primitive object={root} />;
 }
 
+const POINT_SIZE = 0.15; // metres; the point cloud is thinned to one point per 0.12 m voxel
+
 function Tunnel({ url, visible, onBounds }) {
   const { scene } = useGLTF(url);
 
@@ -64,7 +66,15 @@ function Tunnel({ url, visible, onBounds }) {
         rgb[i * 3 + 2] = c.b;
       }
       found.geometry.setAttribute('color', new THREE.BufferAttribute(rgb, 3));
-      found.material = new THREE.PointsMaterial({ size: 0.09, sizeAttenuation: true, vertexColors: true, toneMapped: false });
+      // Points are kept one per 0.12 m voxel, so they must be drawn a bit wider than that (and as
+      // discs, not squares) or the walls look like gapped mosaic tiles when seen up close.
+      found.material = new THREE.PointsMaterial({ size: POINT_SIZE, sizeAttenuation: true, vertexColors: true, toneMapped: false });
+      found.material.onBeforeCompile = (shader) => {
+        shader.fragmentShader = shader.fragmentShader.replace(
+          '#include <clipping_planes_fragment>',
+          '#include <clipping_planes_fragment>\n  if (length(gl_PointCoord - vec2(0.5)) > 0.5) discard;',
+        );
+      };
       found.material.color.setRGB(1.8, 1.8, 1.8); // scanned in dim light; lift it so the walls are readable
       found.userData.siteTuned = true;
     }
