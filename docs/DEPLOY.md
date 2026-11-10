@@ -54,7 +54,7 @@ npm ci
 node scripts/build-release.mjs            # 輸出到 release/
 ```
 
-大型模型檔（`public/models/sites/*.glb`，共約 113 MB（已用 meshopt 壓縮；壓縮前約 267 MB，原檔另存在開發電腦 `D:SiteWorksites-original`，壓縮用 `scripts/compress-glb.mjs`））是由業主提供的掃描資料轉出來的，不在 git 裡。
+大型模型檔（`public/models/sites/*.glb`，共約 113 MB（已用 meshopt 壓縮；壓縮前約 267 MB，原檔另存在開發電腦 `D:\SiteWork\sites-original\`，壓縮用 `scripts/compress-glb.mjs`））是由業主提供的掃描資料轉出來的，不在 git 裡。
 重新打包前要先放回 `public/models/sites/`，或用 `scripts/build-site-model.mjs`、`scripts/build-site-pointcloud.py`、
 `scripts/build-slpk-model.py` 從原始掃描資料重新轉檔。
 
