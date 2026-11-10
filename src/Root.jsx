@@ -7,6 +7,7 @@ import LoadingScreen from './components/LoadingScreen';
 const Portal = lazy(() => import('./portal/Portal'));
 const MuseumApp = lazy(() => import('./App'));
 const SiteModelViewer = lazy(() => import('./components/SiteModelViewer'));
+const VideosPage = lazy(() => import('./components/VideosPage'));
 
 const isHome = (pathname) => routePath(pathname).replace(/\/+$/, '') === '';
 
@@ -20,6 +21,7 @@ export default function Root() {
   let page;
   let fallback = null;
   if (modelSite) page = <SiteModelViewer site={modelSite} />;
+  else if (path === '/videos' && !isDevTestPage) page = <VideosPage />;
   else if (isHome(pathname) && !isDevTestPage) page = <Portal />;
   else {
     page = <MuseumApp />;
