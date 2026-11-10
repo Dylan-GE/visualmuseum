@@ -155,3 +155,80 @@
     bottom: max(44px, calc(env(safe-area-inset-bottom) + 30px));
   }
 }
+
+/* 載入畫面：LOGO、下載進度（MB）、輪流顯示的操作小提示 */
+.site-loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(340px, calc(100vw - 48px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.site-loader__logo {
+  width: clamp(72px, 12vw, 104px);
+  height: auto;
+  margin-bottom: 6px;
+  animation: ls-pulse 2s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(215, 184, 116, 0.45));
+}
+
+.site-loader__title {
+  margin: 0;
+  font-family: 'Noto Serif TC', 'Songti TC', 'PMingLiU', serif;
+  font-size: 26px;
+  letter-spacing: 0.16em;
+  color: #f0d99a;
+}
+
+.site-loader__label {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 244, 216, 0.7);
+}
+
+.site-loader .site-bar {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.site-bar-fill.is-busy {
+  background-size: 200% 100%;
+  animation: ls-shimmer 1.4s linear infinite;
+}
+
+.site-loader__size {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 244, 216, 0.55);
+  font-variant-numeric: tabular-nums;
+}
+
+.site-loader__tip {
+  margin: 14px 0 0;
+  min-height: 2.6em;
+  font-size: 13.5px;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  color: #fff4d8;
+  animation: site-tip-in 0.5s ease both;
+}
+
+@keyframes site-tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

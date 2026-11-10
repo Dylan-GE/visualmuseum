@@ -7,7 +7,7 @@
 
 | 項目 | 說明 |
 | --- | --- |
-| `museum-site/` | 整個網站，約 300 MB。把整個資料夾的內容放到網頁伺服器的網站根目錄即可。 |
+| `museum-site/` | 整個網站，約 160 MB。把整個資料夾的內容放到網頁伺服器的網站根目錄即可。 |
 | `server-configs/` | nginx、Apache、IIS 的設定範例（`museum-site/` 裡已經附了 `.htaccess` 和 `web.config`）。 |
 | `source-code-*.zip` | 原始碼（不含大型模型檔，模型檔在 `museum-site/models/`；也不含 `scratch/` 這個存放隧道模型中間檔的資料夾，約 230 MB，完整內容在 git 倉庫裡）。 |
 | `THIRD_PARTY_LICENSES.csv` | 使用的第三方套件與授權。 |
@@ -54,7 +54,7 @@ npm ci
 node scripts/build-release.mjs            # 輸出到 release/
 ```
 
-大型模型檔（`public/models/sites/*.glb`，共約 257 MB）是由業主提供的掃描資料轉出來的，不在 git 裡。
+大型模型檔（`public/models/sites/*.glb`，共約 113 MB（已用 meshopt 壓縮；壓縮前約 267 MB，原檔另存在開發電腦 `D:SiteWorksites-original`，壓縮用 `scripts/compress-glb.mjs`））是由業主提供的掃描資料轉出來的，不在 git 裡。
 重新打包前要先放回 `public/models/sites/`，或用 `scripts/build-site-model.mjs`、`scripts/build-site-pointcloud.py`、
 `scripts/build-slpk-model.py` 從原始掃描資料重新轉檔。
 
