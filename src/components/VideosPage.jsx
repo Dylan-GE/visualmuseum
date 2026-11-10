@@ -61,7 +61,7 @@ export default function VideosPage() {
           </span>
           <span>
             <strong>瑞欣石礦</strong>
-            <small>720°環景</small>
+            <small>720°環景影片紀實</small>
           </span>
         </div>
       </header>

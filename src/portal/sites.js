@@ -16,7 +16,7 @@ export const SITES = [
   { id: 'guoying', title: '國英坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}guoying`, model: { terrain: assetUrl('/models/sites/guoying.glb'), tunnel: assetUrl('/models/sites/guoying-tunnel.glb') } },
   { id: 'shengfu', title: '昇福坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}shengfu`, model: { terrain: assetUrl('/models/sites/shengfu.glb'), tunnel: assetUrl('/models/sites/shengfu-tunnel.glb') } },
   { id: 'ruishin', title: '瑞欣石礦', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}ruishin`, model: { terrain: assetUrl('/models/sites/ruishin.glb') } },
-  { id: 'videos', title: '瑞欣石礦', subtitle: '720°環景', status: 'open', href: VIDEOS_PATH },
+  { id: 'videos', title: '瑞欣石礦', subtitle: '720°環景影片紀實', status: 'open', href: VIDEOS_PATH },
   GIS_URL
     ? { id: 'gis', title: 'GIS網站', status: 'open', href: GIS_URL, external: true }
     : { id: 'gis', title: 'GIS網站', status: 'soon' },
