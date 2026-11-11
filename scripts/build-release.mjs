@@ -74,6 +74,9 @@ for (const item of data.items) {
   }
 })(path.join(SITE, 'models', 'tools'));
 
+// The 90 s test clip is only for the GitHub Pages test site; the release carries the full video.
+fs.rmSync(path.join(SITE, 'videos', 'ruishin-720-clip.mp4'), { force: true });
+
 // 3) index.html tweaks + SPA fallback copy + robots
 const indexPath = path.join(SITE, 'index.html');
 let html = fs.readFileSync(indexPath, 'utf8');

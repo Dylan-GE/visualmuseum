@@ -23,11 +23,18 @@ const repo = process.env.PAGES_REPO ?? 'visualmuseum';
 const base = `/${repo}/`;
 const publicUrl = `https://${owner.toLowerCase()}.github.io`;
 
+// GitHub Pages rejects files over 100 MB, so the full panorama video (public/videos/ruishin-720.mp4) cannot go
+// up. If a short test clip exists (public/videos/ruishin-720-clip.mp4, e.g. the first 90 s cut with ffmpeg
+// -c copy) it is published under the real file name and the 720° page uses its own player; otherwise the
+// entrance falls back to YouTube.
+const clip = path.join(ROOT, 'public', 'videos', 'ruishin-720-clip.mp4');
+const hasClip = fs.existsSync(clip);
+
 const vite = path.join(ROOT, 'node_modules', 'vite', 'bin', 'vite.js');
 const build = spawnSync(process.execPath, [vite, 'build', '--outDir', 'dist-pages', '--emptyOutDir'], {
   cwd: ROOT,
   stdio: 'inherit',
-  env: { ...process.env, VITE_BASE: base, VITE_PUBLIC_BASE_URL: publicUrl }, // origin only: buildARUrl() adds the base path itself
+  env: { ...process.env, VITE_BASE: base, VITE_PUBLIC_BASE_URL: publicUrl, VITE_PANORAMA_LOCAL: hasClip ? '1' : '' }, // origin only: buildARUrl() adds the base path itself
 });
 if (build.status !== 0) process.exit(build.status ?? 1);
 
@@ -63,9 +70,13 @@ function prune(dir) {
 }
 prune(path.join(OUT, 'models', 'tools'));
 
-// The panorama source video (public/videos, hundreds of MB) must not go to GitHub Pages: the test site
-// has no VITE_PANORAMA_LOCAL, so the 720° entrance links to YouTube instead.
+// The full panorama source video (public/videos, hundreds of MB) must not go to GitHub Pages; publish only the
+// short test clip, if there is one, in its place.
 fs.rmSync(path.join(OUT, 'videos'), { recursive: true, force: true });
+if (hasClip) {
+  fs.mkdirSync(path.join(OUT, 'videos'), { recursive: true });
+  fs.copyFileSync(clip, path.join(OUT, 'videos', 'ruishin-720.mp4'));
+}
 
 // 2) noindex everywhere + SPA fallback (GitHub Pages serves 404.html for unknown
 //    paths such as /<repo>/ruisan or /<repo>/ar/<id>) + no Jekyll processing.
