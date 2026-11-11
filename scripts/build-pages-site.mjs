@@ -63,6 +63,10 @@ function prune(dir) {
 }
 prune(path.join(OUT, 'models', 'tools'));
 
+// The panorama source video (public/videos, hundreds of MB) must not go to GitHub Pages: the test site
+// has no VITE_PANORAMA_LOCAL, so the 720° entrance links to YouTube instead.
+fs.rmSync(path.join(OUT, 'videos'), { recursive: true, force: true });
+
 // 2) noindex everywhere + SPA fallback (GitHub Pages serves 404.html for unknown
 //    paths such as /<repo>/ruisan or /<repo>/ar/<id>) + no Jekyll processing.
 const indexPath = path.join(OUT, 'index.html');

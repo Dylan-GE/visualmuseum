@@ -1,0 +1,195 @@
+.pano {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #000;
+  color: #fff4d8;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none; /* 讓手指滑動轉視角，而不是捲動頁面 */
+  cursor: grab;
+}
+
+.pano:active {
+  cursor: grabbing;
+}
+
+.pano .vp__poster {
+  cursor: pointer;
+}
+
+.pano__video {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pano__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 全螢幕：播放器鋪滿整個畫面（標準全螢幕，或 iPhone 用的鋪滿視窗） */
+.pano.is-fs,
+.pano.is-pseudo-fs {
+  border-radius: 0;
+}
+
+.pano.is-pseudo-fs {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+.pano__center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.pano__center .vp__play {
+  opacity: 0.9;
+}
+
+.pano__hint,
+.pano__badge {
+  position: absolute;
+  left: 50%;
+  padding: 8px 16px;
+  border: 1px solid rgba(230, 197, 121, 0.42);
+  border-radius: 999px;
+  background: rgba(13, 11, 8, 0.7);
+  backdrop-filter: blur(8px);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.pano__hint {
+  top: 16px;
+}
+
+.pano__badge {
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.pano__error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  background: rgba(8, 7, 5, 0.9);
+  text-align: center;
+}
+
+.pano__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 14px 12px;
+  background: linear-gradient(0deg, rgba(8, 7, 5, 0.85), transparent);
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  cursor: default;
+}
+
+.pano.is-active .pano__bar,
+.pano:focus-within .pano__bar {
+  opacity: 1;
+  transform: none;
+}
+
+.pano__btn {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+  border: 1px solid rgba(230, 197, 121, 0.4);
+  border-radius: 10px;
+  background: rgba(13, 11, 8, 0.65);
+  color: inherit;
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.pano__btn:hover {
+  border-color: rgba(240, 217, 154, 0.85);
+  background: rgba(37, 29, 18, 0.85);
+}
+
+.pano__btn--text {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+
+.pano__time {
+  min-width: 38px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.pano__seek {
+  flex: 1;
+  min-width: 60px;
+  height: 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #d7b874 var(--p, 0%), rgba(255, 244, 216, 0.25) var(--p, 0%));
+  cursor: pointer;
+}
+
+.pano__seek::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f0d99a;
+  border: 0;
+}
+
+.pano__seek::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f0d99a;
+  border: 0;
+}
+
+@media (max-width: 560px) {
+  .pano__bar {
+    gap: 6px;
+    padding-inline: 8px;
+  }
+
+  .pano__btn--text {
+    display: none;
+  }
+
+  .pano__hint {
+    font-size: 12px;
+    top: 10px;
+  }
+}

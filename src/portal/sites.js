@@ -7,6 +7,10 @@ import { BASE_HREF, assetUrl } from '../utils/assetUrl';
 // GIS 網站（業主提供）。部署時要換網址可以用環境變數 VITE_GIS_URL 覆蓋；設成空字串則顯示為即將開放。
 const GIS_URL = (import.meta.env.VITE_GIS_URL ?? 'https://ge.4cgis.com/GSMMAXRWEB/#').trim();
 
+// 720°環景：影片檔（public/videos/ruishin-720.mp4）在的環境，建置時設 VITE_PANORAMA_LOCAL=1，入口就進自己的播放頁（可拖曳轉視角、全螢幕）；
+// 沒有影片檔的環境（GitHub Pages 測試站）退回直接開 YouTube。
+const PANORAMA_LOCAL = import.meta.env.VITE_PANORAMA_LOCAL === '1';
+
 export const RUISAN_PATH = `${BASE_HREF}ruisan`;
 
 export const SITES = [
@@ -14,7 +18,9 @@ export const SITES = [
   { id: 'guoying', title: '國英坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}guoying`, model: { terrain: assetUrl('/models/sites/guoying.glb'), tunnel: assetUrl('/models/sites/guoying-tunnel.glb') } },
   { id: 'shengfu', title: '昇福坑', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}shengfu`, model: { terrain: assetUrl('/models/sites/shengfu.glb'), tunnel: assetUrl('/models/sites/shengfu-tunnel.glb') } },
   { id: 'ruishin', title: '瑞欣石礦', subtitle: '三維模型', status: 'open', href: `${BASE_HREF}ruishin`, model: { terrain: assetUrl('/models/sites/ruishin.glb') } },
-  { id: 'panorama', title: '瑞欣石礦', subtitle: '720°環景', status: 'open', href: 'https://www.youtube.com/watch?v=zEvjbLL5hng', external: true }, // 暫時直接開 YouTube（嵌入播放器不能拖曳轉向）；拿到影片原始檔後改回自己的 /panorama 頁
+  PANORAMA_LOCAL
+    ? { id: 'panorama', title: '瑞欣石礦', subtitle: '720°環景', status: 'open', href: `${BASE_HREF}panorama` }
+    : { id: 'panorama', title: '瑞欣石礦', subtitle: '720°環景', status: 'open', href: 'https://www.youtube.com/watch?v=zEvjbLL5hng', external: true },
   { id: 'documentary', title: '影片紀實', subtitle: '台灣礦業紀實', status: 'open', href: `${BASE_HREF}documentary` },
   GIS_URL
     ? { id: 'gis', title: 'GIS網站', status: 'open', href: GIS_URL, external: true }

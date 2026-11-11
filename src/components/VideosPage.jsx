@@ -2,7 +2,8 @@ import { useState } from 'react';
 import './VideosPage.css';
 import bg from '../portal/assets/enter-bg.webp';
 import stoneBadge from '../portal/assets/stone.webp';
-import { BASE_HREF } from '../utils/assetUrl';
+import { BASE_HREF, assetUrl } from '../utils/assetUrl';
+import PanoramaPlayer from './PanoramaPlayer';
 
 // 兩個影片頁，各放一支 YouTube 影片。點「播放」才會載入 YouTube（一進頁面不連線，也不會先吃流量）。
 // 想換縮圖：把圖片放到 src/assets/videos/<影片代碼>.jpg（16:9）就會自動顯示，不用改程式。
@@ -12,8 +13,12 @@ const VIDEO_PAGES = {
     brandSub: '720°環景',
     name: '瑞欣石礦 720°環景',
     video: { id: 'zEvjbLL5hng', title: '環視蛇紋石之巔：瑞穗露天礦場 720° 數位巡禮', tag: '720° 全景' },
-    // 這支在 YouTube 是 360° 影片，但 YouTube 的「嵌入式播放器」只播固定視角、不能拖曳轉向
-    // （2026-11 在 Chrome 實測：拖曳只會暫停）。要自由轉動視角只能到 YouTube 本站觀看。
+    // 自己的 720° 播放器：影片檔放在 public/videos/（檔案太大，不進 git）。有影片檔的環境（正式機）在建置時
+    // 設 VITE_PANORAMA_LOCAL=1；沒有的環境（GitHub Pages 測試站）就退回 YouTube 內嵌。
+    // 退回時要注意：YouTube 的「嵌入式播放器」不能拖曳轉向（2026-11 在 Chrome 實測，拖曳只會暫停），
+    // 所以那種情況改成引導訪客按「360° 互動觀看」到 YouTube 本站看。
+    local: import.meta.env.VITE_PANORAMA_LOCAL === '1' ? { src: assetUrl('/videos/ruishin-720.mp4'), poster: 'zEvjbLL5hng' } : null,
+    localHint: '按住畫面拖曳（手機用手指滑動）可轉動 720° 視角，滾輪或雙指可縮放；右下角可切換全螢幕。',
     hint: '本頁的內嵌播放器只能固定視角觀看。想用滑鼠拖曳、自由轉動 720° 視角，請按「360° 互動觀看」到 YouTube 觀看（手機、平板可用手指滑動，或用 YouTube App）。',
     primaryLabel: '360° 互動觀看 ↗',
     other: 'documentary',
@@ -47,7 +52,9 @@ export default function VideosPage({ pageId }) {
   const page = VIDEO_PAGES[pageId];
   const other = VIDEO_PAGES[page.other];
   const [playing, setPlaying] = useState(false);
-  const { video } = page;
+  const { video, local } = page;
+  const hint = local ? page.localHint : page.hint;
+  const primaryLabel = local ? null : page.primaryLabel;
 
   return (
     <div className="vp">
@@ -72,7 +79,15 @@ export default function VideosPage({ pageId }) {
       <main className="vp__main">
         <section className="vp__stage" aria-label="影片播放區">
           <div className="vp__frame">
-            {playing ? (
+            {local ? (
+              <PanoramaPlayer
+                src={local.src}
+                poster={thumbOf(local.poster)}
+                title={video.title}
+                tag={video.tag}
+                fallbackUrl={watchUrl(video.id)}
+              />
+            ) : playing ? (
               <iframe
                 src={embedUrl(video.id)}
                 title={video.title}
@@ -104,19 +119,19 @@ export default function VideosPage({ pageId }) {
             <h1>{video.title}</h1>
             <div className="vp__actions">
               <a
-                className={`vp__link${page.primaryLabel ? ' vp__link--primary' : ''}`}
+                className={`vp__link${primaryLabel ? ' vp__link--primary' : ''}`}
                 href={watchUrl(video.id)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {page.primaryLabel ?? '在 YouTube 觀看 ↗'}
+                {primaryLabel ?? '在 YouTube 觀看 ↗'}
               </a>
               <a className="vp__link" href={`${BASE_HREF}${page.other}`}>
                 看「{other.name}」→
               </a>
             </div>
           </div>
-          {page.hint && <p className="vp__hint">{page.hint}</p>}
+          {hint && <p className="vp__hint">{hint}</p>}
         </section>
       </main>
     </div>

@@ -36,3 +36,8 @@ public/models/sites/
 dist-pages
 release
 virtual-museum-release-*.zip
+
+# Source videos (GBs) - never commit; transcoded web copies go under public/videos/
+/*.mp4
+/*.mov
+public/videos/*.mp4

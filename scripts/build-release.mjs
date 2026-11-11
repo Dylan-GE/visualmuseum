@@ -34,12 +34,15 @@ const allowIndex = args.includes('--index');
 fs.rmSync(REL, { recursive: true, force: true });
 fs.mkdirSync(REL, { recursive: true });
 
-// 1) production build
+// 1) production build. The 720° page plays its own video file when public/videos/ruishin-720.mp4 exists
+//    (hundreds of MB, not in git); without it the entrance falls back to YouTube.
+const hasPanoramaVideo = fs.existsSync(path.join(ROOT, 'public', 'videos', 'ruishin-720.mp4'));
+console.log(hasPanoramaVideo ? 'Panorama video found: 720° page uses the local player.' : 'WARNING: public/videos/ruishin-720.mp4 missing: 720° entrance will link to YouTube.');
 const vite = path.join(ROOT, 'node_modules', 'vite', 'bin', 'vite.js');
 const build = spawnSync(process.execPath, [vite, 'build', '--outDir', SITE, '--emptyOutDir'], {
   cwd: ROOT,
   stdio: 'inherit',
-  env: { ...process.env, VITE_BASE: base, ...(publicUrl ? { VITE_PUBLIC_BASE_URL: publicUrl } : {}) },
+  env: { ...process.env, VITE_BASE: base, VITE_PANORAMA_LOCAL: hasPanoramaVideo ? '1' : '', ...(publicUrl ? { VITE_PUBLIC_BASE_URL: publicUrl } : {}) },
 });
 if (build.status !== 0) process.exit(build.status ?? 1);
 
@@ -140,6 +143,7 @@ const webConfig = `<?xml version="1.0" encoding="UTF-8"?>
       <remove fileExtension=".mtl" />   <mimeMap fileExtension=".mtl"  mimeType="text/plain" />
       <remove fileExtension=".wasm" />  <mimeMap fileExtension=".wasm" mimeType="application/wasm" />
       <remove fileExtension=".webp" />  <mimeMap fileExtension=".webp" mimeType="image/webp" />
+      <remove fileExtension=".mp4" />   <mimeMap fileExtension=".mp4"  mimeType="video/mp4" />
     </staticContent>
     <rewrite>
       <rules>
