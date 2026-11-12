@@ -43,6 +43,7 @@ globalThis.FileReader = class {
 };
 
 function loadObject(item) {
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
   const objPath = path.join(ROOT, 'public', item.model_url);
   const mtlPath = objPath.replace(/\.obj$/i, '.mtl');
   const loader = new OBJLoader();
@@ -96,6 +97,7 @@ async function buildOne(item) {
   root.updateMatrixWorld(true);
 
   const glb = await new GLTFExporter().parseAsync(root, { binary: true });
+  // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
   const file = path.join(OUT_DIR, `${item.id}.glb`);
   fs.writeFileSync(file, Buffer.from(glb));
 

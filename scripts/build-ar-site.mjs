@@ -69,6 +69,7 @@ let files = 0;
 let bytes = 0;
 const walk = (dir) => {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
     const p = path.join(dir, e.name);
     if (e.isDirectory()) walk(p);
     else {

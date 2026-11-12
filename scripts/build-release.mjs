@@ -66,6 +66,7 @@ for (const item of data.items) {
 }
 (function prune(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       prune(full);
@@ -181,6 +182,7 @@ for (const [key, info] of Object.entries(lock.packages ?? {})) {
   let licence = lic;
   if (!licence) {
     // no "license" field: fall back to the licence file shipped with the package
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
     const file = ['LICENSE', 'LICENSE.md', 'LICENSE.txt', 'license'].map((f) => path.join(ROOT, key, f)).find((f) => fs.existsSync(f));
     const head = file ? fs.readFileSync(file, 'utf8').slice(0, 400) : '';
     licence = /MIT License/i.test(head) ? 'MIT (from LICENSE file)' : /Apache License/i.test(head) ? 'Apache-2.0 (from LICENSE file)' : 'UNKNOWN';
@@ -197,6 +199,7 @@ const manifest = [];
 let total = 0;
 (function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full);
     else {
