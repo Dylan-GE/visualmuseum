@@ -1,0 +1,9 @@
+# Semgrep: paths that are not our shipped code.
+# Every entry here needs a reason in the PR description (see ci-standards README, "誤判抑制").
+
+# Google's Draco mesh decoder (vendored, minified third-party file). Semgrep flags its
+# bundled glue code (prototype-pollution-loop); we cannot and should not edit it.
+public/draco/
+
+# One-off analysis scripts for the tunnel scan data (not part of the website, not deployed).
+scratch/

@@ -59,6 +59,7 @@ for (const item of data.items) {
 }
 function prune(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       prune(full);
@@ -95,6 +96,7 @@ let total = 0;
 let biggest = [];
 (function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    // nosemgrep: javascript.lang.security.audit.path-traversal.path-join-resolve-traversal.path-join-resolve-traversal -- build-time script; the path comes from a directory walk or constants, never from user input
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(full);
     else {
