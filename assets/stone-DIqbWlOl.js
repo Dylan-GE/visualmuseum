@@ -1,0 +1,1 @@
+var e=`/visualmuseum/assets/stone-BAds4cDS.webp`;export{e as t};
