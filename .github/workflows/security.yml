@@ -1,0 +1,37 @@
+# 各專案的「呼叫端」workflow —— 只有這一小段，邏輯全在中央公版。
+# 中央公版更新後，這裡指向 @v2 的 repo 全部自動跟進。
+# ⚠️ 中央公版在 singi0771/ci-standards；@v2 是版本 tag（要最新可改 @main）。
+name: Security Scan
+
+on:
+  # 只在 PR 上掃描，合併後不再重跑一輪（理由見 ci.yml）。
+  # 程式沒動、但新公布的 CVE 由下面的 schedule 每週重掃抓。
+  # ⚠️ pull_request 這裡「不要」加 paths-ignore —— 理由同 ci.yml：
+  # `security / Security Gate` 是 required check，被 path filter 擋掉就永遠不回報，
+  # 純文件 PR 會卡死在 pending。
+  # 多列 ready_for_review 是為了讓「草稿 PR 不跑、改成正式 PR 那一刻才跑」能運作（見 jobs 的 if）。
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+  schedule:
+    - cron: "0 3 * * 1"        # 每週一完整重掃，抓「程式沒動但新公布的 CVE」；想省分鐘可改每月
+
+# 呼叫端也要宣告最小權限，不然 reusable 拿到的是 repo 預設 token 權限
+permissions:
+  contents: read
+
+# 排程重掃跟 PR 分開一組 —— 兩者共用一組的話，會互相取消，
+# 被取消的那一輪 Security Gate 是紅的
+concurrency:
+  group: security-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  security:
+    # 草稿 PR 先不跑（草稿本來就不能 merge），省 Actions 分鐘
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    uses: singi0771/ci-standards/.github/workflows/security-reusable.yml@v2
+    with:
+      scan-docker-image: true
+      # 同 ci.yml：build context 要是 server/
+      dockerfile: "server/Dockerfile:server"
+      run-zizmor: true

@@ -1,0 +1,67 @@
+# 各專案的「呼叫端」CI workflow —— 邏輯全在中央公版。
+# ⚠️ 中央公版在 singi0771/ci-standards；@v2 是版本 tag（要最新可改 @main）。
+#
+# ── 選配：PR 來源分支政策（走 develop / GitFlow 這類流程時才需要）────────────
+# 公版不預設任何分支模型，分支名稱完全由你決定。要限制「誰可以 merge 進哪裡」，
+# 在下面 jobs.ci.with 加這兩個 input（不加＝不檢查）：
+#
+#     restricted-base-branches: "main"              # 要管的 base，空白隔開，支援 glob
+#     allowed-head-branches: "develop hotfix/*"     # 允許的來源分支
+#
+# 這組的意思是「main 只接受從 develop 或 hotfix/* 發來的 PR」，其他分支發到 main 會被擋下。
+# 檢查結果收進 `ci / CI Gate`，所以分支保護的 ruleset 不必加新的 required check。
+# ⚠️ 它擋的是誤操作。repo 能設分支保護時，要跟 ruleset（必須開 PR、禁止 force push）一起設；
+#    不能設分支保護的 repo（例如 Free 方案的 private repo），紅燈只能提醒、擋不住 merge。
+name: CI
+
+on:
+  # 只在 PR 上檢查，合併進 main / develop 後不再重跑一輪：
+  #   - PR 檢查的就是「合併後的結果」（refs/pull/N/merge），合併後再跑多半是同一份程式碼
+  #   - develop → main 的 PR 會把 develop 累積的變更一起再驗一次；
+  #     PR 開著時 develop 又有新 commit，PR 會收到 synchronize 而自動重跑
+  #   - 直接 push、Gate 沒綠就 merge，由 branch-guard.yml 偵測並開 Issue 通知
+  # ⚠️ pull_request 這裡「不要」加 paths-ignore。
+  # 分支保護把 `ci / CI Gate` 設成 required check 後，被 path filter 擋掉的 PR
+  # 根本不會啟動 workflow → required check 永遠 pending → 純文件 PR 永遠 merge 不了
+  # （連 admin 都不行，ruleset 沒有例外名單）。省那幾分鐘不值得換一個卡死。
+  # 多列 ready_for_review 是為了讓「草稿 PR 不跑、改成正式 PR 那一刻才跑」能運作（見 jobs 的 if）。
+  # 多列 edited 是為了「PR 改了 base 分支」時重跑：不然先發到 develop 拿綠燈、再把 base 改成 main，
+  # 綠燈會原封不動沿用，來源分支政策就被繞過了。改標題、改內文也是 edited，
+  # 那種不重跑（見 jobs 的 if 與 concurrency）。
+  # 沒有 branches: 篩選＝「發到任何分支的 PR 都跑」。
+  # 只想對特定分支的 PR 跑，就自己加，例如：
+  #   pull_request:
+  #     branches: [main, develop]
+  #     types: [...]
+  # ⚠️ 加了之後，沒被列到的分支其 PR 不會有 `ci / CI Gate` —— 那些分支就不能設成 required check。
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, edited]
+
+# 呼叫端也要宣告最小權限，不然 reusable 拿到的是 repo 預設 token 權限
+permissions:
+  contents: read
+
+# 改標題／內文的 edited 不跑任何 job，給它獨立的 group（每次都不同）：否則它會把同一個 PR
+# 正在跑的 CI 取消掉，而自己又什麼都不跑，這個 commit 就永遠沒有 CI Gate 結果。改 base 的 edited 照常共用 group。
+concurrency:
+  group: ${{ github.event.action == 'edited' && github.event.changes.base == null && format('ci-edit-{0}', github.run_id) || format('ci-{0}', github.ref) }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    # 草稿 PR 先不跑（草稿本來就不能 merge），省 Actions 分鐘；
+    # edited 事件只有在 base 分支被改掉時才跑
+    if: ${{ github.event_name != 'pull_request' || (!github.event.pull_request.draft && (github.event.action != 'edited' || github.event.changes.base != null)) }}
+    uses: singi0771/ci-standards/.github/workflows/ci-reusable.yml@v2
+    with:
+      run-python: true
+      python-version: "3.12"
+      run-dotnet: false
+      run-docker-build: true
+      # Dockerfile 在 server/，COPY 的檔案也在 server/，所以 build context 要指到 server（預設是 repo 根目錄，會 build 失敗）
+      dockerfile: "server/Dockerfile:server"
+      run-hadolint: true
+      run-actionlint: true
+      run-shellcheck: true
+      restricted-base-branches: "main"
+      allowed-head-branches: "develop hotfix/*"
