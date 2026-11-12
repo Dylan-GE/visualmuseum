@@ -877,13 +877,6 @@
     font-size: 20px;
   }
 
-  .specimen-ar {
-    grid-template-columns: 36px 1fr;
-  }
-
-  .specimen-ar__qr {
-    display: none;
-  }
 }
 
 .ai-side-panel {
@@ -1265,6 +1258,7 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 2fr 3fr;
+  grid-template-rows: minmax(0, 1fr); /* 內容比視窗高時，右側資訊欄自己捲動，而不是被 overflow:hidden 切掉 */
   width: min(960px, 92vw);
   max-height: 90vh;
   border-radius: var(--radius);
@@ -1574,7 +1568,16 @@
 @media (max-width: 720px) {
   .specimen-modal {
     grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(0, 1fr); /* 上：3D 預覽；下：資訊欄（空間不夠時在裡面上下捲，才按得到 AR／遊戲收藏） */
     max-height: 94vh;
+    max-height: 94dvh;
+  }
+  .specimen-photo__frame {
+    min-height: min(240px, 30vh);
+  }
+  .specimen-info {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
   }
   .specimen-photo {
     min-height: 200px;
@@ -2963,6 +2966,17 @@
   }
 
   .mu .view2d-brand__text small {
+    display: none;
+  }
+}
+
+/* 手機：展品視窗的 AR 卡要看得到 QR Code（點它也能直接開 AR 頁）。放在檔案最後，才不會被前面同權重的基本樣式蓋掉 */
+@media (max-width: 480px) {
+  .mu .specimen-ar {
+    grid-template-columns: 64px 1fr;
+  }
+
+  .mu .specimen-ar__icon {
     display: none;
   }
 }
