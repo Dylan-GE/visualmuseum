@@ -57,10 +57,10 @@ jobs:
       run-python: true
       python-version: "3.12"
       run-dotnet: false
-      run-docker-build: true
-      # Dockerfile 在 server/，COPY 的檔案也在 server/，所以 build context 要指到 server（預設是 repo 根目錄，會 build 失敗）
-      dockerfile: "server/Dockerfile:server"
-      run-hadolint: true
+      # 不檢查 Docker：網站是純靜態檔案、部署在 IIS，沒有用到容器；server/Dockerfile 只是 AI 後端日後選用的範例。
+      # 之後要在容器裡跑 AI 後端時，改回 true 並加上 dockerfile: "server/Dockerfile:server"（build context 要是 server/）。
+      run-docker-build: false
+      run-hadolint: false
       run-actionlint: true
       run-shellcheck: true
       restricted-base-branches: "main"
